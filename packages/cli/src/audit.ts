@@ -9,9 +9,10 @@ import {
   type CaptureSelection,
   capture,
   detectDefaultScope,
-  detectDevServer,
+  detectProjectDevServer,
   discoverRoutesWithSource,
   type Finding,
+  findingIdForPage,
   findScope,
   findScopeForRoutes,
   loadScopes,
@@ -317,7 +318,7 @@ export async function runAuditCommand(
 ): Promise<AuditCommandResult> {
   const projectRoot = options.projectRoot ?? process.cwd();
   const output = options.output ?? process.stdout;
-  const appUrl = options.appUrl ?? (await detectDevServer());
+  const appUrl = options.appUrl ?? (await detectProjectDevServer(projectRoot));
 
   if (appUrl === null) {
     throw new Error(
@@ -348,6 +349,7 @@ export async function runAuditCommand(
     findings.push(
       ...report.findings.map((finding) => ({
         ...finding,
+        id: findingIdForPage(page.path, finding.id),
         page: page.path,
       })),
     );

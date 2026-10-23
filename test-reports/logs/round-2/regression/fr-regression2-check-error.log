@@ -1,0 +1,9 @@
+Capturing: App screens (1 page): /check-error, at 375, 768 and 1440 px.
+Automated findings: 3.
+- /check-error: Elements must meet minimum color contrast ratio thresholds [wcag22-1.4.3], severity 3.
+- /check-error: Target is smaller than 24 by 24 CSS pixels [wcag22-2.5.8], severity 2.
+- /check-error: Page overflows at 320 CSS pixels [wcag22-1.4.10], severity 2.
+Checks that hit errors:
+- /check-error: axe:summary-name on summary. No citation registered for axe rule summary-name.
+Findings JSON: /private/tmp/fr-regression2-check-error/.fittingroom/audits/app/findings.json
+HTML report: /private/tmp/fr-regression2-check-error/.fittingroom/audits/app/report.html

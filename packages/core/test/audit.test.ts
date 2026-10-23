@@ -3,7 +3,7 @@ import os from "node:os";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 import { afterAll, beforeAll, describe, expect, it } from "vitest";
-import { type Finding, mergeFindings, runAutomatedChecks } from "../src/index";
+import { type Finding, findingIdForPage, mergeFindings, runAutomatedChecks } from "../src/index";
 import { type FixtureServer, fixturePath, startFixtureServer } from "./helpers/fixture-server";
 
 const registryPath = fileURLToPath(new URL("../../citations/registry.json", import.meta.url));
@@ -160,6 +160,12 @@ describe("runAutomatedChecks", () => {
       related: ["wcag22-4.1.2"],
       severity: 4,
     });
+  });
+
+  it("gives findings with the same check id on different pages unique ids", () => {
+    expect(findingIdForPage("/login", "target-size-1")).toBe("login-target-size-1");
+    expect(findingIdForPage("/signup", "target-size-1")).toBe("signup-target-size-1");
+    expect(findingIdForPage("/", "target-size-1")).toBe("root-target-size-1");
   });
 
   it("does not merge different problems on the same element", () => {

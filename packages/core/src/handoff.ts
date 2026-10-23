@@ -4,7 +4,7 @@ import path from "node:path";
 import pixelmatch from "pixelmatch";
 import { chromium } from "playwright";
 import { PNG } from "pngjs";
-import { writeJsonAtomic } from "./fittingroom-store";
+import { writeFileAtomic, writeJsonAtomic } from "./fittingroom-store";
 
 export const HANDOFF_WIDTHS = [375, 768, 1440] as const;
 export const HANDOFF_HEIGHT = 900;
@@ -58,6 +58,8 @@ export interface HandoffReference {
 }
 
 export interface WriteHandoffInput {
+  edits?: unknown;
+  findingsFixed?: unknown[];
   projectRoot: string;
   rationale: string;
   reference: HandoffReference;
@@ -252,8 +254,31 @@ export async function writeHandoff(input: WriteHandoffInput): Promise<HandoffRes
     version: 1,
   };
   const brief = briefFor(manifest);
+  const checklist = [
+    "# Implementation checklist",
+    "",
+    `- [ ] Open the reference screenshots for ${input.route}.`,
+    `- [ ] Apply ${input.variantSlug} to the real route.`,
+    "- [ ] Keep the real content and data wiring.",
+    "- [ ] Use the tokens in tokens.json.",
+    `- [ ] Call fr_verify with route ${input.route} and handoffId ${handoffId}.`,
+    "",
+  ].join("\n");
 
   await writeJsonAtomic(path.join(folder, "handoff.json"), manifest);
+  await writeJsonAtomic(path.join(folder, "tokens.json"), input.tokens);
+  await writeJsonAtomic(path.join(folder, "structure.json"), {
+    version: 1,
+    route: input.route,
+    order: input.reference.order,
+    styles: input.reference.styles,
+  });
+  await writeJsonAtomic(path.join(folder, "edits.json"), input.edits ?? { version: 1, files: {} });
+  await writeJsonAtomic(path.join(folder, "findings-fixed.json"), {
+    version: 1,
+    findings: input.findingsFixed ?? [],
+  });
+  await writeFileAtomic(path.join(folder, "checklist.md"), checklist);
   await writeFile(path.join(folder, "brief.md"), `${brief}\n`);
 
   return { brief, folder, handoffId, manifest };

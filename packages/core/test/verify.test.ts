@@ -1,4 +1,4 @@
-import { mkdtemp, readFile, rm } from "node:fs/promises";
+import { mkdtemp, readFile, rm, stat } from "node:fs/promises";
 import os from "node:os";
 import path from "node:path";
 import { afterAll, beforeAll, describe, expect, it } from "vitest";
@@ -53,6 +53,26 @@ describe("handoff", () => {
     expect(brief).toContain("Keep all data wiring and real content.");
     expect(brief).toContain(`Call fr_verify with route /workspace and handoffId ${handoffId}.`);
   }, 120_000);
+
+  it("writes tokens, structure, edits, fixed findings and the checklist", async () => {
+    for (const fileName of [
+      "tokens.json",
+      "structure.json",
+      "edits.json",
+      "findings-fixed.json",
+      "checklist.md",
+    ]) {
+      const file = await stat(path.join(handoffDir, fileName));
+
+      expect(file.size).toBeGreaterThan(0);
+    }
+
+    const tokens = JSON.parse(await readFile(path.join(handoffDir, "tokens.json"), "utf8")) as {
+      "color.action"?: string;
+    };
+
+    expect(tokens["color.action"]).toBe("#1d4ed8");
+  }, 30_000);
 
   it("passes a correct implementation with no style or order mismatches", async () => {
     const report = await verifyImplementation({

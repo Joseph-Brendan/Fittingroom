@@ -1,0 +1,115 @@
+
+> fittingroom@0.0.0 test /Users/josephbrendan/Documents/fittingroom
+> pnpm -r test
+
+Scope: 8 of 9 workspace projects
+packages/board test$ vitest run
+packages/citations test$ vitest run
+packages/directions test$ vitest run
+packages/directions test:  RUN  v3.2.7 /Users/josephbrendan/Documents/fittingroom/packages/directions
+packages/citations test:  RUN  v3.2.7 /Users/josephbrendan/Documents/fittingroom/packages/citations
+packages/board test:  RUN  v3.2.7 /Users/josephbrendan/Documents/fittingroom/packages/board
+packages/citations test:  ✓ test/smoke.test.ts (1 test) 2ms
+packages/citations test:  ✓ test/validation.test.ts (10 tests) 7ms
+packages/citations test:  Test Files  2 passed (2)
+packages/citations test:       Tests  11 passed (11)
+packages/citations test:    Start at  00:07:39
+packages/citations test:    Duration  496ms (transform 65ms, setup 0ms, collect 93ms, tests 9ms, environment 0ms, prepare 242ms)
+packages/board test:  ✓ test/smoke.test.tsx (3 tests) 12ms
+packages/citations test: Done
+packages/board test:  Test Files  1 passed (1)
+packages/board test:       Tests  3 passed (3)
+packages/board test:    Start at  00:07:39
+packages/board test:    Duration  604ms (transform 55ms, setup 0ms, collect 102ms, tests 12ms, environment 0ms, prepare 69ms)
+packages/directions test:  ✓ test/smoke.test.ts (1 test) 1ms
+packages/directions test:  ✓ test/directions.test.ts (4 tests) 37ms
+packages/directions test:  Test Files  2 passed (2)
+packages/directions test:       Tests  5 passed (5)
+packages/directions test:    Start at  00:07:39
+packages/directions test:    Duration  678ms (transform 106ms, setup 0ms, collect 288ms, tests 38ms, environment 0ms, prepare 123ms)
+packages/board test: Done
+packages/directions test: Done
+packages/core test$ vitest run
+packages/core test:  RUN  v3.2.7 /Users/josephbrendan/Documents/fittingroom/packages/core
+packages/core test:  ✓ test/audit.test.ts (8 tests) 10735ms
+packages/core test:    ✓ runAutomatedChecks > finds each planted measured bug exactly once on the right page  5078ms
+packages/core test:    ✓ runAutomatedChecks > turns unmeasurable contrast into judged findings instead of crashing  792ms
+packages/core test:    ✓ runAutomatedChecks > does not crash when an axe result has null data  403ms
+packages/core test:    ✓ runAutomatedChecks > keeps auditing after an axe element has no citation  517ms
+packages/core test:    ✓ runAutomatedChecks > returns no findings on any good-ui page  3938ms
+packages/core test:  ✓ test/edit-engine.test.ts (12 tests) 60ms
+packages/core test:  ✓ test/scopes.test.ts (8 tests) 76ms
+packages/core test:  ✓ test/design-system.test.ts (7 tests) 16ms
+packages/core test:  ✓ test/fixtures-runnable.test.ts (2 tests) 1569ms
+packages/core test:    ✓ bad-ui fixture > has a dev script and serves its home page on port 3000  790ms
+packages/core test:    ✓ good-ui fixture > has a dev script and serves its home page on port 3001  779ms
+packages/core test:  ✓ test/fittingroom-store.test.ts (6 tests) 6ms
+packages/core test:  ✓ test/slop.test.ts (11 tests) 2004ms
+packages/core test:  ✓ test/verify.test.ts (4 tests) 5608ms
+packages/core test:    ✓ handoff > passes a correct implementation with no style or order mismatches  1894ms
+packages/core test:    ✓ handoff > fails a hand-made bad implementation on pixels, tokens and content order  1991ms
+packages/core test:  ✓ test/capture.test.ts (2 tests) 932ms
+packages/core test:    ✓ capture > returns a scope summary before capturing only the selected pages  379ms
+packages/core test:    ✓ capture > captures only the four auth pages in the 14-route fixture  548ms
+packages/core test:  ✓ test/routes.test.ts (6 tests) 363ms
+packages/core test:  ✓ test/dev-server.test.ts (3 tests) 18ms
+packages/core test:  ✓ test/regeneration-state.test.ts (3 tests) 5ms
+packages/core test:  ✓ test/smoke.test.ts (1 test) 1ms
+packages/core test:  Test Files  13 passed (13)
+packages/core test:       Tests  73 passed (73)
+packages/core test:    Start at  00:07:39
+packages/core test:    Duration  25.73s (transform 110ms, setup 0ms, collect 3.11s, tests 21.39s, environment 1ms, prepare 300ms)
+packages/core test: Done
+packages/mcp test$ vitest run
+packages/cli test$ vitest run
+packages/cli test:  RUN  v3.2.7 /Users/josephbrendan/Documents/fittingroom/packages/cli
+packages/mcp test:  RUN  v3.2.7 /Users/josephbrendan/Documents/fittingroom/packages/mcp
+packages/mcp test:  ✓ test/directions.test.ts (7 tests) 11382ms
+packages/mcp test:    ✓ fr_register_variant > accepts a clean variant and returns its preview screenshot  1063ms
+packages/mcp test:    ✓ fr_register_variant > rejects a variant that adds a WCAG AA contrast failure  1009ms
+packages/mcp test:    ✓ fr_register_variant > rejects a variant that throws while rendering  5404ms
+packages/mcp test:    ✓ fr_handoff > verifies the real route and fails when it does not match the handoff  1930ms
+packages/cli test:  ✓ test/binary.test.ts (15 tests) 17292ms
+packages/cli test:    ✓ fitroom binary > shows the page picker when audit has a URL but no scope  2365ms
+packages/cli test:    ✓ fitroom binary > skips the picker for --scope and prints the summary before capture  2204ms
+packages/cli test:    ✓ fitroom binary > captures only the pages passed with --pages  2249ms
+packages/cli test:    ✓ fitroom binary > auto-detects the running dev server when --url is omitted  2232ms
+packages/cli test:    ✓ fitroom binary > tells the user to start the app or pass --url when no dev server is found  377ms
+packages/cli test:    ✓ fitroom binary > starts the board when board gets --url  861ms
+packages/cli test:    ✓ fitroom binary > creates .fittingroom and a valid empty board.json when it is missing  411ms
+packages/cli test:    ✓ fitroom binary > gives a plain error when board.json is corrupt  385ms
+packages/cli test:    ✓ fitroom binary > creates scopes.json when fitroom scopes runs with no .fittingroom  343ms
+packages/cli test:    ✓ fitroom binary > keeps --version working after a command  347ms
+packages/cli test:    ✓ fitroom binary > prints valid audit options for an unknown option  328ms
+packages/cli test:    ✓ fitroom binary > prints valid board options for an unknown option  375ms
+packages/cli test:    ✓ fitroom binary > lists every audit option with a description and an example  351ms
+packages/cli test:    ✓ fitroom binary > lists every board option with a description and an example  379ms
+packages/cli test:    ✓ fitroom binary > lists every scopes option with a description and an example  348ms
+packages/mcp test:  ✓ test/tools.test.ts (6 tests) 5146ms
+packages/mcp test:    ✓ Fitting Room MCP tools > captures only the selected page group  351ms
+packages/mcp test:    ✓ Fitting Room MCP tools > audits a scope, returns a critique brief, then merges judged findings  1476ms
+packages/mcp test:    ✓ Fitting Room MCP tools > returns a slop score and saves a 1200 by 630 score card  1578ms
+packages/mcp test:    ✓ Fitting Room MCP tools > includes screenshots and page details for judged review  1716ms
+packages/mcp test:  ✓ test/regenerate.test.ts (3 tests) 1758ms
+packages/mcp test:  ✓ test/scope-selection.test.ts (3 tests) 658ms
+packages/mcp test:    ✓ MCP scope selection > captures the default scope when no scope is passed  610ms
+packages/mcp test:  ✓ test/smoke.test.ts (1 test) 8ms
+packages/mcp test:  Test Files  5 passed (5)
+packages/mcp test:       Tests  20 passed (20)
+packages/mcp test:    Start at  00:08:05
+packages/mcp test:    Duration  21.96s (transform 135ms, setup 0ms, collect 2.48s, tests 18.95s, environment 0ms, prepare 131ms)
+packages/mcp test: Done
+packages/cli test:  ✓ test/audit.test.ts (12 tests) 16096ms
+packages/cli test:    ✓ fitroom audit scope selection > finds each planted measured bug exactly once in the bad-ui groups  6681ms
+packages/cli test:    ✓ fitroom audit scope selection > prints one merged finding and the report paths  1334ms
+packages/cli test:    ✓ fitroom audit scope selection > finds zero measured findings in every good-ui group  5657ms
+packages/cli test:    ✓ fitroom audit scope selection > reports checks that hit errors and still finishes the audit  712ms
+packages/cli test:    ✓ fitroom audit scope selection > captures only the four auth pages and prints the capture summary  1453ms
+packages/cli test: Board ready: http://127.0.0.1:55850/?token=FmEATMqUTX1yDGXAutgZfO9R1vPSMG1I
+packages/cli test:  ✓ test/board.test.ts (1 test) 55ms
+packages/cli test:  ✓ test/smoke.test.ts (1 test) 1ms
+packages/cli test:  Test Files  4 passed (4)
+packages/cli test:       Tests  29 passed (29)
+packages/cli test:    Start at  00:08:05
+packages/cli test:    Duration  34.58s (transform 129ms, setup 0ms, collect 732ms, tests 33.44s, environment 0ms, prepare 111ms)
+packages/cli test: Done

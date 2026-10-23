@@ -1,0 +1,14 @@
+/Users/josephbrendan/Documents/fr-test-apps/shop-app
+Tools: fr_scopes, fr_capture, fr_audit, fr_slop, fr_directions, fr_regenerate, fr_register_variant, fr_handoff, fr_verify, fr_submit_findings
+Missing expected tools: fr_design_memory, fr_states
+Scopes: marketing:/ | auth:/login,/signup | settings:/settings
+Audit pages: /login, /signup
+Automated findings: 8
+Critique brief has screenshots: true
+Invalid citation rejected: true
+Submitted counts: {"automated":8,"judged":1,"total":9}
+Directions surface: app
+Directions slots: 1:refined:Refined | 2:native:Clean UI | 3:bold:Dark-First | 4:wildcard:Spatial
+Slop score: 0
+Slop rules: 0
+Slop score card: /Users/josephbrendan/Documents/fr-test-apps/shop-app/.fittingroom/slop/auth-1792795834955.png

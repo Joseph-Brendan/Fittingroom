@@ -1,0 +1,9 @@
+Tools: fr_scopes, fr_capture, fr_audit, fr_directions, fr_regenerate, fr_register_variant, fr_handoff, fr_verify, fr_submit_findings
+Scopes: marketing:/,/pricing | auth:/login,/signup | onboarding:/onboarding | dashboard:/analytics,/dashboard | app:/reports | settings:/settings | checkout:/checkout
+Audit pages: /, /pricing
+Audit findings: 3
+Directions route: /
+Directions slots: 1:refined:Refined | 2:native:Swiss / International | 3:bold:Neubrutalism | 4:wildcard:Art Deco
+Board variants: 0
+Board empty state: yes
+The board did not receive the 4 directions.

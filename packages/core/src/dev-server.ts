@@ -1,4 +1,7 @@
-const defaultPorts = [3000, 3001, 5173, 4173, 4321, 8080, 8000] as const;
+import { readFile } from "node:fs/promises";
+import path from "node:path";
+
+const defaultPorts = [3000, 3001, 3100, 3200, 5173, 4173, 4321, 8080, 8000] as const;
 
 export interface DetectDevServerOptions {
   ports?: readonly number[];
@@ -31,4 +34,37 @@ export async function detectDevServer(
   }
 
   return null;
+}
+
+function devScriptPort(script: string): number | null {
+  const match = script.match(/(?:-p|--port|-l)(?:\s+|=)(\d+)/) ?? script.match(/\bPORT=(\d+)/);
+
+  if (match === null) {
+    return null;
+  }
+
+  const port = Number(match[1]);
+
+  return Number.isInteger(port) && port > 0 && port < 65536 ? port : null;
+}
+
+export async function detectProjectDevServer(projectRoot: string): Promise<string | null> {
+  let declaredPort: number | null = null;
+
+  try {
+    const raw = JSON.parse(await readFile(path.join(projectRoot, "package.json"), "utf8")) as {
+      scripts?: Record<string, unknown>;
+    };
+    const devScript = raw.scripts?.dev;
+
+    if (typeof devScript === "string") {
+      declaredPort = devScriptPort(devScript);
+    }
+  } catch {}
+
+  if (declaredPort !== null) {
+    return detectDevServer({ ports: [declaredPort] });
+  }
+
+  return detectDevServer();
 }

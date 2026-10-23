@@ -1,0 +1,17 @@
+{
+  "address": "http://127.0.0.1:4173/?token=p7e00-0qnzz5BbUwpjJ1P1ygBz8P7Hho",
+  "startsWithLocalhost": true,
+  "tokenized": true,
+  "refusedStatus": 401,
+  "selected": "marketing",
+  "options": [
+    "Marketing",
+    "Authentication",
+    "Settings"
+  ],
+  "banner": "Design system connected: Tailwind v4 @theme, shadcn/ui.",
+  "title": "No directions yet.",
+  "copy": "Run an audit and generate directions, or click Generate directions.",
+  "button": "Generate directions",
+  "screenshot": "test-reports/screenshots/round-3/shop/board-empty.png"
+}

@@ -1,0 +1,7 @@
+Capturing: Onboarding (1 page): /onboarding, at 375, 768 and 1440 px.
+Automated findings: 1.
+- /onboarding: Focused control has no visible focus indicator [wcag22-2.4.7], severity 3.
+Checks that hit errors:
+- None.
+Findings JSON: /Users/josephbrendan/Documents/fittingroom/fixtures/bad-ui/.fittingroom/audits/onboarding/findings.json
+HTML report: /Users/josephbrendan/Documents/fittingroom/fixtures/bad-ui/.fittingroom/audits/onboarding/report.html

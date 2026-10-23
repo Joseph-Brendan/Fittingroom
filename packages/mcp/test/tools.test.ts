@@ -1,4 +1,4 @@
-import { mkdtemp, rm, stat } from "node:fs/promises";
+import { mkdtemp, readFile, rm, stat } from "node:fs/promises";
 import os from "node:os";
 import path from "node:path";
 import { Client } from "@modelcontextprotocol/sdk/client/index.js";
@@ -122,6 +122,7 @@ describe("Fitting Room MCP tools", () => {
         "fr_directions",
         "fr_regenerate",
         "fr_register_variant",
+        "fr_slop",
         "fr_submit_findings",
       ]),
     );
@@ -264,6 +265,29 @@ describe("Fitting Room MCP tools", () => {
 
     expect(submit.counts).toEqual({ automated: 3, judged: 1, total: 4 });
     expect(submit.findings.find((finding) => finding.id === "judged-1")?.confidence).toBe("judged");
+  });
+
+  it("returns a slop score and saves a 1200 by 630 score card", async () => {
+    await client.callTool({ name: "fr_audit", arguments: { scope: "marketing" } });
+
+    const result = await client.callTool({ name: "fr_slop", arguments: {} });
+    const report = parseJson<{
+      score: number;
+      scoreCardPath: string;
+      rules: Array<{ evidence: string[]; id: string; title: string; weight: number }>;
+      topRules: unknown[];
+    }>(result.content);
+
+    expect(report.score).toBeGreaterThanOrEqual(0);
+    expect(report.score).toBeLessThanOrEqual(100);
+    expect(Array.isArray(report.rules)).toBe(true);
+    expect(report.topRules.length).toBeLessThanOrEqual(3);
+
+    const png = await readFile(report.scoreCardPath);
+
+    expect(png.subarray(1, 4).toString()).toBe("PNG");
+    expect(png.readUInt32BE(16)).toBe(1200);
+    expect(png.readUInt32BE(20)).toBe(630);
   });
 
   it("includes screenshots and page details for judged review", async () => {

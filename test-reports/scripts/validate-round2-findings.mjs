@@ -1,18 +1,10 @@
-import { access, readFile, readdir } from "node:fs/promises";
+import { access, readFile } from "node:fs/promises";
 import path from "node:path";
 
 const projectRoot = path.resolve(process.argv[2] ?? "fixtures/bad-ui");
 const registryPath = path.resolve("packages/citations/registry.json");
 const auditsRoot = path.join(projectRoot, ".fittingroom", "audits");
-const scopes = [
-  "marketing",
-  "auth",
-  "onboarding",
-  "dashboard",
-  "app",
-  "settings",
-  "checkout",
-];
+const scopes = ["marketing", "auth", "onboarding", "dashboard", "app", "settings", "checkout"];
 const expectedBugs = new Map([
   ["/|wcag22-1.4.3", "bug 1"],
   ["/reports|wcag22-2.5.8", "bug 2"],
@@ -69,10 +61,7 @@ for (const scope of scopes) {
     }
 
     for (const field of ["selector", "screenshotPath", "measuredValue"]) {
-      if (
-        typeof finding.evidence?.[field] !== "string" ||
-        finding.evidence[field].trim() === ""
-      ) {
+      if (typeof finding.evidence?.[field] !== "string" || finding.evidence[field].trim() === "") {
         problems.push(`${scope}: finding ${finding.id} is missing evidence.${field}`);
       }
     }

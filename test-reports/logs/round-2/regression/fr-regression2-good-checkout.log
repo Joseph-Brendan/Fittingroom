@@ -1,0 +1,6 @@
+Capturing: Checkout (1 page): /checkout, at 375, 768 and 1440 px.
+Automated findings: 0.
+Checks that hit errors:
+- None.
+Findings JSON: /Users/josephbrendan/Documents/fittingroom/fixtures/good-ui/.fittingroom/audits/checkout/findings.json
+HTML report: /Users/josephbrendan/Documents/fittingroom/fixtures/good-ui/.fittingroom/audits/checkout/report.html

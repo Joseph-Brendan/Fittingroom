@@ -1,5 +1,6 @@
 import path from "node:path";
 import {
+  detectDesignSystem,
   findScope,
   loadFittingRoomFile,
   loadJsonFile,
@@ -80,6 +81,32 @@ function parseBoardFileState(value: unknown): BoardFileState {
   }
 
   return value as unknown as BoardFileState;
+}
+
+function designSystemSummary(info: Awaited<ReturnType<typeof detectDesignSystem>>): string {
+  const labels: Record<string, string> = {
+    "tailwind-v4": "Tailwind v4 @theme",
+    "tailwind-v3": "Tailwind v3 config",
+    dtcg: "DTCG tokens",
+    "css-variables": "CSS variables",
+    shadcn: "shadcn/ui",
+    mui: "MUI",
+    chakra: "Chakra UI",
+    mantine: "Mantine",
+    "radix-themes": "Radix Themes",
+    "ant-design": "Ant Design",
+  };
+  const sources = info.sources.map((source) => labels[source] ?? source).join(", ");
+
+  if (info.status === "connected") {
+    return `Design system connected: ${sources}.`;
+  }
+
+  if (info.status === "partial") {
+    return `Design system partly found: ${sources}. Missing ${info.missing.join(", ")}.`;
+  }
+
+  return "Design system not found. Edits will create a new token set you can adopt later.";
 }
 
 function withBoardExtras(
@@ -289,9 +316,22 @@ export async function runBoardCommand(
     config?.scopes.map((scope) => ({ id: scope.id, name: scope.name })) ?? [
       { id: initialState.scope.id, name: initialState.scope.name },
     ];
+  const detectedDesignSystem =
+    initialState.designSystem === undefined ? await detectDesignSystem(projectRoot) : undefined;
+  const designSystem: BoardState["designSystem"] =
+    initialState.designSystem ??
+    (detectedDesignSystem === undefined
+      ? undefined
+      : {
+          status: detectedDesignSystem.status,
+          summary: designSystemSummary(detectedDesignSystem),
+          tokens: detectedDesignSystem.tokens,
+          components: detectedDesignSystem.components,
+        });
   const initial: BoardState = {
     ...initialState,
     ...(requestedScope === undefined ? {} : { scope: requestedScope }),
+    ...(designSystem === undefined ? {} : { designSystem }),
     scopes,
     previousRounds: initialState.previousRounds ?? [],
   };

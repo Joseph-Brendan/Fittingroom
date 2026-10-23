@@ -1,0 +1,14 @@
+/Users/josephbrendan/Documents/fr-test-apps/metrics-dashboard
+Tools: fr_scopes, fr_capture, fr_audit, fr_slop, fr_directions, fr_regenerate, fr_register_variant, fr_handoff, fr_verify, fr_submit_findings
+Missing expected tools: fr_design_memory, fr_states
+Scopes: marketing:/ | dashboard:/analytics,/dashboard | app:/reports
+Audit pages: /analytics, /dashboard
+Automated findings: 9
+Critique brief has screenshots: true
+Invalid citation rejected: true
+Submitted counts: {"automated":9,"judged":1,"total":10}
+Directions surface: dashboard
+Directions slots: 1:refined:Refined | 2:native:Data-Dense Utilitarian | 3:bold:Command Center | 4:wildcard:Widget / Bento Dashboard
+Slop score: 12
+Slop rules: 1
+Slop score card: /Users/josephbrendan/Documents/fr-test-apps/metrics-dashboard/.fittingroom/slop/dashboard-1792795834955.png

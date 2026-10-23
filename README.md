@@ -120,6 +120,18 @@ color, spacing, radius and type controls, plus a custom value warning. The inspe
 duplicate, project-first insert, and dnd-kit reordering within the same parent. Every edit is sent to
 the board edit API and reloads the iframe. Undo restores the previous edit.
 
+## Run the MCP server
+
+Start the server from the folder of the app you are testing. This keeps route discovery and file paths inside your project.
+
+```bash
+npx @fittingroom/mcp
+```
+
+If you installed the package locally, run `./node_modules/.bin/fittingroom-mcp`.
+
+Add it to your MCP client config with command `npx` and args `["@fittingroom/mcp"]`. Set the working directory to your app folder.
+
 ## MCP tools
 
 The MCP server exposes these tools over stdio:

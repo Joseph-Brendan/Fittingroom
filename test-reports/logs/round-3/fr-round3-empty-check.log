@@ -1,0 +1,21 @@
+{
+  "address": "http://127.0.0.1:4173/?token=KzkMz-1FZuJVCOTgEm9vmvvS85HYe2xI",
+  "startsWithLocalhost": true,
+  "tokenized": true,
+  "refusedStatus": 401,
+  "selected": "marketing",
+  "options": [
+    "Marketing",
+    "Authentication",
+    "Onboarding",
+    "Dashboard",
+    "App screens",
+    "Settings",
+    "Checkout"
+  ],
+  "banner": "Design system not found. Edits will create a new token set you can adopt later.",
+  "title": "No directions yet.",
+  "copy": "Run an audit and generate directions, or click Generate directions.",
+  "button": "Generate directions",
+  "screenshot": "test-reports/screenshots/round-3/board-empty.png"
+}

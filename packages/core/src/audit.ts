@@ -609,6 +609,14 @@ async function runReflowCheck(page: Page): Promise<ReflowIssue | null> {
   });
 }
 
+export function findingIdForPage(pagePath: string, findingId: string): string {
+  const pageKey = (pagePath === "/" ? "root" : pagePath.replace(/^\/+|\/+$/g, ""))
+    .replace(/[^a-z0-9]+/gi, "-")
+    .replace(/^-+|-+$/g, "");
+
+  return `${pageKey === "" ? "root" : pageKey}-${findingId}`;
+}
+
 function defaultOutputDir(): string {
   const timestamp = new Date().toISOString().replace(/[:.]/g, "-");
 

@@ -1,0 +1,8 @@
+refined: accepted=true newFailures=0 errors=0
+native: accepted=true newFailures=0 errors=0
+bold: accepted=true newFailures=0 errors=0
+wildcard: accepted=true newFailures=0 errors=0
+bad-render: accepted=false renderErrors=2 newFailures=0
+bad-image: accepted=false renderErrors=0 newFailures=1
+Handoff folder: /Users/josephbrendan/Documents/fr-test-apps/metrics-dashboard/.fittingroom/handoffs/handoff-0eaa6b20
+Handoff files: brief.md, checklist.md, edits.json, findings-fixed.json, handoff.json, reference, source, structure.json, tokens.json

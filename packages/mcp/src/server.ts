@@ -13,9 +13,11 @@ import {
   type DiscoveredRoute,
   detectDefaultScope,
   detectDesignSystem,
-  detectDevServer,
+  detectProjectDevServer,
+  detectSlop,
   discoverRoutes,
   discoverRoutesWithSource,
+  findingIdForPage,
   findScope,
   findScopeForRoutes,
   groupRoutes,
@@ -24,6 +26,7 @@ import {
   PAGE_GROUPS,
   readContentInventory,
   regenerateScope,
+  renderSlopScoreCard,
   runAutomatedChecks,
   type ScopeChecklistEntry,
   type ScopeSummary,
@@ -81,6 +84,7 @@ interface DirectionSlot {
 
 interface RegisteredVariant {
   filePath: string;
+  findingsFixed: StoredFinding[];
   rationale: string;
   reference: NonNullable<Awaited<ReturnType<typeof previewVariant>>["reference"]>;
   route: string;
@@ -380,7 +384,7 @@ export function createFittingRoomServer(options: FittingRoomServerOptions = {}):
       return options.appUrl;
     }
 
-    const detected = await detectDevServer();
+    const detected = await detectProjectDevServer(projectRoot);
 
     if (detected === null) {
       throw new Error("No local dev server found. Start your app and try again.");
@@ -546,6 +550,10 @@ export function createFittingRoomServer(options: FittingRoomServerOptions = {}):
     return direction;
   }
 
+  function evidenceSelector(finding: CitationFinding): string | null {
+    return typeof finding.evidence === "string" ? null : finding.evidence.selector;
+  }
+
   function newWcagFailures(
     baseline: readonly StoredFinding[],
     preview: readonly CitationFinding[],
@@ -667,6 +675,7 @@ export function createFittingRoomServer(options: FittingRoomServerOptions = {}):
           findings.push(
             ...report.findings.map((finding) => ({
               ...finding,
+              id: findingIdForPage(page.path, finding.id),
               page: page.path,
             })),
           );
@@ -697,6 +706,43 @@ export function createFittingRoomServer(options: FittingRoomServerOptions = {}):
         lastAudit = payload;
 
         return payload;
+      }),
+  );
+
+  server.registerTool(
+    "fr_slop",
+    {
+      title: "Check for AI slop",
+      description:
+        "Score the latest capture for generic AI design patterns and save a 1200 by 630 score card.",
+      inputSchema: {},
+      annotations: {
+        readOnlyHint: false,
+      },
+    },
+    async () =>
+      runTool(async () => {
+        if (lastAudit === null) {
+          throw new Error("Run fr_audit before checking for slop.");
+        }
+
+        const report = await detectSlop({
+          summary: lastAudit.summary,
+          pages: lastAudit.pages,
+        });
+        const scoreCardPath = path.join(
+          projectRoot,
+          ".fittingroom",
+          "slop",
+          `${lastAudit.summary.id}-${Date.now()}.png`,
+        );
+
+        await renderSlopScoreCard(report, scoreCardPath);
+
+        return {
+          ...report,
+          scoreCardPath,
+        };
       }),
   );
 
@@ -923,9 +969,18 @@ export function createFittingRoomServer(options: FittingRoomServerOptions = {}):
 
         if (accepted && preview.reference !== null) {
           const designSystem = await detectDesignSystem(projectRoot);
+          const fixedFindings = baseline.filter(
+            (finding) =>
+              !preview.findings.some(
+                (previewFinding) =>
+                  previewFinding.citation === finding.citation &&
+                  evidenceSelector(previewFinding) === evidenceSelector(finding),
+              ),
+          );
 
           registeredVariants.set(slug, {
             filePath: resolvedFile,
+            findingsFixed: fixedFindings,
             rationale,
             reference: preview.reference,
             route: activeRoute,
@@ -971,7 +1026,17 @@ export function createFittingRoomServer(options: FittingRoomServerOptions = {}):
           );
         }
 
+        let edits: unknown = { version: 1, files: {} };
+
+        try {
+          edits = JSON.parse(
+            await readFile(path.join(projectRoot, ".fittingroom", "edits.json"), "utf8"),
+          ) as unknown;
+        } catch {}
+
         const handoff = await writeHandoff({
+          edits,
+          findingsFixed: variant.findingsFixed,
           projectRoot,
           rationale: variant.rationale,
           reference: variant.reference,

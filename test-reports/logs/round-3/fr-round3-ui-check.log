@@ -1,0 +1,22 @@
+{
+  "cardCount": 4,
+  "names": [
+    "Refined",
+    "Clean UI",
+    "Dark-First",
+    "Spatial"
+  ],
+  "widths": [
+    "1440",
+    "1440",
+    "1440",
+    "1440"
+  ],
+  "drawerVisible": true,
+  "screenshots": [
+    "test-reports/screenshots/round-3/e2e/board-1440.png",
+    "test-reports/screenshots/round-3/e2e/board-375.png",
+    "test-reports/screenshots/round-3/e2e/board-768.png",
+    "test-reports/screenshots/round-3/e2e/board-findings.png"
+  ]
+}
