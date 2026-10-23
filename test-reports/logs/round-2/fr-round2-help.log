@@ -1,0 +1,25 @@
+Fitting Room
+Try your UI on before you ship it.
+
+Usage: fitroom <command> [options]
+
+Commands:
+  audit [options]                    Audit one page group.
+  board [options]                    Serve the local comparison board.
+  scopes [action] [options]          List or edit saved page groups.
+
+Command options:
+  --url <url>       Set the app URL for audit or board.
+  --scope <scope>   Use a saved page group.
+  --pages <pages>   Use pages separated by commas for audit.
+  --state <file>    Read board state from this file.
+
+Examples:
+  fitroom audit --url http://localhost:3000
+  fitroom board --url http://localhost:3000
+
+Run fitroom <command> --help for all options.
+
+Other options:
+  -h, --help                         Show this help.
+  -v, --version                      Show the version.

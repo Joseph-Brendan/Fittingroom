@@ -1,0 +1,15 @@
+
+ RUN  v3.2.7 /Users/josephbrendan/Documents/fittingroom/packages/cli
+
+ ✓ test/audit.test.ts (12 tests) 16339ms
+   ✓ fitroom audit scope selection > finds each planted measured bug exactly once in the bad-ui groups  6928ms
+   ✓ fitroom audit scope selection > prints one merged finding and the report paths  1319ms
+   ✓ fitroom audit scope selection > finds zero measured findings in every good-ui group  5587ms
+   ✓ fitroom audit scope selection > reports checks that hit errors and still finishes the audit  784ms
+   ✓ fitroom audit scope selection > captures only the four auth pages and prints the capture summary  1435ms
+
+ Test Files  1 passed (1)
+      Tests  12 passed (12)
+   Start at  23:24:04
+   Duration  16.84s (transform 98ms, setup 0ms, collect 381ms, tests 16.34s, environment 0ms, prepare 38ms)
+

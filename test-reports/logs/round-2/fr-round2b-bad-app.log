@@ -1,0 +1,7 @@
+Capturing: App screens (1 page): /reports, at 375, 768 and 1440 px.
+Automated findings: 1.
+- /reports: Target is smaller than 24 by 24 CSS pixels [wcag22-2.5.8], severity 2.
+Checks that hit errors:
+- None.
+Findings JSON: /Users/josephbrendan/Documents/fittingroom/fixtures/bad-ui/.fittingroom/audits/app/findings.json
+HTML report: /Users/josephbrendan/Documents/fittingroom/fixtures/bad-ui/.fittingroom/audits/app/report.html

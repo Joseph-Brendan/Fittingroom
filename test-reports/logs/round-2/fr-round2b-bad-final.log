@@ -1,0 +1,19 @@
+
+> @fittingroom/fixture-bad-ui@0.0.0 dev /Users/josephbrendan/Documents/fittingroom/fixtures/bad-ui
+> serve . -l 3000
+
+ INFO  Accepting connections at http://localhost:3000
+ HTTP  10/23/2026 11:23:13 PM ::1 GET /
+ HTTP  10/23/2026 11:23:13 PM ::1 Returned 200 in 10 ms
+ HTTP  10/23/2026 11:23:47 PM ::1 GET /check-error
+ HTTP  10/23/2026 11:23:47 PM ::1 Returned 200 in 1 ms
+ HTTP  10/23/2026 11:23:47 PM ::1 GET /check-error
+ HTTP  10/23/2026 11:23:47 PM ::1 Returned 304 in 0 ms
+ HTTP  10/23/2026 11:23:47 PM ::1 GET /check-error
+ HTTP  10/23/2026 11:23:47 PM ::1 Returned 304 in 0 ms
+ HTTP  10/23/2026 11:23:47 PM ::1 GET /check-error
+ HTTP  10/23/2026 11:23:47 PM ::1 Returned 200 in 0 ms
+ HTTP  10/23/2026 11:23:47 PM ::1 GET /check-error
+ HTTP  10/23/2026 11:23:47 PM ::1 Returned 304 in 0 ms
+
+ INFO  Gracefully shutting down. Please wait...

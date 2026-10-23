@@ -1,0 +1,14 @@
+Usage: fitroom audit [options]
+
+Audit one page group of your app.
+
+Options:
+  --url <url>       Audit the app at this URL. Without it, Fitting Room finds a local dev server.
+  --scope <scope>   Use a saved page group. This skips the picker.
+  --pages <pages>   Use pages separated by commas. This skips the picker.
+  -h, --help        Show this help.
+
+Examples:
+  fitroom audit --url http://localhost:3000
+  fitroom audit --url http://localhost:3000 --scope marketing
+  fitroom audit --url http://localhost:3000 --pages /,/pricing

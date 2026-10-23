@@ -12,12 +12,16 @@ export interface ScopesCommandOptions {
   output?: NodeJS.WritableStream;
 }
 
+function pageCountLabel(count: number): string {
+  return `${count} ${count === 1 ? "page" : "pages"}`;
+}
+
 function scopeText(config: ScopesConfig): string {
   return [
     "Available scopes:",
     ...config.scopes.map(
       (scope) =>
-        `- ${scope.id}: ${scope.name} (${scope.routes.length} pages): ${scope.routes.join(" ")}`,
+        `- ${scope.id}: ${scope.name} (${pageCountLabel(scope.routes.length)}): ${scope.routes.join(" ")}`,
     ),
   ].join("\n");
 }

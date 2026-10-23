@@ -1,0 +1,7 @@
+Capturing: Authentication (2 pages): /login /signup, at 375, 768 and 1440 px.
+Automated findings: 1.
+- /signup: Form elements must have labels [wcag22-3.3.2], severity 4. Related: wcag22-4.1.2.
+Checks that hit errors:
+- None.
+Findings JSON: /Users/josephbrendan/Documents/fittingroom/fixtures/bad-ui/.fittingroom/audits/auth/findings.json
+HTML report: /Users/josephbrendan/Documents/fittingroom/fixtures/bad-ui/.fittingroom/audits/auth/report.html

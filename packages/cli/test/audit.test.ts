@@ -388,6 +388,21 @@ describe("fitroom audit scope selection", () => {
     expect(config.scopes.find((scope) => scope.id === "verification")?.routes).toEqual(["/verify"]);
   });
 
+  it("lists one page groups with singular page text", async () => {
+    const scopesRoot = path.join(temporaryDirectory, "scopes-singular");
+    const { output, text } = captureOutput();
+
+    await mkdir(scopesRoot, { recursive: true });
+    await cp(path.join(fixturePath("bad-ui"), "app"), path.join(scopesRoot, "app"), {
+      recursive: true,
+    });
+
+    await runScopesCommand(["list"], { output, projectRoot: scopesRoot });
+
+    expect(text()).toContain("(1 page)");
+    expect(text()).not.toContain("(1 pages)");
+  });
+
   it("skips the checklist for --scope and --pages", async () => {
     const scopeOutput = captureOutput();
     const scopeSelection = await selectAuditScope({

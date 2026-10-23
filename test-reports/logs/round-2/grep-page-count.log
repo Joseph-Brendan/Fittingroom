@@ -1,0 +1,4 @@
+27:function pageCountLabel(count) {
+34:      (entry, index) => `[${entry.selected ? "x" : " "}] ${index + 1}. ${entry.name} (${pageCountLabel(entry.routes.length)}): ${entry.routes.join(" ")}`
+980:function pageCountLabel2(count) {
+987:      (scope) => `- ${scope.id}: ${scope.name} (${pageCountLabel2(scope.routes.length)}): ${scope.routes.join(" ")}`

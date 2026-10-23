@@ -1,0 +1,8 @@
+Available scopes:
+- marketing: Marketing (2 pages): / /pricing
+- auth: Authentication (2 pages): /login /signup
+- onboarding: Onboarding (1 page): /onboarding
+- dashboard: Dashboard (2 pages): /analytics /dashboard
+- app: App screens (1 page): /reports
+- settings: Settings (1 page): /settings
+- checkout: Checkout (1 page): /checkout

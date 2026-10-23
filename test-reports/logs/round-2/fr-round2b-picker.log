@@ -1,0 +1,17 @@
+Page groups:
+[ ] 1. Marketing (2 pages): / /pricing
+[ ] 2. Authentication (2 pages): /login /signup
+[ ] 3. Onboarding (1 page): /onboarding
+[ ] 4. Dashboard (2 pages): /analytics /dashboard
+[ ] 5. App screens (1 page): /reports
+[ ] 6. Settings (1 page): /settings
+[ ] 7. Checkout (1 page): /checkout
+Select a page group by number. Capturing: Marketing (2 pages): / /pricing, at 375, 768 and 1440 px.
+Automated findings: 3.
+- /: Elements must meet minimum color contrast ratio thresholds [wcag22-1.4.3], severity 3.
+- /: Focused control is hidden by page content [wcag22-2.4.11], severity 3.
+- /pricing: Images must have alternative text [wcag22-1.1.1], severity 4.
+Checks that hit errors:
+- None.
+Findings JSON: /Users/josephbrendan/Documents/fittingroom/fixtures/bad-ui/.fittingroom/audits/marketing/findings.json
+HTML report: /Users/josephbrendan/Documents/fittingroom/fixtures/bad-ui/.fittingroom/audits/marketing/report.html
