@@ -1,0 +1,79 @@
+{
+  "slug": "spatial",
+  "name": "Spatial",
+  "surfaces": ["app"],
+  "description": "Layered panels with depth, light and optional spatial motion.",
+  "bestFor": ["visionOS style", "immersive apps"],
+  "typePair": {
+    "display": "Manrope, system-ui, sans-serif",
+    "body": "Nunito Sans, system-ui, sans-serif"
+  },
+  "typeScale": { "base": 16, "ratio": 1.25, "steps": [12, 14, 16, 20, 25, 31] },
+  "radius": { "control": "16px", "panel": "28px" },
+  "border": "1px solid",
+  "shadow": "0 22px 70px rgba(16, 32, 61, 0.18)",
+  "colorRecipe": {
+    "background": "#EEF4FF",
+    "surface": "#DCE8FF",
+    "text": "#10203D",
+    "mutedText": "#40516E",
+    "accent": "#0B5CAD",
+    "accentText": "#FFFFFF",
+    "border": "#A9BFE0",
+    "focus": "#0B5CAD",
+    "contrastPairs": [
+      {
+        "foreground": "#10203D",
+        "background": "#EEF4FF",
+        "ratio": 14.68,
+        "usage": "text on background"
+      },
+      {
+        "foreground": "#40516E",
+        "background": "#EEF4FF",
+        "ratio": 7.26,
+        "usage": "muted text on background"
+      },
+      {
+        "foreground": "#10203D",
+        "background": "#DCE8FF",
+        "ratio": 13.14,
+        "usage": "text on surface"
+      },
+      {
+        "foreground": "#40516E",
+        "background": "#DCE8FF",
+        "ratio": 6.5,
+        "usage": "muted text on surface"
+      },
+      {
+        "foreground": "#FFFFFF",
+        "background": "#0B5CAD",
+        "ratio": 6.67,
+        "usage": "accent text on accent"
+      },
+      {
+        "foreground": "#0B5CAD",
+        "background": "#EEF4FF",
+        "ratio": 6.04,
+        "usage": "accent text on background"
+      },
+      {
+        "foreground": "#0B5CAD",
+        "background": "#EEF4FF",
+        "ratio": 6.04,
+        "usage": "focus ring on background"
+      }
+    ]
+  },
+  "density": 4,
+  "motion": 5,
+  "layoutRules": [
+    "Limit the scene to three depth planes.",
+    "Keep every action reachable in a flat 2D fallback.",
+    "Give text panels a solid, opaque surface."
+  ],
+  "do": ["Make depth optional and readable.", "Respect reduced-motion settings."],
+  "dont": ["Put body text in a moving 3D layer.", "Use motion as the only cue for hierarchy."],
+  "a11yRisk": "Depth and camera motion can cause discomfort and make focus and z-order unpredictable."
+}

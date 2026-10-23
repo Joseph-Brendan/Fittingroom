@@ -1,0 +1,82 @@
+{
+  "slug": "neubrutalism",
+  "name": "Neubrutalism",
+  "surfaces": ["marketing"],
+  "description": "Thick borders, flat color and hard offset shadows.",
+  "bestFor": ["indie tools", "dev products"],
+  "typePair": {
+    "display": "Space Grotesk, Arial Black, sans-serif",
+    "body": "IBM Plex Sans, system-ui, sans-serif"
+  },
+  "typeScale": { "base": 16, "ratio": 1.333, "steps": [12, 14, 16, 21, 28, 37] },
+  "radius": { "control": "0px", "panel": "0px" },
+  "border": "4px solid",
+  "shadow": "6px 6px 0 #15120B",
+  "colorRecipe": {
+    "background": "#FFF9E8",
+    "surface": "#F4EACB",
+    "text": "#15120B",
+    "mutedText": "#554C34",
+    "accent": "#B91C1C",
+    "accentText": "#FFFFFF",
+    "border": "#D4C79F",
+    "focus": "#B91C1C",
+    "contrastPairs": [
+      {
+        "foreground": "#15120B",
+        "background": "#FFF9E8",
+        "ratio": 17.78,
+        "usage": "text on background"
+      },
+      {
+        "foreground": "#554C34",
+        "background": "#FFF9E8",
+        "ratio": 8.09,
+        "usage": "muted text on background"
+      },
+      {
+        "foreground": "#15120B",
+        "background": "#F4EACB",
+        "ratio": 15.56,
+        "usage": "text on surface"
+      },
+      {
+        "foreground": "#554C34",
+        "background": "#F4EACB",
+        "ratio": 7.08,
+        "usage": "muted text on surface"
+      },
+      {
+        "foreground": "#FFFFFF",
+        "background": "#B91C1C",
+        "ratio": 6.47,
+        "usage": "accent text on accent"
+      },
+      {
+        "foreground": "#B91C1C",
+        "background": "#FFF9E8",
+        "ratio": 6.15,
+        "usage": "accent text on background"
+      },
+      {
+        "foreground": "#B91C1C",
+        "background": "#FFF9E8",
+        "ratio": 6.15,
+        "usage": "focus ring on background"
+      }
+    ]
+  },
+  "density": 5,
+  "motion": 3,
+  "layoutRules": [
+    "Give every block a visible border and a hard shadow.",
+    "Use flat fills and avoid gradients.",
+    "Keep spacing rhythmic and slightly tight."
+  ],
+  "do": [
+    "Use one saturated accent on neutral paper tones.",
+    "Make interactive states obvious with offsets."
+  ],
+  "dont": ["Put white text on bright yellow.", "Stack more than two shadow depths."],
+  "a11yRisk": "Colored fills and thick borders can hide weak contrast, especially on disabled and focus states."
+}

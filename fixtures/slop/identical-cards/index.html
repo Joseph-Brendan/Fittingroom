@@ -1,0 +1,33 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Design review</title>
+    <style>
+      *, *::before, *::after { box-sizing: border-box; }
+      body { margin: 0; background: #ffffff; color: #16181d; font-family: Arial, sans-serif; }
+      main { max-width: 960px; margin: 0 auto; padding: 32px 20px; }
+      h1 { font-size: 34px; font-weight: 700; margin: 0 0 12px; }
+      h2 { font-size: 24px; font-weight: 700; margin: 0 0 10px; }
+      p { font-size: 16px; font-weight: 400; margin: 0 0 16px; }
+      button { min-height: 44px; padding: 10px 16px; border: 1px solid #cbd5e1; border-radius: 8px; background: #ffffff; color: #16181d; font: inherit; }
+
+      .cards { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+      .feature-card { border: 1px solid #cbd5e1; border-radius: 12px; padding: 20px; }
+      .feature-card h2 { font-size: 20px; }
+
+    </style>
+  </head>
+  <body>
+    <main>
+      <h1>Northstar workspace</h1>
+      <p>Everything your team needs to plan the week.</p>
+      <div class="cards">
+        <article class="feature-card"><h2>Capture</h2><p>Turn notes into clear tasks.</p></article>
+        <article class="feature-card"><h2>Plan</h2><p>Group the work that matters.</p></article>
+        <article class="feature-card"><h2>Ship</h2><p>Share progress with the team.</p></article>
+      </div>
+    </main>
+  </body>
+</html>

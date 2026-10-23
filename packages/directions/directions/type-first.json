@@ -1,0 +1,79 @@
+{
+  "slug": "type-first",
+  "name": "Type-First",
+  "surfaces": ["marketing"],
+  "description": "Oversized type carries the page with very few images.",
+  "bestFor": ["launches", "personal brands"],
+  "typePair": {
+    "display": "Archivo Black, Impact, sans-serif",
+    "body": "Inter, system-ui, sans-serif"
+  },
+  "typeScale": { "base": 16, "ratio": 1.5, "steps": [14, 16, 24, 36, 54, 81] },
+  "radius": { "control": "0px", "panel": "0px" },
+  "border": "0px solid",
+  "shadow": "none",
+  "colorRecipe": {
+    "background": "#FAFAFA",
+    "surface": "#EEEEEE",
+    "text": "#111111",
+    "mutedText": "#4A4A4A",
+    "accent": "#1F2937",
+    "accentText": "#FFFFFF",
+    "border": "#A3A3A3",
+    "focus": "#111111",
+    "contrastPairs": [
+      {
+        "foreground": "#111111",
+        "background": "#FAFAFA",
+        "ratio": 18.09,
+        "usage": "text on background"
+      },
+      {
+        "foreground": "#4A4A4A",
+        "background": "#FAFAFA",
+        "ratio": 8.49,
+        "usage": "muted text on background"
+      },
+      {
+        "foreground": "#111111",
+        "background": "#EEEEEE",
+        "ratio": 16.28,
+        "usage": "text on surface"
+      },
+      {
+        "foreground": "#4A4A4A",
+        "background": "#EEEEEE",
+        "ratio": 7.64,
+        "usage": "muted text on surface"
+      },
+      {
+        "foreground": "#FFFFFF",
+        "background": "#1F2937",
+        "ratio": 14.68,
+        "usage": "accent text on accent"
+      },
+      {
+        "foreground": "#1F2937",
+        "background": "#FAFAFA",
+        "ratio": 14.06,
+        "usage": "accent text on background"
+      },
+      {
+        "foreground": "#111111",
+        "background": "#FAFAFA",
+        "ratio": 18.09,
+        "usage": "focus ring on background"
+      }
+    ]
+  },
+  "density": 4,
+  "motion": 2,
+  "layoutRules": [
+    "Make one headline the dominant visual element.",
+    "Keep supporting copy short and aligned to one column.",
+    "Use large deliberate type breaks instead of decorative panels."
+  ],
+  "do": ["Test every heading at 320px first.", "Use weight and scale for hierarchy."],
+  "dont": ["Let oversized lines clip or scroll horizontally.", "Add images just to fill space."],
+  "a11yRisk": "Huge headings can overflow on narrow screens and line lengths can become hard to track."
+}

@@ -1,0 +1,76 @@
+{
+  "slug": "terminal-cli",
+  "name": "Terminal / CLI",
+  "surfaces": ["app"],
+  "description": "Monospace type, keyboard-first flows and terse status output.",
+  "bestFor": ["dev tools", "power users"],
+  "typePair": { "display": "JetBrains Mono, monospace", "body": "IBM Plex Mono, monospace" },
+  "typeScale": { "base": 15, "ratio": 1.2, "steps": [12, 13, 15, 18, 22, 26] },
+  "radius": { "control": "0px", "panel": "0px" },
+  "border": "1px solid",
+  "shadow": "none",
+  "colorRecipe": {
+    "background": "#070B10",
+    "surface": "#0F1620",
+    "text": "#F1F5F9",
+    "mutedText": "#B8C4D4",
+    "accent": "#7DD3FC",
+    "accentText": "#06121A",
+    "border": "#2B3A4A",
+    "focus": "#7DD3FC",
+    "contrastPairs": [
+      {
+        "foreground": "#F1F5F9",
+        "background": "#070B10",
+        "ratio": 18.01,
+        "usage": "text on background"
+      },
+      {
+        "foreground": "#B8C4D4",
+        "background": "#070B10",
+        "ratio": 11.17,
+        "usage": "muted text on background"
+      },
+      {
+        "foreground": "#F1F5F9",
+        "background": "#0F1620",
+        "ratio": 16.58,
+        "usage": "text on surface"
+      },
+      {
+        "foreground": "#B8C4D4",
+        "background": "#0F1620",
+        "ratio": 10.28,
+        "usage": "muted text on surface"
+      },
+      {
+        "foreground": "#06121A",
+        "background": "#7DD3FC",
+        "ratio": 11.36,
+        "usage": "accent text on accent"
+      },
+      {
+        "foreground": "#7DD3FC",
+        "background": "#070B10",
+        "ratio": 11.83,
+        "usage": "accent text on background"
+      },
+      {
+        "foreground": "#7DD3FC",
+        "background": "#070B10",
+        "ratio": 11.83,
+        "usage": "focus ring on background"
+      }
+    ]
+  },
+  "density": 6,
+  "motion": 1,
+  "layoutRules": [
+    "Keep every command reachable from the keyboard.",
+    "Show the current working context at all times.",
+    "Print clear success and failure lines after actions."
+  ],
+  "do": ["Offer visible shortcuts next to commands.", "Keep focus outlines on every control."],
+  "dont": ["Hide actions behind icon-only buttons.", "Use monospace for long prose."],
+  "a11yRisk": "Keyboard-first interfaces often leave pointer and new users without discoverable controls."
+}

@@ -1,0 +1,7 @@
+{
+  "slot": 3,
+  "id": "bold",
+  "name": "Bold",
+  "description": "Push scale, contrast, and hierarchy for a confident visual point of view.",
+  "surfaces": ["marketing", "dashboard", "app-screens", "checkout"]
+}

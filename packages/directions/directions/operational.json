@@ -1,0 +1,79 @@
+{
+  "slug": "operational",
+  "name": "Operational",
+  "surfaces": ["dashboard"],
+  "description": "Tasks and alerts lead, with KPIs kept close for context.",
+  "bestFor": ["support", "warehouses", "dispatch"],
+  "typePair": {
+    "display": "Inter, system-ui, sans-serif",
+    "body": "IBM Plex Sans, system-ui, sans-serif"
+  },
+  "typeScale": { "base": 15, "ratio": 1.2, "steps": [12, 13, 15, 18, 22, 26] },
+  "radius": { "control": "6px", "panel": "10px" },
+  "border": "1px solid",
+  "shadow": "0 2px 8px rgba(42, 28, 14, 0.12)",
+  "colorRecipe": {
+    "background": "#FFF9F2",
+    "surface": "#FEE9D2",
+    "text": "#2A1C0E",
+    "mutedText": "#6C4A28",
+    "accent": "#9A3412",
+    "accentText": "#FFFFFF",
+    "border": "#D7B38B",
+    "focus": "#9A3412",
+    "contrastPairs": [
+      {
+        "foreground": "#2A1C0E",
+        "background": "#FFF9F2",
+        "ratio": 15.8,
+        "usage": "text on background"
+      },
+      {
+        "foreground": "#6C4A28",
+        "background": "#FFF9F2",
+        "ratio": 7.59,
+        "usage": "muted text on background"
+      },
+      {
+        "foreground": "#2A1C0E",
+        "background": "#FEE9D2",
+        "ratio": 14.01,
+        "usage": "text on surface"
+      },
+      {
+        "foreground": "#6C4A28",
+        "background": "#FEE9D2",
+        "ratio": 6.72,
+        "usage": "muted text on surface"
+      },
+      {
+        "foreground": "#FFFFFF",
+        "background": "#9A3412",
+        "ratio": 7.31,
+        "usage": "accent text on accent"
+      },
+      {
+        "foreground": "#9A3412",
+        "background": "#FFF9F2",
+        "ratio": 6.99,
+        "usage": "accent text on background"
+      },
+      {
+        "foreground": "#9A3412",
+        "background": "#FFF9F2",
+        "ratio": 6.99,
+        "usage": "focus ring on background"
+      }
+    ]
+  },
+  "density": 6,
+  "motion": 3,
+  "layoutRules": [
+    "Put tasks and alerts in the first scan path.",
+    "Keep KPI context in a compact strip above them.",
+    "Rank alerts by severity, then recency."
+  ],
+  "do": ["Use text and icons for severity.", "Let users dismiss or snooze alerts."],
+  "dont": ["Use red for every priority.", "Keep stale alerts in the main list."],
+  "a11yRisk": "Alert colors and constant updates can cause fatigue, and severity shown by color alone is easy to miss."
+}

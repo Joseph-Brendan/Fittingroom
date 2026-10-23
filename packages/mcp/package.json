@@ -1,0 +1,44 @@
+{
+  "name": "@fittingroom/mcp",
+  "version": "0.0.0",
+  "description": "MCP server for Fitting Room, using stdio transport.",
+  "license": "Apache-2.0",
+  "type": "module",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    }
+  },
+  "bin": {
+    "fittingroom-mcp": "./dist/bin.js"
+  },
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "tsup src/index.ts src/bin.ts --format esm --dts --clean --sourcemap --external @fittingroom/core --external @fittingroom/citations --external @fittingroom/directions",
+    "test": "vitest run",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@fittingroom/citations": "workspace:*",
+    "@fittingroom/core": "workspace:*",
+    "@fittingroom/directions": "workspace:*",
+    "@modelcontextprotocol/sdk": "^1.32.1",
+    "esbuild": "^0.27.7",
+    "playwright": "^1.64.1",
+    "react": "^19.3.1",
+    "react-dom": "^19.3.1",
+    "typescript": "^5.9.3",
+    "zod": "^4.6.7"
+  },
+  "engines": {
+    "node": ">=24.0.0"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}

@@ -1,0 +1,76 @@
+{
+  "slug": "command-center",
+  "name": "Command Center",
+  "surfaces": ["dashboard"],
+  "description": "Dark canvas, hairline grids and clear live status lights.",
+  "bestFor": ["logistics", "monitoring", "IoT"],
+  "typePair": { "display": "Inter, system-ui, sans-serif", "body": "JetBrains Mono, monospace" },
+  "typeScale": { "base": 15, "ratio": 1.25, "steps": [12, 13, 15, 19, 23, 29] },
+  "radius": { "control": "4px", "panel": "8px" },
+  "border": "1px solid",
+  "shadow": "0 0 0 1px #2B3A4A, 0 12px 40px rgba(0, 0, 0, 0.5)",
+  "colorRecipe": {
+    "background": "#070B10",
+    "surface": "#0F1620",
+    "text": "#F1F5F9",
+    "mutedText": "#B8C4D4",
+    "accent": "#7DD3FC",
+    "accentText": "#06121A",
+    "border": "#2B3A4A",
+    "focus": "#7DD3FC",
+    "contrastPairs": [
+      {
+        "foreground": "#F1F5F9",
+        "background": "#070B10",
+        "ratio": 18.01,
+        "usage": "text on background"
+      },
+      {
+        "foreground": "#B8C4D4",
+        "background": "#070B10",
+        "ratio": 11.17,
+        "usage": "muted text on background"
+      },
+      {
+        "foreground": "#F1F5F9",
+        "background": "#0F1620",
+        "ratio": 16.58,
+        "usage": "text on surface"
+      },
+      {
+        "foreground": "#B8C4D4",
+        "background": "#0F1620",
+        "ratio": 10.28,
+        "usage": "muted text on surface"
+      },
+      {
+        "foreground": "#06121A",
+        "background": "#7DD3FC",
+        "ratio": 11.36,
+        "usage": "accent text on accent"
+      },
+      {
+        "foreground": "#7DD3FC",
+        "background": "#070B10",
+        "ratio": 11.83,
+        "usage": "accent text on background"
+      },
+      {
+        "foreground": "#7DD3FC",
+        "background": "#070B10",
+        "ratio": 11.83,
+        "usage": "focus ring on background"
+      }
+    ]
+  },
+  "density": 7,
+  "motion": 5,
+  "layoutRules": [
+    "Use a hairline grid to align every panel.",
+    "Keep status lights large enough to read without color.",
+    "Reserve the brightest accent for live alerts."
+  ],
+  "do": ["Pair status color with a label and icon.", "Keep critical metrics above the fold."],
+  "dont": ["Use neon value as the only status cue.", "Animate every live number."],
+  "a11yRisk": "Neon status colors and continuous animation can fail contrast and distract from urgent changes."
+}

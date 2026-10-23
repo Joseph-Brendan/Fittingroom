@@ -1,0 +1,79 @@
+{
+  "slug": "memphis",
+  "name": "Memphis",
+  "surfaces": ["marketing"],
+  "description": "Clashing patterns, chunky geometry and 80s play.",
+  "bestFor": ["campaigns", "launches"],
+  "typePair": {
+    "display": "Archivo Black, Impact, sans-serif",
+    "body": "DM Sans, system-ui, sans-serif"
+  },
+  "typeScale": { "base": 16, "ratio": 1.333, "steps": [12, 14, 16, 21, 28, 37] },
+  "radius": { "control": "8px", "panel": "16px" },
+  "border": "2px solid",
+  "shadow": "5px 5px 0 #171123",
+  "colorRecipe": {
+    "background": "#FFFDF2",
+    "surface": "#FFE8F2",
+    "text": "#171123",
+    "mutedText": "#584866",
+    "accent": "#C2185B",
+    "accentText": "#FFFFFF",
+    "border": "#C8B8D8",
+    "focus": "#C2185B",
+    "contrastPairs": [
+      {
+        "foreground": "#171123",
+        "background": "#FFFDF2",
+        "ratio": 18.04,
+        "usage": "text on background"
+      },
+      {
+        "foreground": "#584866",
+        "background": "#FFFDF2",
+        "ratio": 8.12,
+        "usage": "muted text on background"
+      },
+      {
+        "foreground": "#171123",
+        "background": "#FFE8F2",
+        "ratio": 15.84,
+        "usage": "text on surface"
+      },
+      {
+        "foreground": "#584866",
+        "background": "#FFE8F2",
+        "ratio": 7.13,
+        "usage": "muted text on surface"
+      },
+      {
+        "foreground": "#FFFFFF",
+        "background": "#C2185B",
+        "ratio": 5.87,
+        "usage": "accent text on accent"
+      },
+      {
+        "foreground": "#C2185B",
+        "background": "#FFFDF2",
+        "ratio": 5.76,
+        "usage": "accent text on background"
+      },
+      {
+        "foreground": "#C2185B",
+        "background": "#FFFDF2",
+        "ratio": 5.76,
+        "usage": "focus ring on background"
+      }
+    ]
+  },
+  "density": 5,
+  "motion": 6,
+  "layoutRules": [
+    "Confine patterns to bands and image masks.",
+    "Keep text and form surfaces plain.",
+    "Use at most two patterns per view."
+  ],
+  "do": ["Give primary actions a quiet background.", "Repeat one shape language across sections."],
+  "dont": ["Put patterns behind body copy.", "Animate pattern backgrounds continuously."],
+  "a11yRisk": "Patterns create visual noise around actions and motion can distract from focus and reading."
+}

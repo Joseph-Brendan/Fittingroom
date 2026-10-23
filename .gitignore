@@ -1,0 +1,14 @@
+node_modules/
+dist/
+coverage/
+.fittingroom/
+.env
+.env.*
+!.env.example
+.DS_Store
+test-results/
+playwright-report/
+blob-report/
+*.tsbuildinfo
+.tmp-*/
+e2e/.board-session.json

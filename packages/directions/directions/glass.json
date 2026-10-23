@@ -1,0 +1,79 @@
+{
+  "slug": "glass",
+  "name": "Glass / Liquid Glass",
+  "surfaces": ["marketing"],
+  "description": "Frosted, layered surfaces over quiet depth.",
+  "bestFor": ["AI products", "media"],
+  "typePair": {
+    "display": "Manrope, system-ui, sans-serif",
+    "body": "Inter, system-ui, sans-serif"
+  },
+  "typeScale": { "base": 16, "ratio": 1.25, "steps": [12, 14, 16, 20, 25, 31] },
+  "radius": { "control": "14px", "panel": "28px" },
+  "border": "1px solid",
+  "shadow": "0 24px 80px rgba(30, 27, 75, 0.18)",
+  "colorRecipe": {
+    "background": "#EEF2FF",
+    "surface": "#FFFFFF",
+    "text": "#1E1B4B",
+    "mutedText": "#4C4A72",
+    "accent": "#4338CA",
+    "accentText": "#FFFFFF",
+    "border": "#C7D2FE",
+    "focus": "#4338CA",
+    "contrastPairs": [
+      {
+        "foreground": "#1E1B4B",
+        "background": "#EEF2FF",
+        "ratio": 14.3,
+        "usage": "text on background"
+      },
+      {
+        "foreground": "#4C4A72",
+        "background": "#EEF2FF",
+        "ratio": 7.42,
+        "usage": "muted text on background"
+      },
+      {
+        "foreground": "#1E1B4B",
+        "background": "#FFFFFF",
+        "ratio": 15.99,
+        "usage": "text on surface"
+      },
+      {
+        "foreground": "#4C4A72",
+        "background": "#FFFFFF",
+        "ratio": 8.3,
+        "usage": "muted text on surface"
+      },
+      {
+        "foreground": "#FFFFFF",
+        "background": "#4338CA",
+        "ratio": 7.9,
+        "usage": "accent text on accent"
+      },
+      {
+        "foreground": "#4338CA",
+        "background": "#EEF2FF",
+        "ratio": 7.07,
+        "usage": "accent text on background"
+      },
+      {
+        "foreground": "#4338CA",
+        "background": "#EEF2FF",
+        "ratio": 7.07,
+        "usage": "focus ring on background"
+      }
+    ]
+  },
+  "density": 4,
+  "motion": 4,
+  "layoutRules": [
+    "Place text on an opaque or near-opaque panel over any blur.",
+    "Use depth to separate one primary surface from the background.",
+    "Keep glass layers to two levels."
+  ],
+  "do": ["Test text contrast against the heaviest blur.", "Use inner borders to define edges."],
+  "dont": ["Put body text directly on a moving gradient.", "Stack five translucent panels."],
+  "a11yRisk": "Blur and transparency reduce effective contrast, especially for muted text and icons."
+}

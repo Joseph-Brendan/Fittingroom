@@ -1,0 +1,146 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Save project</title>
+    <style>
+      *,
+      *::before,
+      *::after {
+        box-sizing: border-box;
+      }
+
+      :root {
+        color: #16181d;
+        background: #ffffff;
+        font-family: system-ui, sans-serif;
+      }
+
+      body {
+        margin: 0;
+      }
+
+      .sticky-banner {
+        position: fixed;
+        inset: 0 0 auto;
+        z-index: 10;
+        display: flex;
+        min-height: 84px;
+        align-items: center;
+        padding: 12px 24px;
+        background: #0b57d0;
+        color: #ffffff;
+      }
+
+      main {
+        position: relative;
+        max-width: 720px;
+        margin: 0 auto;
+        padding: 120px 24px 48px;
+      }
+
+      h1 {
+        margin: 0 0 8px;
+        font-size: 1.75rem;
+      }
+
+      h2 {
+        margin: 0 0 8px;
+        font-size: 1.125rem;
+      }
+
+      .helper {
+        margin: 0 0 24px;
+        color: #a9a9a9;
+      }
+
+      .focus-target {
+        position: absolute;
+        top: 16px;
+        left: 24px;
+        min-height: 44px;
+        border: 0;
+        border-radius: 6px;
+        padding: 12px 18px;
+        background: #ffffff;
+        color: #16181d;
+        font: inherit;
+      }
+
+      label {
+        display: block;
+        margin-bottom: 8px;
+        font-weight: 600;
+      }
+
+      input {
+        width: 100%;
+        min-height: 44px;
+        margin-bottom: 20px;
+        border: 1px solid #74777d;
+        border-radius: 6px;
+        padding: 8px 12px;
+        font: inherit;
+      }
+
+      .save-button {
+        min-height: 44px;
+        border: 0;
+        border-radius: 6px;
+        padding: 12px 18px;
+        background: #0b57d0;
+        color: #ffffff;
+        font: inherit;
+        font-weight: 600;
+      }
+
+      .icon-button {
+        width: 18px;
+        height: 18px;
+        min-height: 0;
+        margin-top: 24px;
+        border: 0;
+        border-radius: 3px;
+        padding: 0;
+        background: #0b57d0;
+        color: #ffffff;
+        font: inherit;
+        font-size: 0.75rem;
+      }
+
+      .wide-panel {
+        width: 480px;
+        margin-top: 24px;
+        border: 1px solid #74777d;
+        border-radius: 8px;
+        padding: 16px;
+        background: #f7f7f7;
+      }
+
+      .wide-panel p {
+        margin: 0;
+      }
+    </style>
+  </head>
+  <body>
+    <aside class="sticky-banner" aria-label="Product announcement">
+      New feature: invite a teammate from the project menu.
+    </aside>
+    <main>
+      <button id="focus-target" class="focus-target" type="button">Open help</button>
+      <h1>Save your work</h1>
+      <p class="helper" role="status">Your draft saves automatically.</p>
+      <form>
+        <label for="project-name">Project name</label>
+        <input id="project-name" name="project-name" type="text" />
+        <button class="save-button" type="button">Save project</button>
+      </form>
+      <button id="icon-save" class="icon-button" type="button" aria-label="Save item">S</button>
+      <section class="wide-panel" aria-labelledby="activity-heading">
+        <h2 id="activity-heading">Recent activity</h2>
+        <p>Your last project was updated two minutes ago.</p>
+      </section>
+    </main>
+  </body>
+</html>

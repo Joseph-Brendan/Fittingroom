@@ -1,0 +1,82 @@
+{
+  "slug": "apple-native",
+  "name": "Apple Native (HIG)",
+  "surfaces": ["app"],
+  "description": "System type, clear navigation and content-first deference.",
+  "bestFor": ["iOS", "macOS", "PWAs"],
+  "typePair": {
+    "display": "SF Pro Display, -apple-system, BlinkMacSystemFont, sans-serif",
+    "body": "SF Pro Text, -apple-system, BlinkMacSystemFont, sans-serif"
+  },
+  "typeScale": { "base": 16, "ratio": 1.2, "steps": [12, 14, 16, 19, 23, 28] },
+  "radius": { "control": "8px", "panel": "16px" },
+  "border": "1px solid",
+  "shadow": "0 1px 3px rgba(0, 0, 0, 0.12)",
+  "colorRecipe": {
+    "background": "#FFFFFF",
+    "surface": "#F8FAFC",
+    "text": "#111827",
+    "mutedText": "#475569",
+    "accent": "#1D4ED8",
+    "accentText": "#FFFFFF",
+    "border": "#CBD5E1",
+    "focus": "#1D4ED8",
+    "contrastPairs": [
+      {
+        "foreground": "#111827",
+        "background": "#FFFFFF",
+        "ratio": 17.74,
+        "usage": "text on background"
+      },
+      {
+        "foreground": "#475569",
+        "background": "#FFFFFF",
+        "ratio": 7.58,
+        "usage": "muted text on background"
+      },
+      {
+        "foreground": "#111827",
+        "background": "#F8FAFC",
+        "ratio": 16.96,
+        "usage": "text on surface"
+      },
+      {
+        "foreground": "#475569",
+        "background": "#F8FAFC",
+        "ratio": 7.24,
+        "usage": "muted text on surface"
+      },
+      {
+        "foreground": "#FFFFFF",
+        "background": "#1D4ED8",
+        "ratio": 6.7,
+        "usage": "accent text on accent"
+      },
+      {
+        "foreground": "#1D4ED8",
+        "background": "#FFFFFF",
+        "ratio": 6.7,
+        "usage": "accent text on background"
+      },
+      {
+        "foreground": "#1D4ED8",
+        "background": "#FFFFFF",
+        "ratio": 6.7,
+        "usage": "focus ring on background"
+      }
+    ]
+  },
+  "density": 4,
+  "motion": 2,
+  "layoutRules": [
+    "Use clear back and close paths in every flow.",
+    "Let content lead and keep chrome quiet.",
+    "Keep touch targets at least 44 by 44 points."
+  ],
+  "do": ["Use system conventions for navigation.", "Give controls direct, short labels."],
+  "dont": [
+    "Copy native controls onto the web without keyboard support.",
+    "Use small icon-only targets."
+  ],
+  "a11yRisk": "Native styling can hide missing web focus, keyboard and hit-target behavior."
+}

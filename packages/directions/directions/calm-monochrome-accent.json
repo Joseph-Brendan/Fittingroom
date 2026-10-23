@@ -1,0 +1,79 @@
+{
+  "slug": "calm-monochrome-accent",
+  "name": "Calm Monochrome + Accent",
+  "surfaces": ["dashboard"],
+  "description": "Gray scale surfaces with one accent reserved for meaning.",
+  "bestFor": ["health", "education", "SaaS"],
+  "typePair": {
+    "display": "Inter, system-ui, sans-serif",
+    "body": "IBM Plex Sans, system-ui, sans-serif"
+  },
+  "typeScale": { "base": 16, "ratio": 1.2, "steps": [12, 14, 16, 19, 23, 28] },
+  "radius": { "control": "6px", "panel": "12px" },
+  "border": "1px solid",
+  "shadow": "0 1px 2px rgba(24, 32, 31, 0.06)",
+  "colorRecipe": {
+    "background": "#F7F8F8",
+    "surface": "#FFFFFF",
+    "text": "#18201F",
+    "mutedText": "#4A5654",
+    "accent": "#0F766E",
+    "accentText": "#FFFFFF",
+    "border": "#C8D3D1",
+    "focus": "#0F766E",
+    "contrastPairs": [
+      {
+        "foreground": "#18201F",
+        "background": "#F7F8F8",
+        "ratio": 15.6,
+        "usage": "text on background"
+      },
+      {
+        "foreground": "#4A5654",
+        "background": "#F7F8F8",
+        "ratio": 7.18,
+        "usage": "muted text on background"
+      },
+      {
+        "foreground": "#18201F",
+        "background": "#FFFFFF",
+        "ratio": 16.6,
+        "usage": "text on surface"
+      },
+      {
+        "foreground": "#4A5654",
+        "background": "#FFFFFF",
+        "ratio": 7.64,
+        "usage": "muted text on surface"
+      },
+      {
+        "foreground": "#FFFFFF",
+        "background": "#0F766E",
+        "ratio": 5.47,
+        "usage": "accent text on accent"
+      },
+      {
+        "foreground": "#0F766E",
+        "background": "#F7F8F8",
+        "ratio": 5.14,
+        "usage": "accent text on background"
+      },
+      {
+        "foreground": "#0F766E",
+        "background": "#F7F8F8",
+        "ratio": 5.14,
+        "usage": "focus ring on background"
+      }
+    ]
+  },
+  "density": 5,
+  "motion": 2,
+  "layoutRules": [
+    "Keep 90 percent of the interface in gray tones.",
+    "Reserve the accent for focus, selection and one status.",
+    "Use borders and spacing before adding new colors."
+  ],
+  "do": ["Give the accent one clear job.", "Pair accent states with labels or icons."],
+  "dont": ["Use the accent for decoration.", "Signal multiple statuses with the same hue."],
+  "a11yRisk": "One accent pressed into too many jobs makes status and selection cues ambiguous, and muted gray can fall below contrast."
+}

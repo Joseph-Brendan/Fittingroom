@@ -1,0 +1,79 @@
+{
+  "slug": "fluent",
+  "name": "Fluent",
+  "surfaces": ["app"],
+  "description": "Layered light, crisp lines and enterprise clarity.",
+  "bestFor": ["enterprise", "Windows"],
+  "typePair": {
+    "display": "Segoe UI Variable, Segoe UI, sans-serif",
+    "body": "Segoe UI Variable, Segoe UI, sans-serif"
+  },
+  "typeScale": { "base": 16, "ratio": 1.25, "steps": [12, 14, 16, 20, 25, 31] },
+  "radius": { "control": "4px", "panel": "8px" },
+  "border": "1px solid",
+  "shadow": "0 8px 24px rgba(32, 31, 30, 0.12)",
+  "colorRecipe": {
+    "background": "#F8F8F8",
+    "surface": "#FFFFFF",
+    "text": "#201F1E",
+    "mutedText": "#605E5C",
+    "accent": "#005A9E",
+    "accentText": "#FFFFFF",
+    "border": "#D2D0CE",
+    "focus": "#005A9E",
+    "contrastPairs": [
+      {
+        "foreground": "#201F1E",
+        "background": "#F8F8F8",
+        "ratio": 15.49,
+        "usage": "text on background"
+      },
+      {
+        "foreground": "#605E5C",
+        "background": "#F8F8F8",
+        "ratio": 6.08,
+        "usage": "muted text on background"
+      },
+      {
+        "foreground": "#201F1E",
+        "background": "#FFFFFF",
+        "ratio": 16.46,
+        "usage": "text on surface"
+      },
+      {
+        "foreground": "#605E5C",
+        "background": "#FFFFFF",
+        "ratio": 6.46,
+        "usage": "muted text on surface"
+      },
+      {
+        "foreground": "#FFFFFF",
+        "background": "#005A9E",
+        "ratio": 7.1,
+        "usage": "accent text on accent"
+      },
+      {
+        "foreground": "#005A9E",
+        "background": "#F8F8F8",
+        "ratio": 6.69,
+        "usage": "accent text on background"
+      },
+      {
+        "foreground": "#005A9E",
+        "background": "#F8F8F8",
+        "ratio": 6.69,
+        "usage": "focus ring on background"
+      }
+    ]
+  },
+  "density": 5,
+  "motion": 3,
+  "layoutRules": [
+    "Use at most three depth levels.",
+    "Give every interactive control a strong focus rectangle.",
+    "Keep navigation in a predictable left rail."
+  ],
+  "do": ["Use layered panels for hierarchy.", "Keep hover and focus states distinct."],
+  "dont": ["Add depth to every card.", "Shrink targets for dense enterprise tables."],
+  "a11yRisk": "Layered surfaces and compact enterprise layouts can hide focus and fail target-size floors."
+}

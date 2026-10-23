@@ -1,0 +1,82 @@
+{
+  "slug": "scrapbook-hand-drawn",
+  "name": "Scrapbook / Hand-Drawn",
+  "surfaces": ["marketing"],
+  "description": "Stickers, doodles and collage pieces with a warm handmade feel.",
+  "bestFor": ["creators", "kids", "community"],
+  "typePair": {
+    "display": "Caveat, cursive",
+    "body": "Atkinson Hyperlegible, system-ui, sans-serif"
+  },
+  "typeScale": { "base": 16, "ratio": 1.25, "steps": [12, 14, 16, 20, 25, 31] },
+  "radius": { "control": "8px", "panel": "18px" },
+  "border": "2px dashed",
+  "shadow": "4px 6px 0 rgba(92, 75, 59, 0.2)",
+  "colorRecipe": {
+    "background": "#FFFBF5",
+    "surface": "#F5EBDD",
+    "text": "#2A2118",
+    "mutedText": "#5C4B3B",
+    "accent": "#8A3B12",
+    "accentText": "#FFFFFF",
+    "border": "#C9B8A4",
+    "focus": "#8A3B12",
+    "contrastPairs": [
+      {
+        "foreground": "#2A2118",
+        "background": "#FFFBF5",
+        "ratio": 15.32,
+        "usage": "text on background"
+      },
+      {
+        "foreground": "#5C4B3B",
+        "background": "#FFFBF5",
+        "ratio": 8.07,
+        "usage": "muted text on background"
+      },
+      {
+        "foreground": "#2A2118",
+        "background": "#F5EBDD",
+        "ratio": 13.4,
+        "usage": "text on surface"
+      },
+      {
+        "foreground": "#5C4B3B",
+        "background": "#F5EBDD",
+        "ratio": 7.05,
+        "usage": "muted text on surface"
+      },
+      {
+        "foreground": "#FFFFFF",
+        "background": "#8A3B12",
+        "ratio": 7.73,
+        "usage": "accent text on accent"
+      },
+      {
+        "foreground": "#8A3B12",
+        "background": "#FFFBF5",
+        "ratio": 7.5,
+        "usage": "accent text on background"
+      },
+      {
+        "foreground": "#8A3B12",
+        "background": "#FFFBF5",
+        "ratio": 7.5,
+        "usage": "focus ring on background"
+      }
+    ]
+  },
+  "density": 4,
+  "motion": 3,
+  "layoutRules": [
+    "Rotate only small decorative pieces, never body text.",
+    "Keep one strong alignment grid under the collage.",
+    "Limit each section to one sticker cluster."
+  ],
+  "do": [
+    "Hide decorative stickers from assistive tech.",
+    "Use real photos and plain labels for content."
+  ],
+  "dont": ["Tilt paragraphs or form fields.", "Use doodles in place of real labels."],
+  "a11yRisk": "Tilted text, dense decoration and decorative images without alt handling can confuse reading order."
+}

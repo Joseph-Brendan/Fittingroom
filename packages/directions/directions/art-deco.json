@@ -1,0 +1,79 @@
+{
+  "slug": "art-deco",
+  "name": "Art Deco",
+  "surfaces": ["marketing"],
+  "description": "Symmetry, fine gold lines and elegant ornament.",
+  "bestFor": ["hospitality", "premium events"],
+  "typePair": {
+    "display": "Cormorant Garamond, Georgia, serif",
+    "body": "Josefin Sans, system-ui, sans-serif"
+  },
+  "typeScale": { "base": 18, "ratio": 1.333, "steps": [14, 16, 18, 24, 32, 42] },
+  "radius": { "control": "0px", "panel": "2px" },
+  "border": "1px solid",
+  "shadow": "0 0 0 1px #D4AF37",
+  "colorRecipe": {
+    "background": "#0E1114",
+    "surface": "#171C22",
+    "text": "#F7F2E7",
+    "mutedText": "#C9C0AE",
+    "accent": "#D4AF37",
+    "accentText": "#111111",
+    "border": "#3B4148",
+    "focus": "#D4AF37",
+    "contrastPairs": [
+      {
+        "foreground": "#F7F2E7",
+        "background": "#0E1114",
+        "ratio": 16.96,
+        "usage": "text on background"
+      },
+      {
+        "foreground": "#C9C0AE",
+        "background": "#0E1114",
+        "ratio": 10.49,
+        "usage": "muted text on background"
+      },
+      {
+        "foreground": "#F7F2E7",
+        "background": "#171C22",
+        "ratio": 15.35,
+        "usage": "text on surface"
+      },
+      {
+        "foreground": "#C9C0AE",
+        "background": "#171C22",
+        "ratio": 9.49,
+        "usage": "muted text on surface"
+      },
+      {
+        "foreground": "#111111",
+        "background": "#D4AF37",
+        "ratio": 8.98,
+        "usage": "accent text on accent"
+      },
+      {
+        "foreground": "#D4AF37",
+        "background": "#0E1114",
+        "ratio": 9.01,
+        "usage": "accent text on background"
+      },
+      {
+        "foreground": "#D4AF37",
+        "background": "#0E1114",
+        "ratio": 9.01,
+        "usage": "focus ring on background"
+      }
+    ]
+  },
+  "density": 4,
+  "motion": 2,
+  "layoutRules": [
+    "Center hero compositions and mirror supporting columns.",
+    "Use gold lines as borders, never as body text.",
+    "Simplify ornament below 768px."
+  ],
+  "do": ["Keep ornament outside text areas.", "Use serif headings with generous size."],
+  "dont": ["Put gold lines behind paragraphs.", "Use thin serif text at small sizes."],
+  "a11yRisk": "Thin metallic lines and ornate small type lose contrast and legibility on small screens."
+}

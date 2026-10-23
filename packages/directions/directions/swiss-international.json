@@ -1,0 +1,79 @@
+{
+  "slug": "swiss-international",
+  "name": "Swiss / International",
+  "surfaces": ["marketing"],
+  "description": "Ordered, grid-led layout with confident, neutral typography.",
+  "bestFor": ["B2B", "agencies", "docs sites"],
+  "typePair": {
+    "display": "Helvetica Neue, Arial, sans-serif",
+    "body": "Inter, Helvetica Neue, sans-serif"
+  },
+  "typeScale": { "base": 16, "ratio": 1.25, "steps": [12, 14, 16, 20, 25, 31] },
+  "radius": { "control": "2px", "panel": "0px" },
+  "border": "1px solid",
+  "shadow": "none",
+  "colorRecipe": {
+    "background": "#FFFFFF",
+    "surface": "#F5F5F5",
+    "text": "#111111",
+    "mutedText": "#525252",
+    "accent": "#B91C1C",
+    "accentText": "#FFFFFF",
+    "border": "#D4D4D4",
+    "focus": "#B91C1C",
+    "contrastPairs": [
+      {
+        "foreground": "#111111",
+        "background": "#FFFFFF",
+        "ratio": 18.88,
+        "usage": "text on background"
+      },
+      {
+        "foreground": "#525252",
+        "background": "#FFFFFF",
+        "ratio": 7.81,
+        "usage": "muted text on background"
+      },
+      {
+        "foreground": "#111111",
+        "background": "#F5F5F5",
+        "ratio": 17.32,
+        "usage": "text on surface"
+      },
+      {
+        "foreground": "#525252",
+        "background": "#F5F5F5",
+        "ratio": 7.17,
+        "usage": "muted text on surface"
+      },
+      {
+        "foreground": "#FFFFFF",
+        "background": "#B91C1C",
+        "ratio": 6.47,
+        "usage": "accent text on accent"
+      },
+      {
+        "foreground": "#B91C1C",
+        "background": "#FFFFFF",
+        "ratio": 6.47,
+        "usage": "accent text on background"
+      },
+      {
+        "foreground": "#B91C1C",
+        "background": "#FFFFFF",
+        "ratio": 6.47,
+        "usage": "focus ring on background"
+      }
+    ]
+  },
+  "density": 3,
+  "motion": 2,
+  "layoutRules": [
+    "Use a twelve-column grid with a single strong left edge.",
+    "Let whitespace separate sections instead of cards.",
+    "Keep one accent action visible in each view."
+  ],
+  "do": ["Let type hierarchy carry the page.", "Use clear grid breaks and aligned captions."],
+  "dont": ["Add decorative gradients or soft shadows.", "Center long paragraphs."],
+  "a11yRisk": "Restrained palettes can drift toward low contrast, so verify text, links and focus rings at every size."
+}

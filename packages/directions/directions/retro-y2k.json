@@ -1,0 +1,76 @@
+{
+  "slug": "retro-y2k",
+  "name": "Retro / Y2K",
+  "surfaces": ["marketing"],
+  "description": "Chrome accents, pixel details and playful nostalgia.",
+  "bestFor": ["music", "culture", "events"],
+  "typePair": { "display": "VT323, monospace", "body": "IBM Plex Mono, monospace" },
+  "typeScale": { "base": 16, "ratio": 1.333, "steps": [12, 14, 16, 21, 28, 37] },
+  "radius": { "control": "6px", "panel": "12px" },
+  "border": "1px solid",
+  "shadow": "0 0 0 2px #6D28D9, 0 8px 0 #211333",
+  "colorRecipe": {
+    "background": "#F7F1FF",
+    "surface": "#E9DDF9",
+    "text": "#211333",
+    "mutedText": "#5F4A78",
+    "accent": "#6D28D9",
+    "accentText": "#FFFFFF",
+    "border": "#BEA8D8",
+    "focus": "#6D28D9",
+    "contrastPairs": [
+      {
+        "foreground": "#211333",
+        "background": "#F7F1FF",
+        "ratio": 15.74,
+        "usage": "text on background"
+      },
+      {
+        "foreground": "#5F4A78",
+        "background": "#F7F1FF",
+        "ratio": 6.93,
+        "usage": "muted text on background"
+      },
+      {
+        "foreground": "#211333",
+        "background": "#E9DDF9",
+        "ratio": 13.42,
+        "usage": "text on surface"
+      },
+      {
+        "foreground": "#5F4A78",
+        "background": "#E9DDF9",
+        "ratio": 5.91,
+        "usage": "muted text on surface"
+      },
+      {
+        "foreground": "#FFFFFF",
+        "background": "#6D28D9",
+        "ratio": 7.1,
+        "usage": "accent text on accent"
+      },
+      {
+        "foreground": "#6D28D9",
+        "background": "#F7F1FF",
+        "ratio": 6.42,
+        "usage": "accent text on background"
+      },
+      {
+        "foreground": "#6D28D9",
+        "background": "#F7F1FF",
+        "ratio": 6.42,
+        "usage": "focus ring on background"
+      }
+    ]
+  },
+  "density": 4,
+  "motion": 5,
+  "layoutRules": [
+    "Keep pixel type to short headings and labels.",
+    "Use chrome and bevels on one focal element.",
+    "Repeat the same geometric motif across sections."
+  ],
+  "do": ["Use plain body copy for long reads.", "Test novelty type at 200 percent zoom."],
+  "dont": ["Set paragraphs in a pixel face.", "Put low-contrast chrome behind text."],
+  "a11yRisk": "Novelty fonts and chrome effects are hard to read at small sizes and low contrast."
+}

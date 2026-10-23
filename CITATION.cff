@@ -1,0 +1,18 @@
+cff-version: 1.2.0
+message: "If you use Fitting Room in your work, cite it with this metadata."
+title: "Fitting Room"
+abstract: "An open-source MCP server and CLI that captures a UI, audits it with citations, and shows redesign directions on a local design board."
+type: software
+authors:
+  - family-names: "Brendan"
+    given-names: "Joseph"
+    affiliation: "Independent"
+license: "Apache-2.0"
+version: "0.0.0"
+keywords:
+  - "MCP server"
+  - "CLI"
+  - "UI audit"
+  - "accessibility"
+  - "design board"
+  - "vibe coding"

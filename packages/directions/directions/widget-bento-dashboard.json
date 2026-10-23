@@ -1,0 +1,79 @@
+{
+  "slug": "widget-bento-dashboard",
+  "name": "Widget / Bento Dashboard",
+  "surfaces": ["dashboard"],
+  "description": "User-arranged tiles with clear boundaries and flexible spans.",
+  "bestFor": ["personal dashboards", "CRMs"],
+  "typePair": {
+    "display": "Plus Jakarta Sans, system-ui, sans-serif",
+    "body": "Inter, system-ui, sans-serif"
+  },
+  "typeScale": { "base": 15, "ratio": 1.25, "steps": [12, 13, 15, 19, 23, 29] },
+  "radius": { "control": "10px", "panel": "18px" },
+  "border": "1px solid",
+  "shadow": "0 6px 18px rgba(20, 32, 26, 0.08)",
+  "colorRecipe": {
+    "background": "#F7F8F4",
+    "surface": "#FFFFFF",
+    "text": "#14201A",
+    "mutedText": "#4D5B52",
+    "accent": "#166534",
+    "accentText": "#FFFFFF",
+    "border": "#C7D2C9",
+    "focus": "#166534",
+    "contrastPairs": [
+      {
+        "foreground": "#14201A",
+        "background": "#F7F8F4",
+        "ratio": 15.73,
+        "usage": "text on background"
+      },
+      {
+        "foreground": "#4D5B52",
+        "background": "#F7F8F4",
+        "ratio": 6.71,
+        "usage": "muted text on background"
+      },
+      {
+        "foreground": "#14201A",
+        "background": "#FFFFFF",
+        "ratio": 16.78,
+        "usage": "text on surface"
+      },
+      {
+        "foreground": "#4D5B52",
+        "background": "#FFFFFF",
+        "ratio": 7.16,
+        "usage": "muted text on surface"
+      },
+      {
+        "foreground": "#FFFFFF",
+        "background": "#166534",
+        "ratio": 7.13,
+        "usage": "accent text on accent"
+      },
+      {
+        "foreground": "#166534",
+        "background": "#F7F8F4",
+        "ratio": 6.68,
+        "usage": "accent text on background"
+      },
+      {
+        "foreground": "#166534",
+        "background": "#F7F8F4",
+        "ratio": 6.68,
+        "usage": "focus ring on background"
+      }
+    ]
+  },
+  "density": 6,
+  "motion": 3,
+  "layoutRules": [
+    "Snap tiles to a fixed grid with clear minimum spans.",
+    "Keep headers and drag handles at the same position in every tile.",
+    "Use consistent tile heights within each row."
+  ],
+  "do": ["Make drag handles keyboard operable.", "Announce live tile updates politely."],
+  "dont": ["Put scroll areas inside short tiles.", "Let live updates move focused controls."],
+  "a11yRisk": "Drag-only arrangement and live tiles can break keyboard order and flood screen readers with updates."
+}

@@ -1,0 +1,6 @@
+{
+  "style": "new-york",
+  "tailwind": {
+    "css": "app/globals.css"
+  }
+}

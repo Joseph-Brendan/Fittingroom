@@ -1,0 +1,11 @@
+:root {
+  --color-brand: #1d4ed8;
+  --color-text: #111827;
+  --space-sm: 8px;
+  --space-lg: 24px;
+  --radius-card: 12px;
+  --font-sans: Inter, system-ui, sans-serif;
+  --font-size-sm: 14px;
+  --font-size-lg: 20px;
+  --shadow-card: 0 8px 24px rgba(17, 24, 39, 0.12);
+}

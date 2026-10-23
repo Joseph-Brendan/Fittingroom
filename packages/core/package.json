@@ -1,0 +1,42 @@
+{
+  "name": "@fittingroom/core",
+  "version": "0.0.0",
+  "description": "Capture, audit, detect, and diff UI for Fitting Room.",
+  "license": "Apache-2.0",
+  "type": "module",
+  "sideEffects": false,
+  "main": "./dist/index.js",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    }
+  },
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "tsup src/index.ts --format esm --dts --clean --sourcemap --external @fittingroom/directions",
+    "test": "vitest run",
+    "typecheck": "tsc --noEmit"
+  },
+  "engines": {
+    "node": ">=24.0.0"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "dependencies": {
+    "@fittingroom/directions": "workspace:*",
+    "axe-core": "^4.14.0",
+    "pixelmatch": "8.0.0",
+    "playwright": "^1.64.1",
+    "pngjs": "7.0.0",
+    "ts-morph": "^28.0.0"
+  },
+  "devDependencies": {
+    "@types/pngjs": "6.0.5"
+  }
+}

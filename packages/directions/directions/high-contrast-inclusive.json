@@ -1,0 +1,79 @@
+{
+  "slug": "high-contrast-inclusive",
+  "name": "High-Contrast Inclusive",
+  "surfaces": ["app"],
+  "description": "Maximum text contrast, large targets and explicit states.",
+  "bestFor": ["government", "health", "older users"],
+  "typePair": {
+    "display": "Atkinson Hyperlegible, system-ui, sans-serif",
+    "body": "Atkinson Hyperlegible, system-ui, sans-serif"
+  },
+  "typeScale": { "base": 18, "ratio": 1.25, "steps": [14, 16, 18, 23, 28, 35] },
+  "radius": { "control": "4px", "panel": "8px" },
+  "border": "2px solid",
+  "shadow": "none",
+  "colorRecipe": {
+    "background": "#FFFFFF",
+    "surface": "#F2F2F2",
+    "text": "#000000",
+    "mutedText": "#333333",
+    "accent": "#0B3D91",
+    "accentText": "#FFFFFF",
+    "border": "#767676",
+    "focus": "#000000",
+    "contrastPairs": [
+      {
+        "foreground": "#000000",
+        "background": "#FFFFFF",
+        "ratio": 21,
+        "usage": "text on background"
+      },
+      {
+        "foreground": "#333333",
+        "background": "#FFFFFF",
+        "ratio": 12.63,
+        "usage": "muted text on background"
+      },
+      {
+        "foreground": "#000000",
+        "background": "#F2F2F2",
+        "ratio": 18.76,
+        "usage": "text on surface"
+      },
+      {
+        "foreground": "#333333",
+        "background": "#F2F2F2",
+        "ratio": 11.29,
+        "usage": "muted text on surface"
+      },
+      {
+        "foreground": "#FFFFFF",
+        "background": "#0B3D91",
+        "ratio": 10.04,
+        "usage": "accent text on accent"
+      },
+      {
+        "foreground": "#0B3D91",
+        "background": "#FFFFFF",
+        "ratio": 10.04,
+        "usage": "accent text on background"
+      },
+      {
+        "foreground": "#000000",
+        "background": "#FFFFFF",
+        "ratio": 21,
+        "usage": "focus ring on background"
+      }
+    ]
+  },
+  "density": 4,
+  "motion": 1,
+  "layoutRules": [
+    "Keep body text at 18px or larger.",
+    "Use visible borders and underlines for links.",
+    "Make every target at least 44 by 44 CSS pixels."
+  ],
+  "do": ["Use plain words and short labels.", "Keep focus outlines thick and persistent."],
+  "dont": ["Use subtle gray text.", "Remove underlines from links in body copy."],
+  "a11yRisk": "The main risk is losing essentials in the name of plainness, so keep headings and grouping strong."
+}

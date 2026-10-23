@@ -1,0 +1,79 @@
+{
+  "slug": "data-dense-utilitarian",
+  "name": "Data-Dense Utilitarian",
+  "surfaces": ["dashboard"],
+  "description": "Tight grids, monospaced numbers and tables built for scanning.",
+  "bestFor": ["ops", "finance", "admin panels"],
+  "typePair": {
+    "display": "IBM Plex Sans, system-ui, sans-serif",
+    "body": "IBM Plex Mono, monospace"
+  },
+  "typeScale": { "base": 14, "ratio": 1.2, "steps": [11, 12, 14, 17, 20, 24] },
+  "radius": { "control": "2px", "panel": "4px" },
+  "border": "1px solid",
+  "shadow": "none",
+  "colorRecipe": {
+    "background": "#FFFFFF",
+    "surface": "#F8FAFC",
+    "text": "#111827",
+    "mutedText": "#475569",
+    "accent": "#1D4ED8",
+    "accentText": "#FFFFFF",
+    "border": "#CBD5E1",
+    "focus": "#1D4ED8",
+    "contrastPairs": [
+      {
+        "foreground": "#111827",
+        "background": "#FFFFFF",
+        "ratio": 17.74,
+        "usage": "text on background"
+      },
+      {
+        "foreground": "#475569",
+        "background": "#FFFFFF",
+        "ratio": 7.58,
+        "usage": "muted text on background"
+      },
+      {
+        "foreground": "#111827",
+        "background": "#F8FAFC",
+        "ratio": 16.96,
+        "usage": "text on surface"
+      },
+      {
+        "foreground": "#475569",
+        "background": "#F8FAFC",
+        "ratio": 7.24,
+        "usage": "muted text on surface"
+      },
+      {
+        "foreground": "#FFFFFF",
+        "background": "#1D4ED8",
+        "ratio": 6.7,
+        "usage": "accent text on accent"
+      },
+      {
+        "foreground": "#1D4ED8",
+        "background": "#FFFFFF",
+        "ratio": 6.7,
+        "usage": "accent text on background"
+      },
+      {
+        "foreground": "#1D4ED8",
+        "background": "#FFFFFF",
+        "ratio": 6.7,
+        "usage": "focus ring on background"
+      }
+    ]
+  },
+  "density": 8,
+  "motion": 1,
+  "layoutRules": [
+    "Align numbers to the right and labels to the left.",
+    "Keep table headers sticky and visible.",
+    "Use one compact row height across the table."
+  ],
+  "do": ["Support keyboard row selection.", "Use tabular numerals for metrics."],
+  "dont": ["Shrink row targets below 24px.", "Hide filters in nested menus."],
+  "a11yRisk": "New users can be overwhelmed by density, and compact rows can shrink targets below the AA minimum."
+}

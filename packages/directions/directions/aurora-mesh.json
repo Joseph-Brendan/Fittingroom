@@ -1,0 +1,79 @@
+{
+  "slug": "aurora-mesh",
+  "name": "Aurora / Mesh Gradient",
+  "surfaces": ["marketing"],
+  "description": "Soft blurred color fields behind crisp content.",
+  "bestFor": ["SaaS heroes", "fintech"],
+  "typePair": {
+    "display": "DM Sans, system-ui, sans-serif",
+    "body": "Inter, system-ui, sans-serif"
+  },
+  "typeScale": { "base": 16, "ratio": 1.25, "steps": [12, 14, 16, 20, 25, 31] },
+  "radius": { "control": "18px", "panel": "32px" },
+  "border": "1px solid",
+  "shadow": "0 20px 70px rgba(79, 70, 229, 0.18)",
+  "colorRecipe": {
+    "background": "#F8FAFC",
+    "surface": "#EEF2FF",
+    "text": "#172033",
+    "mutedText": "#475569",
+    "accent": "#4F46E5",
+    "accentText": "#FFFFFF",
+    "border": "#C7D2FE",
+    "focus": "#4F46E5",
+    "contrastPairs": [
+      {
+        "foreground": "#172033",
+        "background": "#F8FAFC",
+        "ratio": 15.55,
+        "usage": "text on background"
+      },
+      {
+        "foreground": "#475569",
+        "background": "#F8FAFC",
+        "ratio": 7.24,
+        "usage": "muted text on background"
+      },
+      {
+        "foreground": "#172033",
+        "background": "#EEF2FF",
+        "ratio": 14.55,
+        "usage": "text on surface"
+      },
+      {
+        "foreground": "#475569",
+        "background": "#EEF2FF",
+        "ratio": 6.78,
+        "usage": "muted text on surface"
+      },
+      {
+        "foreground": "#FFFFFF",
+        "background": "#4F46E5",
+        "ratio": 6.29,
+        "usage": "accent text on accent"
+      },
+      {
+        "foreground": "#4F46E5",
+        "background": "#F8FAFC",
+        "ratio": 6.01,
+        "usage": "accent text on background"
+      },
+      {
+        "foreground": "#4F46E5",
+        "background": "#F8FAFC",
+        "ratio": 6.01,
+        "usage": "focus ring on background"
+      }
+    ]
+  },
+  "density": 3,
+  "motion": 5,
+  "layoutRules": [
+    "Place body content on a solid panel over the gradient.",
+    "Use no more than two color fields per view.",
+    "Keep navigation and form surfaces opaque."
+  ],
+  "do": ["Derive the gradient from brand colors.", "Keep primary copy dark and crisp."],
+  "dont": ["Default to purple-to-blue AI gradients.", "Animate large fields behind text."],
+  "a11yRisk": "Moving gradients and translucent overlays can weaken text contrast and trigger motion sensitivity."
+}

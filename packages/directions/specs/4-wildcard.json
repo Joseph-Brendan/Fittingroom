@@ -1,0 +1,15 @@
+{
+  "slot": 4,
+  "id": "wildcard",
+  "name": "Wildcard",
+  "description": "Try an unexpected concept that still keeps the content clear and meets accessibility rules.",
+  "surfaces": [
+    "marketing",
+    "authentication",
+    "onboarding",
+    "dashboard",
+    "app-screens",
+    "settings",
+    "checkout"
+  ]
+}

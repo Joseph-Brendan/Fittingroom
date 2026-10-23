@@ -1,0 +1,79 @@
+{
+  "slug": "claymorphism",
+  "name": "Claymorphism",
+  "surfaces": ["marketing"],
+  "description": "Soft, puffy surfaces with gentle depth and rounded forms.",
+  "bestFor": ["onboarding", "games"],
+  "typePair": {
+    "display": "Nunito, system-ui, sans-serif",
+    "body": "Nunito Sans, system-ui, sans-serif"
+  },
+  "typeScale": { "base": 16, "ratio": 1.25, "steps": [12, 14, 16, 20, 25, 31] },
+  "radius": { "control": "24px", "panel": "40px" },
+  "border": "1px solid",
+  "shadow": "inset 0 -6px 12px rgba(63, 29, 24, 0.12), 0 12px 24px rgba(63, 29, 24, 0.16)",
+  "colorRecipe": {
+    "background": "#FFF4F2",
+    "surface": "#FFE3DD",
+    "text": "#3F1D18",
+    "mutedText": "#6E463F",
+    "accent": "#9A3412",
+    "accentText": "#FFFFFF",
+    "border": "#E3B8AC",
+    "focus": "#9A3412",
+    "contrastPairs": [
+      {
+        "foreground": "#3F1D18",
+        "background": "#FFF4F2",
+        "ratio": 13.91,
+        "usage": "text on background"
+      },
+      {
+        "foreground": "#6E463F",
+        "background": "#FFF4F2",
+        "ratio": 7.46,
+        "usage": "muted text on background"
+      },
+      {
+        "foreground": "#3F1D18",
+        "background": "#FFE3DD",
+        "ratio": 12.34,
+        "usage": "text on surface"
+      },
+      {
+        "foreground": "#6E463F",
+        "background": "#FFE3DD",
+        "ratio": 6.62,
+        "usage": "muted text on surface"
+      },
+      {
+        "foreground": "#FFFFFF",
+        "background": "#9A3412",
+        "ratio": 7.31,
+        "usage": "accent text on accent"
+      },
+      {
+        "foreground": "#9A3412",
+        "background": "#FFF4F2",
+        "ratio": 6.78,
+        "usage": "accent text on background"
+      },
+      {
+        "foreground": "#9A3412",
+        "background": "#FFF4F2",
+        "ratio": 6.78,
+        "usage": "focus ring on background"
+      }
+    ]
+  },
+  "density": 4,
+  "motion": 3,
+  "layoutRules": [
+    "Use depth on isolated controls, not on text blocks.",
+    "Keep inner shadows subtle and consistent.",
+    "Give form fields a flat, high-contrast surface."
+  ],
+  "do": ["Keep labels dark and outside the clay surface.", "Use depth to show pressed states."],
+  "dont": ["Emboss body text.", "Use soft shadows as the only focus cue."],
+  "a11yRisk": "Soft shadows and low-contrast edges make controls hard to find for low-vision users."
+}

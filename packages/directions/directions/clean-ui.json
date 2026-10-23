@@ -1,0 +1,76 @@
+{
+  "slug": "clean-ui",
+  "name": "Clean UI",
+  "surfaces": ["app"],
+  "description": "Calm neutrals, precise spacing and clear interaction states.",
+  "bestFor": ["SaaS", "productivity"],
+  "typePair": { "display": "Inter, system-ui, sans-serif", "body": "Inter, system-ui, sans-serif" },
+  "typeScale": { "base": 16, "ratio": 1.2, "steps": [12, 14, 16, 19, 23, 28] },
+  "radius": { "control": "6px", "panel": "12px" },
+  "border": "1px solid",
+  "shadow": "0 1px 2px rgba(17, 24, 39, 0.08)",
+  "colorRecipe": {
+    "background": "#FFFFFF",
+    "surface": "#F8FAFC",
+    "text": "#111827",
+    "mutedText": "#475569",
+    "accent": "#1D4ED8",
+    "accentText": "#FFFFFF",
+    "border": "#CBD5E1",
+    "focus": "#1D4ED8",
+    "contrastPairs": [
+      {
+        "foreground": "#111827",
+        "background": "#FFFFFF",
+        "ratio": 17.74,
+        "usage": "text on background"
+      },
+      {
+        "foreground": "#475569",
+        "background": "#FFFFFF",
+        "ratio": 7.58,
+        "usage": "muted text on background"
+      },
+      {
+        "foreground": "#111827",
+        "background": "#F8FAFC",
+        "ratio": 16.96,
+        "usage": "text on surface"
+      },
+      {
+        "foreground": "#475569",
+        "background": "#F8FAFC",
+        "ratio": 7.24,
+        "usage": "muted text on surface"
+      },
+      {
+        "foreground": "#FFFFFF",
+        "background": "#1D4ED8",
+        "ratio": 6.7,
+        "usage": "accent text on accent"
+      },
+      {
+        "foreground": "#1D4ED8",
+        "background": "#FFFFFF",
+        "ratio": 6.7,
+        "usage": "accent text on background"
+      },
+      {
+        "foreground": "#1D4ED8",
+        "background": "#FFFFFF",
+        "ratio": 6.7,
+        "usage": "focus ring on background"
+      }
+    ]
+  },
+  "density": 5,
+  "motion": 2,
+  "layoutRules": [
+    "Use an eight-point spacing scale.",
+    "Keep one primary action per screen.",
+    "Separate panels with borders before shadows."
+  ],
+  "do": ["Make every state visibly different.", "Keep controls at least 44px tall."],
+  "dont": ["Flatten primary and secondary actions.", "Hide focus behind subtle styling."],
+  "a11yRisk": "Low-contrast neutrals and understated focus states can make a calm interface hard to navigate."
+}

@@ -1,0 +1,7 @@
+{
+  "slot": 2,
+  "id": "native",
+  "name": "Native",
+  "description": "Use platform patterns from the Apple Human Interface Guidelines or Material Design 3.",
+  "surfaces": ["authentication", "onboarding", "dashboard", "app-screens", "settings", "checkout"]
+}

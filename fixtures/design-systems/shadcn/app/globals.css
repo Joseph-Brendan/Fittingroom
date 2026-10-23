@@ -1,0 +1,12 @@
+:root {
+  --background: #ffffff;
+  --foreground: #111827;
+  --primary: #1d4ed8;
+  --radius: 8px;
+  --color-brand: #1d4ed8;
+  --space-sm: 8px;
+  --radius-card: 12px;
+  --font-sans: Inter, system-ui, sans-serif;
+  --font-size-sm: 14px;
+  --shadow-card: 0 8px 24px rgba(17, 24, 39, 0.12);
+}

@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Handoff fixture</title>
+    <style>
+      * { box-sizing: border-box; }
+      body { margin: 0; background: #f8fafc; color: #0f172a; font-family: Arial, sans-serif; }
+      main { max-width: 1100px; margin: 0 auto; padding: 24px; }
+      .top { display: flex; align-items: center; justify-content: space-between; padding: 20px 0; }
+      .top h1 { font-size: 26px; margin: 0; }
+      .cta { border: 0; border-radius: 10px; background: #1d4ed8; color: #ffffff; font-size: 16px; padding: 12px 18px; }
+      .hero { background: #e0e7ff; border-radius: 16px; margin-top: 24px; padding: 40px; }
+      .hero h2 { font-size: 34px; margin: 0 0 12px; }
+      .hero p { font-size: 18px; line-height: 1.5; margin: 0; }
+      .features { display: grid; gap: 16px; grid-template-columns: repeat(3, 1fr); margin-top: 24px; }
+      .feature { background: #ffffff; border: 1px solid #cbd5e1; border-radius: 12px; padding: 20px; }
+      .feature h3 { font-size: 18px; margin: 0 0 8px; }
+      .feature p { color: #475569; font-size: 15px; line-height: 1.4; margin: 0; }
+      .bottom { border-top: 1px solid #cbd5e1; color: #475569; margin-top: 32px; padding: 20px 0; }
+    </style>
+  </head>
+  <body>
+    <main>
+      <header class="top" data-fr-id="top">
+        <h1 data-fr-id="title">Northstar workspace</h1>
+        <button class="cta" data-fr-id="cta" type="button">Start free</button>
+      </header>
+      <section class="hero" data-fr-id="hero">
+        <h2 data-fr-id="hero-title">Plan work without the noise</h2>
+        <p data-fr-id="hero-copy">Capture ideas, set a direction, and ship with your team in one shared space.</p>
+      </section>
+      <section class="features" data-fr-id="features">
+        <article class="feature" data-fr-id="feature-capture">
+          <h3 data-fr-id="feature-capture-title">Capture</h3>
+          <p data-fr-id="feature-capture-copy">Turn rough notes into clear tasks in seconds.</p>
+        </article>
+        <article class="feature" data-fr-id="feature-plan">
+          <h3 data-fr-id="feature-plan-title">Plan</h3>
+          <p data-fr-id="feature-plan-copy">Group the work that matters and drop the rest.</p>
+        </article>
+        <article class="feature" data-fr-id="feature-ship">
+          <h3 data-fr-id="feature-ship-title">Ship</h3>
+          <p data-fr-id="feature-ship-copy">Share progress with everyone without another meeting.</p>
+        </article>
+      </section>
+      <footer class="bottom" data-fr-id="footer">Built for small product teams.</footer>
+    </main>
+  </body>
+</html>

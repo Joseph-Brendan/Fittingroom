@@ -1,0 +1,79 @@
+{
+  "slug": "cyberpunk",
+  "name": "Cyberpunk",
+  "surfaces": ["marketing"],
+  "description": "Neon edges, dark panels and a technical, glitchy mood.",
+  "bestFor": ["gaming", "crypto", "hacker tools"],
+  "typePair": { "display": "Share Tech Mono, monospace", "body": "IBM Plex Mono, monospace" },
+  "typeScale": { "base": 16, "ratio": 1.414, "steps": [12, 14, 16, 23, 32, 45] },
+  "radius": { "control": "0px", "panel": "2px" },
+  "border": "1px solid",
+  "shadow": "0 0 24px rgba(34, 211, 238, 0.35)",
+  "colorRecipe": {
+    "background": "#06070B",
+    "surface": "#11131C",
+    "text": "#F4F7FF",
+    "mutedText": "#B9C0D4",
+    "accent": "#22D3EE",
+    "accentText": "#071018",
+    "border": "#334155",
+    "focus": "#22D3EE",
+    "contrastPairs": [
+      {
+        "foreground": "#F4F7FF",
+        "background": "#06070B",
+        "ratio": 18.79,
+        "usage": "text on background"
+      },
+      {
+        "foreground": "#B9C0D4",
+        "background": "#06070B",
+        "ratio": 11.08,
+        "usage": "muted text on background"
+      },
+      {
+        "foreground": "#F4F7FF",
+        "background": "#11131C",
+        "ratio": 17.28,
+        "usage": "text on surface"
+      },
+      {
+        "foreground": "#B9C0D4",
+        "background": "#11131C",
+        "ratio": 10.19,
+        "usage": "muted text on surface"
+      },
+      {
+        "foreground": "#071018",
+        "background": "#22D3EE",
+        "ratio": 10.6,
+        "usage": "accent text on accent"
+      },
+      {
+        "foreground": "#22D3EE",
+        "background": "#06070B",
+        "ratio": 11.14,
+        "usage": "accent text on background"
+      },
+      {
+        "foreground": "#22D3EE",
+        "background": "#06070B",
+        "ratio": 11.14,
+        "usage": "focus ring on background"
+      }
+    ]
+  },
+  "density": 5,
+  "motion": 7,
+  "layoutRules": [
+    "Keep the canvas dark and use neon only for status and focus.",
+    "Do not apply glitch effects to text or navigation.",
+    "Use thin grid lines to structure dense panels."
+  ],
+  "do": [
+    "Use cyan or lime on near-black with strong contrast.",
+    "Keep focus rings visible against every panel."
+  ],
+  "dont": ["Flicker or scramble readable copy.", "Rely on neon color alone for status."],
+  "a11yRisk": "Neon on black can still fail contrast, and flicker or glitch effects can trigger motion sensitivity."
+}

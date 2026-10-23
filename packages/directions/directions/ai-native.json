@@ -1,0 +1,79 @@
+{
+  "slug": "ai-native",
+  "name": "AI-Native",
+  "surfaces": ["app"],
+  "description": "Chat and canvas side by side with visible streaming states.",
+  "bestFor": ["AI products", "copilots"],
+  "typePair": { "display": "Geist, system-ui, sans-serif", "body": "Inter, system-ui, sans-serif" },
+  "typeScale": { "base": 16, "ratio": 1.25, "steps": [12, 14, 16, 20, 25, 31] },
+  "radius": { "control": "8px", "panel": "16px" },
+  "border": "1px solid",
+  "shadow": "0 10px 30px rgba(23, 32, 51, 0.1)",
+  "colorRecipe": {
+    "background": "#F8FAFC",
+    "surface": "#EEF2FF",
+    "text": "#172033",
+    "mutedText": "#475569",
+    "accent": "#4F46E5",
+    "accentText": "#FFFFFF",
+    "border": "#C7D2FE",
+    "focus": "#4F46E5",
+    "contrastPairs": [
+      {
+        "foreground": "#172033",
+        "background": "#F8FAFC",
+        "ratio": 15.55,
+        "usage": "text on background"
+      },
+      {
+        "foreground": "#475569",
+        "background": "#F8FAFC",
+        "ratio": 7.24,
+        "usage": "muted text on background"
+      },
+      {
+        "foreground": "#172033",
+        "background": "#EEF2FF",
+        "ratio": 14.55,
+        "usage": "text on surface"
+      },
+      {
+        "foreground": "#475569",
+        "background": "#EEF2FF",
+        "ratio": 6.78,
+        "usage": "muted text on surface"
+      },
+      {
+        "foreground": "#FFFFFF",
+        "background": "#4F46E5",
+        "ratio": 6.29,
+        "usage": "accent text on accent"
+      },
+      {
+        "foreground": "#4F46E5",
+        "background": "#F8FAFC",
+        "ratio": 6.01,
+        "usage": "accent text on background"
+      },
+      {
+        "foreground": "#4F46E5",
+        "background": "#F8FAFC",
+        "ratio": 6.01,
+        "usage": "focus ring on background"
+      }
+    ]
+  },
+  "density": 5,
+  "motion": 4,
+  "layoutRules": [
+    "Keep the chat rail and canvas visible together.",
+    "Show a labeled status while the model works.",
+    "Make generated content easy to select and edit."
+  ],
+  "do": [
+    "Show queued, running, done and error states.",
+    "Keep the canvas usable during streaming."
+  ],
+  "dont": ["Hide progress behind a spinner only.", "Leave placeholder text that looks generated."],
+  "a11yRisk": "Streaming updates can hide status from screen readers and make layout shift unpredictable."
+}

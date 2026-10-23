@@ -1,0 +1,79 @@
+{
+  "slug": "material-3",
+  "name": "Material 3",
+  "surfaces": ["app"],
+  "description": "Tonal color, soft shapes and explicit state layers.",
+  "bestFor": ["Android", "web apps"],
+  "typePair": {
+    "display": "Roboto, system-ui, sans-serif",
+    "body": "Roboto, system-ui, sans-serif"
+  },
+  "typeScale": { "base": 16, "ratio": 1.25, "steps": [12, 14, 16, 20, 25, 31] },
+  "radius": { "control": "12px", "panel": "28px" },
+  "border": "1px solid",
+  "shadow": "0 1px 3px rgba(23, 32, 51, 0.16)",
+  "colorRecipe": {
+    "background": "#F8FAFC",
+    "surface": "#EEF2FF",
+    "text": "#172033",
+    "mutedText": "#475569",
+    "accent": "#4F46E5",
+    "accentText": "#FFFFFF",
+    "border": "#C7D2FE",
+    "focus": "#4F46E5",
+    "contrastPairs": [
+      {
+        "foreground": "#172033",
+        "background": "#F8FAFC",
+        "ratio": 15.55,
+        "usage": "text on background"
+      },
+      {
+        "foreground": "#475569",
+        "background": "#F8FAFC",
+        "ratio": 7.24,
+        "usage": "muted text on background"
+      },
+      {
+        "foreground": "#172033",
+        "background": "#EEF2FF",
+        "ratio": 14.55,
+        "usage": "text on surface"
+      },
+      {
+        "foreground": "#475569",
+        "background": "#EEF2FF",
+        "ratio": 6.78,
+        "usage": "muted text on surface"
+      },
+      {
+        "foreground": "#FFFFFF",
+        "background": "#4F46E5",
+        "ratio": 6.29,
+        "usage": "accent text on accent"
+      },
+      {
+        "foreground": "#4F46E5",
+        "background": "#F8FAFC",
+        "ratio": 6.01,
+        "usage": "accent text on background"
+      },
+      {
+        "foreground": "#4F46E5",
+        "background": "#F8FAFC",
+        "ratio": 6.01,
+        "usage": "focus ring on background"
+      }
+    ]
+  },
+  "density": 5,
+  "motion": 3,
+  "layoutRules": [
+    "Use tonal surface levels for hierarchy.",
+    "Apply state layers on hover, focus and press.",
+    "Keep touch targets at least 48dp."
+  ],
+  "do": ["Pair color roles with icons and labels.", "Use larger corner radii on containers."],
+  "dont": ["Rely on hue alone for status.", "Stack more than three elevation levels."],
+  "a11yRisk": "Tonal surfaces can look distinct while measuring below contrast minimums, especially on disabled states."
+}

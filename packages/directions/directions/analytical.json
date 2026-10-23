@@ -1,0 +1,79 @@
+{
+  "slug": "analytical",
+  "name": "Analytical",
+  "surfaces": ["dashboard"],
+  "description": "Layered exploration with linked charts and clear filters.",
+  "bestFor": ["BI", "research", "growth teams"],
+  "typePair": {
+    "display": "Source Sans 3, system-ui, sans-serif",
+    "body": "Source Sans 3, system-ui, sans-serif"
+  },
+  "typeScale": { "base": 15, "ratio": 1.25, "steps": [12, 13, 15, 19, 23, 29] },
+  "radius": { "control": "4px", "panel": "8px" },
+  "border": "1px solid",
+  "shadow": "none",
+  "colorRecipe": {
+    "background": "#F8FAFC",
+    "surface": "#EEF2FF",
+    "text": "#172033",
+    "mutedText": "#475569",
+    "accent": "#4F46E5",
+    "accentText": "#FFFFFF",
+    "border": "#C7D2FE",
+    "focus": "#4F46E5",
+    "contrastPairs": [
+      {
+        "foreground": "#172033",
+        "background": "#F8FAFC",
+        "ratio": 15.55,
+        "usage": "text on background"
+      },
+      {
+        "foreground": "#475569",
+        "background": "#F8FAFC",
+        "ratio": 7.24,
+        "usage": "muted text on background"
+      },
+      {
+        "foreground": "#172033",
+        "background": "#EEF2FF",
+        "ratio": 14.55,
+        "usage": "text on surface"
+      },
+      {
+        "foreground": "#475569",
+        "background": "#EEF2FF",
+        "ratio": 6.78,
+        "usage": "muted text on surface"
+      },
+      {
+        "foreground": "#FFFFFF",
+        "background": "#4F46E5",
+        "ratio": 6.29,
+        "usage": "accent text on accent"
+      },
+      {
+        "foreground": "#4F46E5",
+        "background": "#F8FAFC",
+        "ratio": 6.01,
+        "usage": "accent text on background"
+      },
+      {
+        "foreground": "#4F46E5",
+        "background": "#F8FAFC",
+        "ratio": 6.01,
+        "usage": "focus ring on background"
+      }
+    ]
+  },
+  "density": 7,
+  "motion": 3,
+  "layoutRules": [
+    "Keep one filter row above the charts.",
+    "Link chart selections to a shared detail panel.",
+    "Annotate each chart with its measure and period."
+  ],
+  "do": ["Show active filters as removable chips.", "Make chart data available as a table."],
+  "dont": ["Show more than one filter drawer at once.", "Use color alone to distinguish series."],
+  "a11yRisk": "Data visualizations that rely on color, hover or small marks exclude keyboard and low-vision users."
+}

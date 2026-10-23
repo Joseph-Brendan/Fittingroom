@@ -1,0 +1,79 @@
+{
+  "slug": "dopamine",
+  "name": "Dopamine",
+  "surfaces": ["marketing"],
+  "description": "Saturated color and playful motion with a clear action path.",
+  "bestFor": ["consumer apps", "youth brands"],
+  "typePair": {
+    "display": "Bricolage Grotesque, system-ui, sans-serif",
+    "body": "DM Sans, system-ui, sans-serif"
+  },
+  "typeScale": { "base": 16, "ratio": 1.333, "steps": [12, 14, 16, 21, 28, 37] },
+  "radius": { "control": "16px", "panel": "28px" },
+  "border": "2px solid",
+  "shadow": "0 14px 0 #B91C1C",
+  "colorRecipe": {
+    "background": "#FFF7ED",
+    "surface": "#FFE8CC",
+    "text": "#3B1D0A",
+    "mutedText": "#713F12",
+    "accent": "#B91C1C",
+    "accentText": "#FFFFFF",
+    "border": "#D6A97A",
+    "focus": "#B91C1C",
+    "contrastPairs": [
+      {
+        "foreground": "#3B1D0A",
+        "background": "#FFF7ED",
+        "ratio": 14.48,
+        "usage": "text on background"
+      },
+      {
+        "foreground": "#713F12",
+        "background": "#FFF7ED",
+        "ratio": 8.17,
+        "usage": "muted text on background"
+      },
+      {
+        "foreground": "#3B1D0A",
+        "background": "#FFE8CC",
+        "ratio": 12.93,
+        "usage": "text on surface"
+      },
+      {
+        "foreground": "#713F12",
+        "background": "#FFE8CC",
+        "ratio": 7.29,
+        "usage": "muted text on surface"
+      },
+      {
+        "foreground": "#FFFFFF",
+        "background": "#B91C1C",
+        "ratio": 6.47,
+        "usage": "accent text on accent"
+      },
+      {
+        "foreground": "#B91C1C",
+        "background": "#FFF7ED",
+        "ratio": 6.09,
+        "usage": "accent text on background"
+      },
+      {
+        "foreground": "#B91C1C",
+        "background": "#FFF7ED",
+        "ratio": 6.09,
+        "usage": "focus ring on background"
+      }
+    ]
+  },
+  "density": 5,
+  "motion": 7,
+  "layoutRules": [
+    "Use at most two bright color blocks per view.",
+    "Reserve motion for one playful accent.",
+    "Keep primary actions large and easy to hit."
+  ],
+  "do": ["Pair color with icons and labels.", "Respect reduced-motion preferences."],
+  "dont": ["Animate essential content.", "Use color as the only state cue."],
+  "a11yRisk": "Fast motion and saturated blocks can overwhelm users and hide contrast failures in secondary text."
+}

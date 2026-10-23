@@ -1,0 +1,79 @@
+{
+  "slug": "editorial",
+  "name": "Editorial",
+  "surfaces": ["marketing"],
+  "description": "Magazine layout with serif display type and a generous reading column.",
+  "bestFor": ["content brands", "newsletters"],
+  "typePair": { "display": "Fraunces, Georgia, serif", "body": "Source Serif 4, Georgia, serif" },
+  "typeScale": { "base": 18, "ratio": 1.333, "steps": [14, 16, 18, 24, 32, 42] },
+  "radius": { "control": "0px", "panel": "0px" },
+  "border": "1px solid",
+  "shadow": "none",
+  "colorRecipe": {
+    "background": "#FFFDF8",
+    "surface": "#F3EEE4",
+    "text": "#1C1917",
+    "mutedText": "#57534E",
+    "accent": "#9F1239",
+    "accentText": "#FFFFFF",
+    "border": "#CFC7B8",
+    "focus": "#9F1239",
+    "contrastPairs": [
+      {
+        "foreground": "#1C1917",
+        "background": "#FFFDF8",
+        "ratio": 17.2,
+        "usage": "text on background"
+      },
+      {
+        "foreground": "#57534E",
+        "background": "#FFFDF8",
+        "ratio": 7.5,
+        "usage": "muted text on background"
+      },
+      {
+        "foreground": "#1C1917",
+        "background": "#F3EEE4",
+        "ratio": 15.12,
+        "usage": "text on surface"
+      },
+      {
+        "foreground": "#57534E",
+        "background": "#F3EEE4",
+        "ratio": 6.6,
+        "usage": "muted text on surface"
+      },
+      {
+        "foreground": "#FFFFFF",
+        "background": "#9F1239",
+        "ratio": 8.02,
+        "usage": "accent text on accent"
+      },
+      {
+        "foreground": "#9F1239",
+        "background": "#FFFDF8",
+        "ratio": 7.89,
+        "usage": "accent text on background"
+      },
+      {
+        "foreground": "#9F1239",
+        "background": "#FFFDF8",
+        "ratio": 7.89,
+        "usage": "focus ring on background"
+      }
+    ]
+  },
+  "density": 3,
+  "motion": 1,
+  "layoutRules": [
+    "Keep body copy between 60 and 70 characters per line.",
+    "Use asymmetric columns for notes, pull quotes and captions.",
+    "Give every article a strong headline and one entry image."
+  ],
+  "do": [
+    "Use serif display type with generous leading.",
+    "Break long reads with subheads and pull quotes."
+  ],
+  "dont": ["Bury dense feature lists in long paragraphs.", "Set body text below 16px."],
+  "a11yRisk": "Long line lengths and low-contrast paper tones can make reading harder for people with low vision."
+}

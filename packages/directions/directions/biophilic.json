@@ -1,0 +1,76 @@
+{
+  "slug": "biophilic",
+  "name": "Biophilic",
+  "surfaces": ["marketing"],
+  "description": "Natural tones, quiet texture and a calm, grounded rhythm.",
+  "bestFor": ["health", "climate", "food"],
+  "typePair": { "display": "Lora, Georgia, serif", "body": "Source Sans 3, system-ui, sans-serif" },
+  "typeScale": { "base": 16, "ratio": 1.25, "steps": [12, 14, 16, 20, 25, 31] },
+  "radius": { "control": "8px", "panel": "20px" },
+  "border": "1px solid",
+  "shadow": "0 12px 36px rgba(27, 42, 26, 0.12)",
+  "colorRecipe": {
+    "background": "#F5F8F1",
+    "surface": "#E7EFE0",
+    "text": "#1B2A1A",
+    "mutedText": "#4B5A46",
+    "accent": "#2F6B3B",
+    "accentText": "#FFFFFF",
+    "border": "#A9BBA2",
+    "focus": "#2F6B3B",
+    "contrastPairs": [
+      {
+        "foreground": "#1B2A1A",
+        "background": "#F5F8F1",
+        "ratio": 14.06,
+        "usage": "text on background"
+      },
+      {
+        "foreground": "#4B5A46",
+        "background": "#F5F8F1",
+        "ratio": 6.87,
+        "usage": "muted text on background"
+      },
+      {
+        "foreground": "#1B2A1A",
+        "background": "#E7EFE0",
+        "ratio": 12.8,
+        "usage": "text on surface"
+      },
+      {
+        "foreground": "#4B5A46",
+        "background": "#E7EFE0",
+        "ratio": 6.25,
+        "usage": "muted text on surface"
+      },
+      {
+        "foreground": "#FFFFFF",
+        "background": "#2F6B3B",
+        "ratio": 6.39,
+        "usage": "accent text on accent"
+      },
+      {
+        "foreground": "#2F6B3B",
+        "background": "#F5F8F1",
+        "ratio": 5.96,
+        "usage": "accent text on background"
+      },
+      {
+        "foreground": "#2F6B3B",
+        "background": "#F5F8F1",
+        "ratio": 5.96,
+        "usage": "focus ring on background"
+      }
+    ]
+  },
+  "density": 3,
+  "motion": 2,
+  "layoutRules": [
+    "Keep texture in margins and section bands.",
+    "Use one natural motif per view.",
+    "Give forms and key actions a plain, solid background."
+  ],
+  "do": ["Use deep green text and strong labels.", "Let photography carry the natural texture."],
+  "dont": ["Put body text over leaves or grain.", "Use pale green text on cream."],
+  "a11yRisk": "Low-contrast greens and busy natural textures are the main risks for text and control boundaries."
+}

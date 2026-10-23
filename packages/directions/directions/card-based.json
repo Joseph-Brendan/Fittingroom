@@ -1,0 +1,79 @@
+{
+  "slug": "card-based",
+  "name": "Card-Based",
+  "surfaces": ["app"],
+  "description": "Content in clear cards with steady grouping and rhythm.",
+  "bestFor": ["feeds", "marketplaces"],
+  "typePair": { "display": "Inter, system-ui, sans-serif", "body": "Inter, system-ui, sans-serif" },
+  "typeScale": { "base": 16, "ratio": 1.25, "steps": [12, 14, 16, 20, 25, 31] },
+  "radius": { "control": "8px", "panel": "14px" },
+  "border": "1px solid",
+  "shadow": "0 6px 18px rgba(20, 32, 26, 0.08)",
+  "colorRecipe": {
+    "background": "#F7F8F4",
+    "surface": "#FFFFFF",
+    "text": "#14201A",
+    "mutedText": "#4D5B52",
+    "accent": "#166534",
+    "accentText": "#FFFFFF",
+    "border": "#C7D2C9",
+    "focus": "#166534",
+    "contrastPairs": [
+      {
+        "foreground": "#14201A",
+        "background": "#F7F8F4",
+        "ratio": 15.73,
+        "usage": "text on background"
+      },
+      {
+        "foreground": "#4D5B52",
+        "background": "#F7F8F4",
+        "ratio": 6.71,
+        "usage": "muted text on background"
+      },
+      {
+        "foreground": "#14201A",
+        "background": "#FFFFFF",
+        "ratio": 16.78,
+        "usage": "text on surface"
+      },
+      {
+        "foreground": "#4D5B52",
+        "background": "#FFFFFF",
+        "ratio": 7.16,
+        "usage": "muted text on surface"
+      },
+      {
+        "foreground": "#FFFFFF",
+        "background": "#166534",
+        "ratio": 7.13,
+        "usage": "accent text on accent"
+      },
+      {
+        "foreground": "#166534",
+        "background": "#F7F8F4",
+        "ratio": 6.68,
+        "usage": "accent text on background"
+      },
+      {
+        "foreground": "#166534",
+        "background": "#F7F8F4",
+        "ratio": 6.68,
+        "usage": "focus ring on background"
+      }
+    ]
+  },
+  "density": 5,
+  "motion": 2,
+  "layoutRules": [
+    "Use one card level only.",
+    "Align card headers and actions across rows.",
+    "Let content determine height before forcing equal cards."
+  ],
+  "do": [
+    "Make the whole card a clear target when it is clickable.",
+    "Use one primary action per card."
+  ],
+  "dont": ["Nest cards inside cards.", "Hide the card title below the image."],
+  "a11yRisk": "Card links with competing inner links and uneven heights can create confusing focus order."
+}

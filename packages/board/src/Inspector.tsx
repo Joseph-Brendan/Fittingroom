@@ -1,0 +1,306 @@
+import {
+  closestCenter,
+  DndContext,
+  type DragEndEvent,
+  KeyboardSensor,
+  PointerSensor,
+  useSensor,
+  useSensors,
+} from "@dnd-kit/core";
+import {
+  SortableContext,
+  sortableKeyboardCoordinates,
+  useSortable,
+  verticalListSortingStrategy,
+} from "@dnd-kit/sortable";
+import { CSS } from "@dnd-kit/utilities";
+import { useState } from "react";
+import type { BoardDesignSystem } from "./types";
+
+export interface SelectedPreviewElement {
+  id: string;
+  label: string;
+  parentId: string | null;
+  siblings: Array<{ id: string; label: string }>;
+  slug: string;
+}
+
+export interface EditOperation {
+  [key: string]: unknown;
+  op: string;
+}
+
+interface InspectorProps {
+  designSystem?: BoardDesignSystem | undefined;
+  onEdit: (slug: string, operation: EditOperation) => void;
+  selected: SelectedPreviewElement;
+}
+
+interface TokenFieldProps {
+  category: "color" | "space" | "radius" | "fontSize";
+  designSystem?: BoardDesignSystem | undefined;
+  label: string;
+  onEdit: (slug: string, operation: EditOperation) => void;
+  property: string;
+  selected: SelectedPreviewElement;
+}
+
+interface SortableItemProps {
+  id: string;
+  label: string;
+}
+
+const basicComponents = ["heading", "text", "button", "input", "image"] as const;
+
+function tokenOptions(
+  designSystem: BoardDesignSystem | undefined,
+  category: TokenFieldProps["category"],
+): Array<[string, string]> {
+  return Object.entries(designSystem?.tokens[category] ?? {});
+}
+
+function TokenField({
+  category,
+  designSystem,
+  label,
+  onEdit,
+  property,
+  selected,
+}: TokenFieldProps) {
+  const [choice, setChoice] = useState("");
+  const [customValue, setCustomValue] = useState("");
+
+  function choose(next: string): void {
+    setChoice(next);
+
+    if (next !== "" && next !== "custom") {
+      onEdit(selected.slug, {
+        op: "set-token",
+        id: selected.id,
+        property,
+        token: next,
+      });
+    }
+  }
+
+  function applyCustom(): void {
+    if (customValue.trim() === "") {
+      return;
+    }
+
+    onEdit(selected.slug, {
+      op: "set-token",
+      id: selected.id,
+      property,
+      token: customValue.trim(),
+    });
+  }
+
+  return (
+    <div className="inspector-field">
+      <label>
+        {label}
+        <select aria-label={label} onChange={(event) => choose(event.target.value)} value={choice}>
+          <option value="">Choose a token</option>
+          {tokenOptions(designSystem, category).map(([name, value]) => (
+            <option key={name} value={`${category}.${name}`}>
+              {name} ({value})
+            </option>
+          ))}
+          <option value="custom">Custom value</option>
+        </select>
+      </label>
+      {choice === "custom" ? (
+        <div className="custom-value">
+          <p>Custom value, not in your system.</p>
+          <input
+            aria-label={`Custom ${label.toLowerCase()}`}
+            onChange={(event) => setCustomValue(event.target.value)}
+            placeholder="Enter a CSS value"
+            value={customValue}
+          />
+          <button onClick={applyCustom} type="button">
+            Apply custom value
+          </button>
+        </div>
+      ) : null}
+    </div>
+  );
+}
+
+function SortableItem({ id, label }: SortableItemProps) {
+  const { attributes, listeners, setNodeRef, transform, transition } = useSortable({ id });
+
+  return (
+    <li
+      className="structure-item"
+      ref={setNodeRef}
+      style={{ transform: CSS.Transform.toString(transform), transition }}
+    >
+      <button
+        {...attributes}
+        {...listeners}
+        aria-label={`Drag ${label}`}
+        className="drag-handle"
+        type="button"
+      >
+        {label}
+      </button>
+    </li>
+  );
+}
+
+export function Inspector({ designSystem, onEdit, selected }: InspectorProps) {
+  const [insertComponent, setInsertComponent] = useState(
+    designSystem?.components[0]?.toLowerCase() ?? basicComponents[0],
+  );
+  const sensors = useSensors(
+    useSensor(PointerSensor),
+    useSensor(KeyboardSensor, { coordinateGetter: sortableKeyboardCoordinates }),
+  );
+  const projectComponents = (designSystem?.components ?? []).map((component) => ({
+    label: `${component} (project)`,
+    value: component.toLowerCase(),
+  }));
+  const options = [
+    ...projectComponents,
+    ...basicComponents
+      .filter((component) => !projectComponents.some((project) => project.value === component))
+      .map((component) => ({ label: component, value: component })),
+  ];
+
+  function dragEnd(event: DragEndEvent): void {
+    const { active, over } = event;
+
+    if (over === null || active.id === over.id || selected.parentId === null) {
+      return;
+    }
+
+    const index = selected.siblings.findIndex((sibling) => sibling.id === over.id);
+
+    if (index === -1) {
+      return;
+    }
+
+    onEdit(selected.slug, {
+      op: "move",
+      id: String(active.id),
+      parent: selected.parentId,
+      index,
+    });
+  }
+
+  return (
+    <aside aria-label="Inspector" className="inspector">
+      <div className="drawer-heading">
+        <h2>Inspector</h2>
+        <p className="selected-id" data-testid="selected-fr-id">
+          {selected.id}
+        </p>
+      </div>
+
+      <div className="inspector-fields">
+        <TokenField
+          category="color"
+          designSystem={designSystem}
+          label="Color"
+          onEdit={onEdit}
+          property="color"
+          selected={selected}
+        />
+        <TokenField
+          category="space"
+          designSystem={designSystem}
+          label="Spacing"
+          onEdit={onEdit}
+          property="padding"
+          selected={selected}
+        />
+        <TokenField
+          category="radius"
+          designSystem={designSystem}
+          label="Radius"
+          onEdit={onEdit}
+          property="borderRadius"
+          selected={selected}
+        />
+        <TokenField
+          category="fontSize"
+          designSystem={designSystem}
+          label="Type"
+          onEdit={onEdit}
+          property="fontSize"
+          selected={selected}
+        />
+      </div>
+
+      <div className="inspector-actions">
+        <button
+          onClick={() => onEdit(selected.slug, { op: "delete", id: selected.id })}
+          type="button"
+        >
+          Delete
+        </button>
+        <button
+          onClick={() =>
+            onEdit(selected.slug, {
+              op: "duplicate",
+              id: selected.id,
+              newId: `${selected.id}-copy`,
+            })
+          }
+          type="button"
+        >
+          Duplicate
+        </button>
+      </div>
+
+      <section className="insert-panel">
+        <h3>Insert</h3>
+        <select
+          aria-label="Insert component"
+          onChange={(event) => setInsertComponent(event.target.value)}
+          value={insertComponent}
+        >
+          {options.map((option) => (
+            <option key={option.value} value={option.value}>
+              {option.label}
+            </option>
+          ))}
+        </select>
+        <button
+          onClick={() =>
+            onEdit(selected.slug, {
+              op: "insert",
+              parent: selected.id,
+              component: insertComponent,
+              id: `insert-${Date.now().toString(36)}`,
+              text: insertComponent,
+            })
+          }
+          type="button"
+        >
+          Insert
+        </button>
+      </section>
+
+      {selected.siblings.length > 1 ? (
+        <section className="structure-panel">
+          <h3>Order in {selected.parentId ?? "parent"}</h3>
+          <DndContext collisionDetection={closestCenter} onDragEnd={dragEnd} sensors={sensors}>
+            <SortableContext
+              items={selected.siblings.map((sibling) => sibling.id)}
+              strategy={verticalListSortingStrategy}
+            >
+              <ul>
+                {selected.siblings.map((sibling) => (
+                  <SortableItem id={sibling.id} key={sibling.id} label={sibling.label} />
+                ))}
+              </ul>
+            </SortableContext>
+          </DndContext>
+        </section>
+      ) : null}
+    </aside>
+  );
+}

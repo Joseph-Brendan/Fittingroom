@@ -1,0 +1,16 @@
+{
+  "slot": 1,
+  "id": "refined",
+  "name": "Refined",
+  "description": "Improve the user's own design while keeping its layout, brand colors, fonts, and style.",
+  "surfaces": [
+    "marketing",
+    "authentication",
+    "onboarding",
+    "dashboard",
+    "app-screens",
+    "settings",
+    "checkout"
+  ],
+  "modes": ["light", "deep"]
+}
