@@ -4,6 +4,7 @@
     "lib": ["ES2023", "DOM", "DOM.Iterable"],
     "types": ["node"],
     "paths": {
+      "@fittingroom/citations": ["../citations/src/index.ts"],
       "@fittingroom/core": ["../core/src/index.ts"],
       "@fittingroom/directions": ["../directions/src/index.ts"]
     }

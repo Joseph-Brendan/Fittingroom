@@ -33,7 +33,7 @@ const ruleCases: RuleCase[] = [
 let temporaryDirectory: string;
 
 beforeAll(async () => {
-  temporaryDirectory = await mkdtemp(path.join(os.tmpdir(), "fitting-room-slop-"));
+  temporaryDirectory = await mkdtemp(path.join(os.tmpdir(), "fittingroom-slop-"));
 });
 
 afterAll(async () => {

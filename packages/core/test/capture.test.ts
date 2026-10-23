@@ -11,7 +11,7 @@ let temporaryDirectory: string;
 
 beforeAll(async () => {
   server = await startFixtureServer(fixturePath("bad-ui"));
-  temporaryDirectory = await mkdtemp(path.join(os.tmpdir(), "fitting-room-capture-"));
+  temporaryDirectory = await mkdtemp(path.join(os.tmpdir(), "fittingroom-capture-"));
 });
 
 afterAll(async () => {
@@ -63,7 +63,9 @@ describe("capture", () => {
       expect(accessibilityTree.nodes?.length).toBeGreaterThan(0);
     }
 
-    const pageRequests = new Set(server.requests.filter((request) => request !== "/favicon.ico"));
+    const pageRequests = new Set(
+      server.requests.filter((request) => request !== "/favicon.ico" && request !== "/styles.css"),
+    );
 
     expect(pageRequests).toEqual(new Set(["/login", "/signup"]));
   }, 120_000);
@@ -90,7 +92,9 @@ describe("capture", () => {
       expect(result.pages.flatMap((page) => page.screenshots)).toHaveLength(12);
 
       const pageRequests = new Set(
-        scopeServer.requests.filter((request) => request !== "/favicon.ico"),
+        scopeServer.requests.filter(
+          (request) => request !== "/favicon.ico" && request !== "/styles.css",
+        ),
       );
 
       expect(pageRequests).toEqual(new Set(pages));

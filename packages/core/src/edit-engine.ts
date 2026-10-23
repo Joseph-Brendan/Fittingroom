@@ -1,4 +1,4 @@
-import { mkdir, readFile, writeFile } from "node:fs/promises";
+import { readFile, writeFile } from "node:fs/promises";
 import path from "node:path";
 import {
   JsxAttribute,
@@ -10,7 +10,13 @@ import {
   type SourceFile,
   SyntaxKind,
 } from "ts-morph";
-import type { DesignTokens, TokenCategory } from "./design-system";
+import {
+  type DesignTokens,
+  defaultTokensFile,
+  type TokenCategory,
+  type TokensFile,
+} from "./design-system";
+import { loadFittingRoomFile, writeFittingRoomJson } from "./fittingroom-store";
 
 export type InsertComponent = "heading" | "text" | "button" | "input" | "image";
 
@@ -277,6 +283,18 @@ function applyStyleToken(element: TargetElement, property: string, value: string
   existing.replaceWithText(`${property}: ${JSON.stringify(value)}`);
 }
 
+function isRecord(value: unknown): value is Record<string, unknown> {
+  return typeof value === "object" && value !== null && !Array.isArray(value);
+}
+
+function parseTokensFile(value: unknown): TokensFile {
+  if (!isRecord(value) || value.version !== 1 || !isRecord(value.tokens)) {
+    throw new Error("The tokens file needs version 1 and a tokens object.");
+  }
+
+  return value as unknown as TokensFile;
+}
+
 async function loadTokens(
   projectRoot: string,
   supplied: DesignTokens | undefined,
@@ -285,33 +303,14 @@ async function loadTokens(
     return supplied;
   }
 
-  try {
-    const raw = JSON.parse(
-      await readFile(path.join(projectRoot, ".fittingroom", "tokens.json"), "utf8"),
-    ) as { tokens?: DesignTokens };
+  const file = await loadFittingRoomFile({
+    projectRoot,
+    fileName: "tokens.json",
+    schema: parseTokensFile,
+    defaultValue: defaultTokensFile,
+  });
 
-    if (raw.tokens !== undefined) {
-      return raw.tokens;
-    }
-  } catch {
-    return {
-      color: {},
-      space: {},
-      radius: {},
-      font: {},
-      fontSize: {},
-      shadow: {},
-    };
-  }
-
-  return {
-    color: {},
-    space: {},
-    radius: {},
-    font: {},
-    fontSize: {},
-    shadow: {},
-  };
+  return file.tokens;
 }
 
 function applyOperation(
@@ -463,27 +462,25 @@ function applyOperation(
   }
 }
 
-function editLogPath(projectRoot: string): string {
-  return path.join(projectRoot, ".fittingroom", "edits.json");
+function parseEditLog(value: unknown): EditLog {
+  if (!isRecord(value) || value.version !== 1 || !isRecord(value.files)) {
+    throw new Error("The edits file needs version 1 and a files object.");
+  }
+
+  return value as unknown as EditLog;
 }
 
 async function loadLog(projectRoot: string): Promise<EditLog> {
-  try {
-    const raw = JSON.parse(await readFile(editLogPath(projectRoot), "utf8")) as EditLog;
-
-    if (raw.version === 1 && typeof raw.files === "object" && raw.files !== null) {
-      return raw;
-    }
-  } catch {
-    return { version: 1, files: {} };
-  }
-
-  return { version: 1, files: {} };
+  return loadFittingRoomFile({
+    projectRoot,
+    fileName: "edits.json",
+    schema: parseEditLog,
+    defaultValue: () => ({ version: 1, files: {} }),
+  });
 }
 
 async function saveLog(projectRoot: string, log: EditLog): Promise<void> {
-  await mkdir(path.join(projectRoot, ".fittingroom"), { recursive: true });
-  await writeFile(editLogPath(projectRoot), `${JSON.stringify(log, null, 2)}\n`);
+  await writeFittingRoomJson(projectRoot, "edits.json", log);
 }
 
 function logKey(projectRoot: string, filePath: string): string {

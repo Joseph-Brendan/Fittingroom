@@ -1,9 +1,11 @@
 import { randomUUID } from "node:crypto";
-import { access } from "node:fs/promises";
+import { access, readFile } from "node:fs/promises";
 import path from "node:path";
 import { type Finding as CitationFinding, validate } from "@fittingroom/citations";
 import {
+  type AuditCheckError,
   buildScopeChecklist,
+  type CapturedElement,
   type CaptureResult,
   type CaptureSelection,
   capture,
@@ -13,6 +15,7 @@ import {
   detectDesignSystem,
   detectDevServer,
   discoverRoutes,
+  discoverRoutesWithSource,
   findScope,
   findScopeForRoutes,
   groupRoutes,
@@ -36,7 +39,7 @@ import { previewVariant } from "./preview.js";
 import { typecheckVariant } from "./typecheck.js";
 
 export const fittingRoomServerInfo = {
-  name: "fitting-room",
+  name: "fittingroom",
   version: "0.0.0",
 } as const;
 
@@ -57,8 +60,9 @@ interface CapturePayload {
 }
 
 interface AuditPayload extends CapturePayload {
-  findings: StoredFinding[];
   critiqueBrief: string;
+  errors: Array<AuditCheckError & { page: string }>;
+  findings: StoredFinding[];
 }
 
 interface DirectionDesignSystem extends Awaited<ReturnType<typeof detectDesignSystem>> {
@@ -181,6 +185,7 @@ const submittedFindingSchema = z.object({
   evidence: submittedEvidenceSchema,
   fix: z.string().trim().min(1),
   id: z.string().trim().min(1).optional(),
+  related: z.array(z.string().trim().min(1)).optional(),
   severity: z.number().int().min(0).max(4),
   title: z.string().trim().min(1),
 });
@@ -250,7 +255,78 @@ function routeDirectoryName(routePath: string): string {
     .replace(/^-+|-+$/g, "");
 }
 
-function buildCritiqueBrief(summary: ScopeSummary, findings: StoredFinding[]): string {
+interface ReviewControl {
+  attributes: Record<string, string>;
+  selector: string;
+  tag: string;
+  text: string;
+}
+
+interface ReviewPage {
+  controls: ReviewControl[];
+  path: string;
+  screenshots: string[];
+  text: string[];
+}
+
+const controlTags = new Set(["a", "button", "input", "select", "textarea"]);
+
+async function readReviewPage(page: CaptureResult["pages"][number]): Promise<ReviewPage> {
+  let elements: CapturedElement[] = [];
+
+  try {
+    const raw = JSON.parse(await readFile(page.slopEvidencePath, "utf8")) as {
+      elements?: CapturedElement[];
+    };
+
+    elements = Array.isArray(raw.elements) ? raw.elements : [];
+  } catch {
+    elements = [];
+  }
+
+  const controls = elements
+    .filter((element) => controlTags.has(element.tag))
+    .map((element) => ({
+      attributes: element.attributes,
+      selector: element.selector,
+      tag: element.tag,
+      text: (element.directText || element.text).trim().slice(0, 120),
+    }))
+    .filter((control) => control.text !== "" || control.attributes["aria-label"] !== undefined)
+    .slice(0, 40);
+  const text = [
+    ...new Set(
+      elements
+        .filter((element) => !controlTags.has(element.tag))
+        .map((element) => element.directText.trim())
+        .filter((value) => value !== ""),
+    ),
+  ].slice(0, 20);
+
+  return {
+    controls,
+    path: page.path,
+    screenshots: page.screenshots.map((screenshot) => screenshot.path),
+    text,
+  };
+}
+
+function reviewControlLine(control: ReviewControl): string {
+  const attributes = Object.entries(control.attributes)
+    .map(([name, value]) => `${name}="${value}"`)
+    .join(", ");
+  const confirm = control.attributes["data-confirm"] ?? control.attributes.onclick;
+  const state = control.attributes["data-state"];
+
+  return `- ${control.tag} "${control.text}" [${attributes === "" ? "no attributes" : attributes}; confirm: ${confirm === undefined ? "none" : `"${confirm}"`}; state: ${state ?? "none"}]`;
+}
+
+function buildCritiqueBrief(
+  summary: ScopeSummary,
+  findings: StoredFinding[],
+  errors: Array<AuditCheckError & { page: string }>,
+  reviewPages: ReviewPage[],
+): string {
   const citations = [...new Set(findings.map((finding) => finding.citation))].sort();
   const issueLines =
     findings.length === 0
@@ -262,6 +338,12 @@ function buildCritiqueBrief(summary: ScopeSummary, findings: StoredFinding[]): s
               `- ${finding.page ?? "Page"}: ${finding.title} [${finding.citation}], severity ${finding.severity}.`,
           ),
         ];
+  const errorLines =
+    errors.length === 0
+      ? ["- None."]
+      : errors.map(
+          (error) => `- ${error.page}: ${error.check} on ${error.selector}. ${error.message}`,
+        );
 
   return [
     `Scope: ${summary.name} (${summary.id}).`,
@@ -269,7 +351,15 @@ function buildCritiqueBrief(summary: ScopeSummary, findings: StoredFinding[]): s
     `Automated findings: ${findings.length}.`,
     `Citations: ${citations.length === 0 ? "none" : citations.join(", ")}.`,
     ...issueLines,
+    "Pages to review:",
+    ...reviewPages.flatMap((page) => [
+      `- ${page.path}: ${page.screenshots.join(", ")}`,
+      ...page.controls.map(reviewControlLine),
+      ...page.text.map((text) => `- text "${text}"`),
+    ]),
     critiqueInstructions,
+    "Checks that hit errors:",
+    ...errorLines,
   ].join("\n");
 }
 
@@ -305,8 +395,12 @@ export function createFittingRoomServer(options: FittingRoomServerOptions = {}):
     routes: DiscoveredRoute[];
     state: ScopeState;
   }> {
-    const config = await loadScopes(projectRoot);
-    const routes = await discoverRoutes(projectRoot);
+    const discovery = await discoverRoutesWithSource(
+      projectRoot,
+      options.appUrl === undefined ? {} : { fallbackUrl: options.appUrl },
+    );
+    const config = await loadScopes(projectRoot, { routes: discovery.routes });
+    const routes = discovery.routes;
     const defaultScope = await detectDefaultScope(
       projectRoot,
       config,
@@ -416,7 +510,10 @@ export function createFittingRoomServer(options: FittingRoomServerOptions = {}):
   }
 
   async function surfaceForRoute(route: string): Promise<DirectionSurface> {
-    const routes = await discoverRoutes(projectRoot);
+    const routes = await discoverRoutes(
+      projectRoot,
+      options.appUrl === undefined ? {} : { fallbackUrl: options.appUrl },
+    );
     const routeInfo = routes.find((entry) => entry.path === route);
 
     if (routeInfo === undefined) {
@@ -559,16 +656,23 @@ export function createFittingRoomServer(options: FittingRoomServerOptions = {}):
         const auditRoot =
           options.auditOutputDir ??
           path.resolve(projectRoot, ".fittingroom", "audits", resolved.selection.id);
+        const errors: Array<AuditCheckError & { page: string }> = [];
         const findings: StoredFinding[] = [];
 
         for (const page of captured.pages) {
-          const pageFindings = await runAutomatedChecks(page.url, {
+          const report = await runAutomatedChecks(page.url, {
             outputDir: path.join(auditRoot, routeDirectoryName(page.path)),
           });
 
           findings.push(
-            ...pageFindings.map((finding) => ({
+            ...report.findings.map((finding) => ({
               ...finding,
+              page: page.path,
+            })),
+          );
+          errors.push(
+            ...report.errors.map((error) => ({
+              ...error,
               page: page.path,
             })),
           );
@@ -578,14 +682,16 @@ export function createFittingRoomServer(options: FittingRoomServerOptions = {}):
         activeRoute = null;
         judgedFindings.clear();
 
+        const reviewPages = await Promise.all(captured.pages.map(readReviewPage));
         const payload: AuditPayload = {
           summary: captured.summary,
           screenshots: captured.pages.flatMap((page) =>
             page.screenshots.map((screenshot) => screenshot.path),
           ),
           pages: captured.pages,
+          critiqueBrief: buildCritiqueBrief(captured.summary, findings, errors, reviewPages),
+          errors,
           findings,
-          critiqueBrief: buildCritiqueBrief(captured.summary, findings),
         };
 
         lastAudit = payload;
@@ -697,7 +803,10 @@ export function createFittingRoomServer(options: FittingRoomServerOptions = {}):
           throw new Error("Run fr_audit before regenerating variants.");
         }
 
-        const config = await loadScopes(projectRoot);
+        const config = await loadScopes(
+          projectRoot,
+          options.appUrl === undefined ? {} : { fallbackUrl: options.appUrl },
+        );
         const scope = findScope(config, scopeId);
 
         if (scope === undefined) {
@@ -957,6 +1066,7 @@ export function createFittingRoomServer(options: FittingRoomServerOptions = {}):
             id: finding.id ?? `judged-${randomUUID()}`,
             title: finding.title,
             citation: finding.citation,
+            ...(finding.related === undefined ? {} : { related: finding.related }),
             severity: finding.severity,
             confidence: finding.confidence,
             evidence: finding.evidence,

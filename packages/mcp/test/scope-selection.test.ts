@@ -35,7 +35,7 @@ let temporaryDirectory: string;
 
 beforeAll(async () => {
   fixture = await startFixtureServer(fixturePath("scope-app"));
-  temporaryDirectory = await mkdtemp(path.join(os.tmpdir(), "fitting-room-mcp-scopes-"));
+  temporaryDirectory = await mkdtemp(path.join(os.tmpdir(), "fittingroom-mcp-scopes-"));
   const projectRoot = path.join(temporaryDirectory, "scope-app");
 
   await cp(fixturePath("scope-app"), projectRoot, { recursive: true });
@@ -51,7 +51,7 @@ beforeAll(async () => {
     captureOutputDir: path.join(temporaryDirectory, "captures"),
     projectRoot,
   });
-  client = new Client({ name: "fitting-room-scope-test", version: "0.0.0" });
+  client = new Client({ name: "fittingroom-scope-test", version: "0.0.0" });
   const [clientTransport, serverTransport] = InMemoryTransport.createLinkedPair();
 
   await Promise.all([server.connect(serverTransport), client.connect(clientTransport)]);
@@ -116,7 +116,7 @@ describe("MCP scope selection", () => {
       projectRoot,
     });
     const clientWithoutDefault = new Client({
-      name: "fitting-room-no-default-test",
+      name: "fittingroom-no-default-test",
       version: "0.0.0",
     });
     const [clientTransport, serverTransport] = InMemoryTransport.createLinkedPair();
@@ -167,7 +167,9 @@ describe("MCP scope selection", () => {
     expect(capture.pages.map((page) => page.path)).toEqual(authPages);
     expect(capture.screenshots).toHaveLength(12);
 
-    const pageRequests = new Set(fixture.requests.filter((request) => request !== "/favicon.ico"));
+    const pageRequests = new Set(
+      fixture.requests.filter((request) => request !== "/favicon.ico" && request !== "/styles.css"),
+    );
 
     expect(pageRequests).toEqual(new Set(authPages));
   }, 120_000);

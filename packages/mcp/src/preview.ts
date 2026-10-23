@@ -313,13 +313,13 @@ export async function previewVariant(
   }
 
   try {
-    const findings = await runAutomatedChecks(previewUrl, {
+    const report = await runAutomatedChecks(previewUrl, {
       outputDir: path.join(outputRoot, "audit"),
     });
 
     return {
-      errors: [],
-      findings,
+      errors: report.errors.map((error) => `${error.check} on ${error.selector}. ${error.message}`),
+      findings: report.findings,
       previewUrl,
       reference,
       renderErrors,

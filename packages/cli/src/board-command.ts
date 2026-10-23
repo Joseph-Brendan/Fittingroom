@@ -1,6 +1,9 @@
-import { readFile } from "node:fs/promises";
 import path from "node:path";
 import {
+  findScope,
+  loadFittingRoomFile,
+  loadJsonFile,
+  loadScopes,
   type RefinedMode,
   type RegeneratedSlot,
   type RegenerationSession,
@@ -28,9 +31,76 @@ interface BoardFileState extends BoardState {
   previews?: Record<string, string>;
 }
 
+function isRecord(value: unknown): value is Record<string, unknown> {
+  return typeof value === "object" && value !== null && !Array.isArray(value);
+}
+
+function parseBoardFileState(value: unknown): BoardFileState {
+  if (!isRecord(value)) {
+    throw new Error("The board state must be an object.");
+  }
+
+  if (
+    !isRecord(value.scope) ||
+    typeof value.scope.id !== "string" ||
+    typeof value.scope.name !== "string"
+  ) {
+    throw new Error("The board state needs a scope with an id and name.");
+  }
+
+  if (!Array.isArray(value.variants)) {
+    throw new Error("The board state needs a variants array.");
+  }
+
+  if (!Array.isArray(value.findings)) {
+    throw new Error("The board state needs a findings array.");
+  }
+
+  if (value.previousRounds !== undefined && !Array.isArray(value.previousRounds)) {
+    throw new Error("The board state previousRounds must be an array.");
+  }
+
+  if (
+    value.scopes !== undefined &&
+    (!Array.isArray(value.scopes) ||
+      value.scopes.some(
+        (scope) =>
+          !isRecord(scope) || typeof scope.id !== "string" || typeof scope.name !== "string",
+      ))
+  ) {
+    throw new Error("The board state scopes must be an array of page groups.");
+  }
+
+  if (value.previews !== undefined && !isRecord(value.previews)) {
+    throw new Error("The board state previews must be an object.");
+  }
+
+  if (value.designSystem !== undefined && !isRecord(value.designSystem)) {
+    throw new Error("The board state designSystem must be an object.");
+  }
+
+  return value as unknown as BoardFileState;
+}
+
+function withBoardExtras(
+  state: BoardState,
+  extras: {
+    designSystem?: BoardState["designSystem"] | undefined;
+    scopes?: BoardState["scopes"] | undefined;
+  },
+): BoardState {
+  return {
+    ...state,
+    ...(extras.designSystem === undefined ? {} : { designSystem: extras.designSystem }),
+    ...(extras.scopes === undefined ? {} : { scopes: extras.scopes }),
+  };
+}
+
 export interface BoardCommandOptions {
+  appUrl?: string;
   output?: NodeJS.WritableStream;
   port?: number;
+  scope?: string;
   statePath?: string;
   token?: string;
 }
@@ -155,20 +225,74 @@ export async function runBoardCommand(
   options: BoardCommandOptions = {},
 ): Promise<RunningBoardServer> {
   const projectRoot = process.cwd();
-  const statePath = options.statePath ?? path.resolve(projectRoot, ".fittingroom", "board.json");
-  const raw = JSON.parse(await readFile(statePath, "utf8")) as BoardFileState;
-  const { previews, ...initialState } = raw;
+  const fallbackOptions = options.appUrl === undefined ? {} : { fallbackUrl: options.appUrl };
+  let config: Awaited<ReturnType<typeof loadScopes>> | undefined;
+  let requestedScope: { id: string; name: string } | undefined;
 
-  if (
-    typeof initialState.scope?.id !== "string" ||
-    !Array.isArray(initialState.variants) ||
-    !Array.isArray(initialState.findings)
-  ) {
-    throw new Error("Board state needs a scope, variants and findings.");
+  if (options.scope !== undefined) {
+    config = await loadScopes(projectRoot, fallbackOptions);
+
+    const found = findScope(config, options.scope);
+
+    if (found === undefined) {
+      throw new Error(`Unknown scope ${options.scope}. Run fitroom scopes to list groups.`);
+    }
+
+    requestedScope = { id: found.id, name: found.name };
   }
 
-  const initial = {
+  const loadConfig = async (): Promise<Awaited<ReturnType<typeof loadScopes>>> => {
+    if (config === undefined) {
+      config = await loadScopes(projectRoot, fallbackOptions);
+    }
+
+    return config;
+  };
+
+  const defaultBoardState = async (): Promise<BoardFileState> => {
+    const loaded = await loadConfig();
+    const selected =
+      options.scope === undefined ? loaded.scopes[0] : findScope(loaded, options.scope);
+
+    if (options.scope !== undefined && selected === undefined) {
+      throw new Error(`Unknown scope ${options.scope}. Run fitroom scopes to list groups.`);
+    }
+
+    if (selected === undefined) {
+      throw new Error("No page groups found. Add an app folder or run with --url.");
+    }
+
+    return {
+      scope: { id: selected.id, name: selected.name },
+      scopes: loaded.scopes.map((scope) => ({ id: scope.id, name: scope.name })),
+      variants: [],
+      findings: [],
+      previousRounds: [],
+    };
+  };
+
+  const raw =
+    options.statePath === undefined
+      ? await loadFittingRoomFile({
+          projectRoot,
+          fileName: "board.json",
+          schema: parseBoardFileState,
+          defaultValue: defaultBoardState,
+        })
+      : await loadJsonFile({
+          filePath: path.resolve(options.statePath),
+          schema: parseBoardFileState,
+          defaultValue: defaultBoardState,
+        });
+  const { previews, ...initialState } = raw;
+  const scopes = initialState.scopes ??
+    config?.scopes.map((scope) => ({ id: scope.id, name: scope.name })) ?? [
+      { id: initialState.scope.id, name: initialState.scope.name },
+    ];
+  const initial: BoardState = {
     ...initialState,
+    ...(requestedScope === undefined ? {} : { scope: requestedScope }),
+    scopes,
     previousRounds: initialState.previousRounds ?? [],
   };
   const history = await readRegenerationHistory(projectRoot);
@@ -178,7 +302,10 @@ export async function runBoardCommand(
 
   const output = options.output ?? process.stdout;
   const server = await startBoardServer({
-    state: stateFromSession(session, initial.findings),
+    state: withBoardExtras(stateFromSession(session, initial.findings), {
+      designSystem: initial.designSystem,
+      scopes: initial.scopes,
+    }),
     ...(previews === undefined ? {} : { previews }),
     ...(options.port === undefined ? {} : { port: options.port }),
     ...(options.token === undefined ? {} : { token: options.token }),
@@ -196,18 +323,28 @@ export async function runBoardCommand(
       history.scopes[session.scopeId] = session;
       await writeRegenerationHistory(projectRoot, history);
 
-      return stateFromSession(session, state.findings);
+      return withBoardExtras(stateFromSession(session, state.findings), {
+        designSystem: state.designSystem,
+        scopes: state.scopes,
+      });
     },
     pin: async ({ state, slot, pinned }) => {
       setSessionPinned(session, slot, pinned);
       history.scopes[session.scopeId] = session;
       await writeRegenerationHistory(projectRoot, history);
 
-      return stateFromSession(session, state.findings);
+      return withBoardExtras(stateFromSession(session, state.findings), {
+        designSystem: state.designSystem,
+        scopes: state.scopes,
+      });
     },
   });
 
   output.write(`Board ready: ${server.url}\n`);
+
+  if (options.appUrl !== undefined) {
+    output.write(`App URL: ${options.appUrl}\n`);
+  }
 
   return server;
 }

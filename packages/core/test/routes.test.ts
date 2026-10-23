@@ -1,8 +1,36 @@
-import { describe, expect, it } from "vitest";
+import { mkdir, mkdtemp, rm } from "node:fs/promises";
+import os from "node:os";
+import path from "node:path";
+import { afterAll, beforeAll, describe, expect, it } from "vitest";
 import { discoverRoutes, groupRoutes } from "../src/index";
-import { fixturePath } from "./helpers/fixture-server";
+import { type FixtureServer, fixturePath, startFixtureServer } from "./helpers/fixture-server";
 
 const projectRoot = fixturePath("bad-ui");
+const expectedRoutePaths = [
+  "/",
+  "/analytics",
+  "/checkout",
+  "/dashboard",
+  "/login",
+  "/onboarding",
+  "/pricing",
+  "/reports",
+  "/settings",
+  "/signup",
+];
+
+let badServer: FixtureServer;
+let temporaryDirectory: string;
+
+beforeAll(async () => {
+  badServer = await startFixtureServer(fixturePath("bad-ui"));
+  temporaryDirectory = await mkdtemp(path.join(os.tmpdir(), "fittingroom-routes-"));
+});
+
+afterAll(async () => {
+  await badServer.close();
+  await rm(temporaryDirectory, { force: true, recursive: true });
+});
 
 describe("Next.js App Router discovery", () => {
   it("lists pages and drops route group folders from URLs", async () => {
@@ -35,6 +63,36 @@ describe("Next.js App Router discovery", () => {
 
     expect(reports?.layouts).toContain("app/(app)/layout.tsx");
     expect(home?.layouts).toEqual(["app/layout.tsx", "app/(marketing)/layout.tsx"]);
+  });
+
+  it("gives good-ui and bad-ui the same route list", async () => {
+    const badRoutes = await discoverRoutes(fixturePath("bad-ui"));
+    const goodRoutes = await discoverRoutes(fixturePath("good-ui"));
+
+    expect(goodRoutes.map((route) => route.path)).toEqual(badRoutes.map((route) => route.path));
+  });
+
+  it("crawls same-origin links when there is no app folder", async () => {
+    const noAppRoot = path.join(temporaryDirectory, "no-app");
+
+    await mkdir(noAppRoot, { recursive: true });
+
+    const routes = await discoverRoutes(noAppRoot, { fallbackUrl: badServer.origin });
+
+    expect(routes.map((route) => route.path)).toEqual(expectedRoutePaths);
+  });
+
+  it("stops crawling at the page limit", async () => {
+    const noAppRoot = path.join(temporaryDirectory, "crawl-limit");
+
+    await mkdir(noAppRoot, { recursive: true });
+
+    const routes = await discoverRoutes(noAppRoot, {
+      fallbackUrl: badServer.origin,
+      maxPages: 3,
+    });
+
+    expect(routes).toHaveLength(3);
   });
 });
 

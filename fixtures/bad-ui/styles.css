@@ -1,0 +1,161 @@
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+:root {
+  color: #16181d;
+  background: #ffffff;
+  font-family: system-ui, sans-serif;
+}
+
+body {
+  margin: 0;
+}
+
+.page {
+  max-width: 720px;
+  margin: 0 auto;
+  padding: 48px 24px;
+}
+
+.page-with-banner {
+  padding-top: 120px;
+}
+
+h1 {
+  margin: 0 0 8px;
+  font-size: 1.75rem;
+}
+
+h2 {
+  margin: 0 0 8px;
+  font-size: 1.125rem;
+}
+
+p {
+  margin: 0 0 24px;
+}
+
+a,
+button {
+  font: inherit;
+}
+
+a:focus-visible,
+button:focus-visible,
+input:focus-visible {
+  outline: 3px solid #16181d;
+  outline-offset: 2px;
+}
+
+button,
+.button {
+  display: inline-block;
+  min-height: 44px;
+  border: 0;
+  border-radius: 6px;
+  padding: 12px 18px;
+  background: #0b57d0;
+  color: #ffffff;
+  font-weight: 600;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.danger {
+  background: #b3261e;
+}
+
+.sticky-banner {
+  position: fixed;
+  inset: 0 0 auto;
+  z-index: 10;
+  display: flex;
+  min-height: 84px;
+  align-items: center;
+  padding: 12px 24px;
+  background: #0b57d0;
+  color: #ffffff;
+}
+
+.focus-target {
+  position: absolute;
+  top: 16px;
+  left: 24px;
+  min-height: 44px;
+  border: 0;
+  border-radius: 6px;
+  padding: 12px 18px;
+  background: #ffffff;
+  color: #16181d;
+  font: inherit;
+}
+
+.helper {
+  color: #a9a9a9;
+}
+
+label {
+  display: block;
+  margin-bottom: 8px;
+  font-weight: 600;
+}
+
+input {
+  width: 100%;
+  min-height: 44px;
+  margin-bottom: 20px;
+  border: 1px solid #74777d;
+  border-radius: 6px;
+  padding: 8px 12px;
+  font: inherit;
+}
+
+.icon-button {
+  width: 18px;
+  height: 18px;
+  min-height: 0;
+  padding: 0;
+  border-radius: 3px;
+  font-size: 0.75rem;
+}
+
+.no-focus:focus,
+.no-focus:focus-visible {
+  outline: none;
+  box-shadow: none;
+}
+
+.wide-panel {
+  width: 480px;
+  margin-top: 24px;
+  border: 1px solid #74777d;
+  border-radius: 8px;
+  padding: 16px;
+  background: #f7f7f7;
+}
+
+.wide-panel p {
+  margin: 0;
+}
+
+.site-nav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 48px;
+  padding-top: 24px;
+  border-top: 1px solid #d7d7d7;
+}
+
+.site-nav a {
+  display: inline-block;
+  min-height: 24px;
+  padding: 8px 12px;
+  border-radius: 6px;
+  background: #eef1f5;
+  color: #16181d;
+  text-decoration: none;
+}

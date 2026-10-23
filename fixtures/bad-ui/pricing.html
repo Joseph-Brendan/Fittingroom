@@ -4,56 +4,30 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Pricing</title>
-    <style>
-      *,
-      *::before,
-      *::after {
-        box-sizing: border-box;
-      }
-
-      :root {
-        color: #16181d;
-        background: #ffffff;
-        font-family: system-ui, sans-serif;
-      }
-
-      body {
-        margin: 0;
-      }
-
-      main {
-        max-width: 720px;
-        margin: 0 auto;
-        padding: 48px 24px;
-      }
-
-      h1 {
-        margin: 0 0 8px;
-        font-size: 1.75rem;
-      }
-
-      p {
-        margin: 0 0 24px;
-        color: #5f6368;
-      }
-
-      a {
-        display: inline-block;
-        min-height: 44px;
-        border-radius: 6px;
-        padding: 12px 18px;
-        background: #0b57d0;
-        color: #ffffff;
-        font-weight: 600;
-        text-decoration: none;
-      }
-    </style>
+    <link rel="stylesheet" href="/styles.css" />
   </head>
   <body>
-    <main>
+    <main class="page">
       <h1>Simple pricing</h1>
       <p>One plan for every project. Cancel when you need to.</p>
-      <a href="/signup">Start a project</a>
+      <img
+        src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='80'%3E%3Crect width='120' height='80' fill='%23e8eef9'/%3E%3Ccircle cx='60' cy='40' r='24' fill='%230b57d0'/%3E%3C/svg%3E"
+        width="120"
+        height="80"
+      />
+      <p><a class="button" href="/signup">Start a project</a></p>
+      <nav class="site-nav" aria-label="Pages">
+        <a href="/">Home</a>
+        <a href="/pricing">Pricing</a>
+        <a href="/login">Log in</a>
+        <a href="/signup">Sign up</a>
+        <a href="/onboarding">Onboarding</a>
+        <a href="/dashboard">Dashboard</a>
+        <a href="/analytics">Analytics</a>
+        <a href="/reports">Reports</a>
+        <a href="/settings">Settings</a>
+        <a href="/checkout">Checkout</a>
+      </nav>
     </main>
   </body>
 </html>

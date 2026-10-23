@@ -54,6 +54,8 @@ export function App({ initialState, token: tokenProp }: AppProps) {
   const [refinedMode, setRefinedMode] = useState<"light" | "deep">("light");
   const [boardBusy, setBoardBusy] = useState(false);
   const [boardError, setBoardError] = useState("");
+  const [selectedScopeId, setSelectedScopeId] = useState("");
+  const [emptyMessage, setEmptyMessage] = useState("");
   const [selected, setSelected] = useState<SelectedPreviewElement | null>(null);
   const [activeSlug, setActiveSlug] = useState<string | null>(null);
   const [previewVersion, setPreviewVersion] = useState(0);
@@ -242,7 +244,7 @@ export function App({ initialState, token: tokenProp }: AppProps) {
       };
 
       if (
-        data.type !== "fitting-room:select" ||
+        data.type !== "fittingroom:select" ||
         typeof data.slug !== "string" ||
         typeof data.id !== "string"
       ) {
@@ -316,6 +318,72 @@ export function App({ initialState, token: tokenProp }: AppProps) {
   }
 
   const groupedFindings = groupFindings(state.findings);
+  const scopes = state.scopes ?? [{ id: state.scope.id, name: state.scope.name }];
+  const selectedScope =
+    scopes.find((scope) => scope.id === selectedScopeId) ??
+    scopes.find((scope) => scope.id === state.scope.id) ??
+    scopes[0] ??
+    state.scope;
+  const scopePicker = (
+    <label className="scope-picker">
+      Page group
+      <select
+        aria-label="Page group"
+        onChange={(event) => {
+          setSelectedScopeId(event.target.value);
+          setEmptyMessage("");
+        }}
+        value={selectedScope.id}
+      >
+        {scopes.map((scope) => (
+          <option key={scope.id} value={scope.id}>
+            {scope.name}
+          </option>
+        ))}
+      </select>
+    </label>
+  );
+
+  if (state.variants.length === 0) {
+    return (
+      <div className="board-shell">
+        <header className="board-header">
+          <div>
+            <p className="eyebrow">Design board</p>
+            <h1>Fitting Room</h1>
+            {scopePicker}
+          </div>
+        </header>
+
+        <div className="design-system-banner" data-status={state.designSystem?.status ?? "none"}>
+          {designSystemBanner(state)}
+        </div>
+
+        <main className="comparison">
+          <section className="empty-board">
+            <p className="empty-title">No directions yet.</p>
+            <p>Run an audit and generate directions, or click Generate directions.</p>
+            <button
+              onClick={() => {
+                setEmptyMessage(
+                  `Use fitting-room to generate 4 directions for ${selectedScope.name} and open the board.`,
+                );
+              }}
+              type="button"
+            >
+              Generate directions
+            </button>
+            {emptyMessage === "" ? null : (
+              <>
+                <p role="status">This board cannot generate directions on its own.</p>
+                <p role="status">{emptyMessage}</p>
+              </>
+            )}
+          </section>
+        </main>
+      </div>
+    );
+  }
 
   return (
     <div className="board-shell">

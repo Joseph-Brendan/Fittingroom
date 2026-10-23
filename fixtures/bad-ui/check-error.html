@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Check errors</title>
+    <style>
+      body {
+        margin: 0;
+        padding: 24px;
+        font-family: system-ui, sans-serif;
+      }
+
+      .helper {
+        color: #a9a9a9;
+      }
+
+      .icon-button {
+        width: 18px;
+        height: 18px;
+        min-height: 0;
+        padding: 0;
+        border: 0;
+      }
+
+      .wide-panel {
+        width: 480px;
+        border: 1px solid #74777d;
+        padding: 16px;
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <p class="helper" role="status">Low contrast helper text.</p>
+      <details>
+        <summary></summary>
+        <p>Details body.</p>
+      </details>
+      <button class="icon-button" type="button" aria-label="Save item">S</button>
+      <section class="wide-panel">
+        <p>Wide panel.</p>
+      </section>
+    </main>
+  </body>
+</html>

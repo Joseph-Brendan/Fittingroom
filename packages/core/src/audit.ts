@@ -16,6 +16,7 @@ export interface Finding {
   id: string;
   title: string;
   citation: string;
+  related?: string[];
   severity: Severity;
   confidence: FindingConfidence;
   evidence: FindingEvidence;
@@ -26,8 +27,19 @@ export interface AuditOptions {
   outputDir?: string;
 }
 
+export interface AuditCheckError {
+  check: string;
+  message: string;
+  selector: string;
+}
+
+export interface AuditReport {
+  errors: AuditCheckError[];
+  findings: Finding[];
+}
+
 interface AxeCheckResult {
-  data: Record<string, unknown>;
+  data: unknown;
   id: string;
   impact?: string | null;
   message: string;
@@ -53,6 +65,7 @@ interface AxeViolation {
 }
 
 interface AxeResults {
+  incomplete: AxeViolation[];
   violations: AxeViolation[];
 }
 
@@ -69,8 +82,20 @@ interface FocusIssue {
   visiblePoints: number;
 }
 
+interface FocusIndicatorIssue {
+  selector: string;
+}
+
+interface ViewportCheckError {
+  check: string;
+  message: string;
+  selector: string;
+}
+
 interface CustomIssues {
+  errors: ViewportCheckError[];
   focus: FocusIssue[];
+  focusIndicators: FocusIndicatorIssue[];
   targetSizes: TargetSizeIssue[];
 }
 
@@ -184,10 +209,26 @@ function axeTargetSelector(target: unknown): string {
   return "html";
 }
 
+function isRecord(value: unknown): value is Record<string, unknown> {
+  return typeof value === "object" && value !== null && !Array.isArray(value);
+}
+
+function safeAxeTargetSelector(target: unknown): string {
+  try {
+    return axeTargetSelector(target);
+  } catch {
+    return "unknown";
+  }
+}
+
+function errorMessage(error: unknown): string {
+  return error instanceof Error ? error.message : "Unknown check error.";
+}
+
 function axeMeasuredValue(violation: AxeViolation, node: AxeNodeResult): string {
   const data = node.any[0]?.data;
 
-  if (data !== undefined && typeof data.contrastRatio === "number") {
+  if (isRecord(data) && typeof data.contrastRatio === "number") {
     const expected =
       typeof data.expectedContrastRatio === "string" ? data.expectedContrastRatio : "4.5:1";
 
@@ -201,12 +242,88 @@ function axeMeasuredValue(violation: AxeViolation, node: AxeNodeResult): string 
   return `${violation.help} (${violation.id})`;
 }
 
+const relatedCitationGroups: readonly (readonly string[])[] = [["wcag22-3.3.2", "wcag22-4.1.2"]];
+
+function citationProblemKey(citation: string): string {
+  const group = relatedCitationGroups.find((ids) => ids.includes(citation));
+
+  return group?.[0] ?? citation;
+}
+
+export function mergeFindings(findings: readonly Finding[]): Finding[] {
+  const groups = new Map<string, Finding[]>();
+
+  for (const finding of findings) {
+    const key = `${finding.evidence.selector}\u0000${citationProblemKey(finding.citation)}`;
+    const group = groups.get(key);
+
+    if (group === undefined) {
+      groups.set(key, [finding]);
+      continue;
+    }
+
+    group.push(finding);
+  }
+
+  const merged: Finding[] = [];
+
+  for (const group of groups.values()) {
+    if (group.length === 1) {
+      const finding = group[0];
+
+      if (finding !== undefined) {
+        merged.push(finding);
+      }
+
+      continue;
+    }
+
+    const citationGroup = relatedCitationGroups.find((ids) =>
+      group.some((finding) => ids.includes(finding.citation)),
+    );
+
+    if (citationGroup === undefined) {
+      merged.push(...group);
+      continue;
+    }
+
+    const primary = group.find((finding) => finding.citation === citationGroup[0]) ?? group[0];
+
+    if (primary === undefined) {
+      continue;
+    }
+
+    const related = [
+      ...new Set([...(primary.related ?? []), ...group.map((finding) => finding.citation)]),
+    ].filter((citation) => citation !== primary.citation);
+    let severity = primary.severity;
+
+    for (const finding of group) {
+      if (finding.severity > severity) {
+        severity = finding.severity;
+      }
+    }
+
+    merged.push({
+      ...primary,
+      severity,
+      ...(related.length === 0 ? {} : { related }),
+    });
+  }
+
+  return merged;
+}
+
 function axeFix(citation: string): string {
   switch (citation) {
     case "wcag22-1.4.3":
       return "Use a text color and background pair that meet the 4.5:1 contrast minimum.";
     case "wcag22-1.4.4":
       return "Keep browser zoom enabled and let text grow without clipping.";
+    case "wcag22-3.3.2":
+      return "Add a visible label or clear instructions to the field.";
+    case "wcag22-4.1.2":
+      return "Give the field a visible label or an accessible name.";
     default:
       return "Update the flagged element so it meets the cited requirement.";
   }
@@ -277,6 +394,18 @@ async function runViewportChecks(page: Page): Promise<CustomIssues> {
       return tag;
     };
 
+    const safeSelectorFor = (element: Element): string => {
+      try {
+        return selectorFor(element);
+      } catch {
+        return element.tagName.toLowerCase();
+      }
+    };
+
+    const messageFor = (error: unknown): string => {
+      return error instanceof Error ? error.message : "Unknown check error.";
+    };
+
     const isVisible = (element: HTMLElement): boolean => {
       const rect = element.getBoundingClientRect();
       const style = window.getComputedStyle(element);
@@ -290,24 +419,67 @@ async function runViewportChecks(page: Page): Promise<CustomIssues> {
       );
     };
 
-    const elements = Array.from(document.querySelectorAll<HTMLElement>(interactiveSelector)).filter(
-      isVisible,
-    );
+    const focusStyle = (element: HTMLElement): string => {
+      const style = window.getComputedStyle(element);
+
+      return [
+        "background-color",
+        "border-top-color",
+        "border-right-color",
+        "border-bottom-color",
+        "border-left-color",
+        "box-shadow",
+        "color",
+        "outline-color",
+        "outline-style",
+        "outline-width",
+        "text-decoration-line",
+      ]
+        .map((property) => `${property}:${style.getPropertyValue(property)}`)
+        .join("|");
+    };
+
+    const errors: ViewportCheckError[] = [];
+    const elements: HTMLElement[] = [];
+
+    for (const element of Array.from(document.querySelectorAll<HTMLElement>(interactiveSelector))) {
+      try {
+        if (isVisible(element)) {
+          elements.push(element);
+        }
+      } catch (error) {
+        errors.push({
+          check: "visibility",
+          selector: safeSelectorFor(element),
+          message: messageFor(error),
+        });
+      }
+    }
+
     const targetSizes: TargetSizeIssue[] = [];
 
     for (const element of elements) {
-      const rect = element.getBoundingClientRect();
+      try {
+        const rect = element.getBoundingClientRect();
 
-      if (rect.width < 24 || rect.height < 24) {
-        targetSizes.push({
-          selector: selectorFor(element),
-          width: Math.round(rect.width * 100) / 100,
-          height: Math.round(rect.height * 100) / 100,
+        if (rect.width < 24 || rect.height < 24) {
+          targetSizes.push({
+            selector: selectorFor(element),
+            width: Math.round(rect.width * 100) / 100,
+            height: Math.round(rect.height * 100) / 100,
+          });
+        }
+      } catch (error) {
+        errors.push({
+          check: "target-size",
+          selector: safeSelectorFor(element),
+          message: messageFor(error),
         });
       }
     }
 
     const focus: FocusIssue[] = [];
+    const focusIndicators: FocusIndicatorIssue[] = [];
     const pointRatios = [
       [0.5, 0.5],
       [0.2, 0.2],
@@ -317,54 +489,74 @@ async function runViewportChecks(page: Page): Promise<CustomIssues> {
     ];
 
     for (const element of elements) {
-      element.focus();
+      try {
+        if (document.activeElement instanceof HTMLElement) {
+          document.activeElement.blur();
+        }
 
-      await new Promise<void>((resolve) => {
-        requestAnimationFrame(() => resolve());
-      });
+        const beforeFocus = focusStyle(element);
 
-      if (document.activeElement !== element) {
-        continue;
-      }
+        element.focus();
 
-      const rect = element.getBoundingClientRect();
-      let pointsInViewport = 0;
-      let visiblePoints = 0;
-      let coveredBy = "";
+        await new Promise<void>((resolve) => {
+          requestAnimationFrame(() => resolve());
+        });
 
-      for (const [xRatio, yRatio] of pointRatios) {
-        if (xRatio === undefined || yRatio === undefined) {
+        if (document.activeElement !== element) {
           continue;
         }
 
-        const x = rect.left + rect.width * xRatio;
-        const y = rect.top + rect.height * yRatio;
-
-        if (x < 0 || x > window.innerWidth || y < 0 || y > window.innerHeight) {
-          continue;
+        if (element.matches(":focus-visible") && beforeFocus === focusStyle(element)) {
+          focusIndicators.push({ selector: selectorFor(element) });
         }
 
-        pointsInViewport += 1;
-        const hit = document.elementFromPoint(x, y);
+        const rect = element.getBoundingClientRect();
+        let pointsInViewport = 0;
+        let visiblePoints = 0;
+        let coveredBy = "";
 
-        if (hit !== null && (hit === element || element.contains(hit))) {
-          visiblePoints += 1;
-        } else if (hit !== null && coveredBy === "") {
-          coveredBy = selectorFor(hit);
+        for (const [xRatio, yRatio] of pointRatios) {
+          if (xRatio === undefined || yRatio === undefined) {
+            continue;
+          }
+
+          const x = rect.left + rect.width * xRatio;
+          const y = rect.top + rect.height * yRatio;
+
+          if (x < 0 || x > window.innerWidth || y < 0 || y > window.innerHeight) {
+            continue;
+          }
+
+          pointsInViewport += 1;
+          const hit = document.elementFromPoint(x, y);
+
+          if (hit !== null && (hit === element || element.contains(hit))) {
+            visiblePoints += 1;
+          } else if (hit !== null && coveredBy === "") {
+            coveredBy = selectorFor(hit);
+          }
         }
-      }
 
-      if (pointsInViewport > 0 && visiblePoints === 0) {
-        focus.push({
-          selector: selectorFor(element),
-          coveredBy,
-          samplePoints: pointsInViewport,
-          visiblePoints,
+        if (pointsInViewport > 0 && visiblePoints === 0) {
+          focus.push({
+            selector: selectorFor(element),
+            coveredBy,
+            samplePoints: pointsInViewport,
+            visiblePoints,
+          });
+        }
+
+        element.blur();
+      } catch (error) {
+        errors.push({
+          check: "focus",
+          selector: safeSelectorFor(element),
+          message: messageFor(error),
         });
       }
     }
 
-    return { focus, targetSizes };
+    return { errors, focus, focusIndicators, targetSizes };
   });
 }
 
@@ -448,11 +640,16 @@ async function saveCrop(
 export async function runAutomatedChecks(
   url: string,
   options: AuditOptions = {},
-): Promise<Finding[]> {
+): Promise<AuditReport> {
   const outputDir = options.outputDir ?? defaultOutputDir();
+  const errors: AuditCheckError[] = [];
   const findings: Finding[] = [];
 
   await mkdir(outputDir, { recursive: true });
+
+  const recordError = (check: string, selector: string, error: unknown): void => {
+    errors.push({ check, selector, message: errorMessage(error) });
+  };
 
   const browser = await chromium.launch({ headless: true });
 
@@ -461,113 +658,245 @@ export async function runAutomatedChecks(
     const page = await context.newPage();
 
     try {
-      await page.goto(url, { waitUntil: "load" });
+      try {
+        await page.goto(url, { waitUntil: "load" });
+      } catch (error) {
+        recordError("page-load", "document", error);
+        return { errors, findings };
+      }
 
-      const axeResults = await runAxe(page);
+      let axeResults: AxeResults | null = null;
 
-      for (const violation of axeResults.violations) {
-        const citation = axeRuleCitations[violation.id];
+      try {
+        axeResults = await runAxe(page);
+      } catch (error) {
+        recordError("axe", "document", error);
+      }
 
-        if (citation === undefined) {
-          throw new Error(`No citation registered for axe rule ${violation.id}.`);
+      if (axeResults !== null) {
+        const measuredContrastSelectors = new Set<string>();
+
+        for (const violation of axeResults.violations) {
+          for (const node of violation.nodes) {
+            const selector = safeAxeTargetSelector(node.target);
+
+            try {
+              const citation = axeRuleCitations[violation.id];
+
+              if (citation === undefined) {
+                throw new Error(`No citation registered for axe rule ${violation.id}.`);
+              }
+
+              if (citation === "wcag22-1.4.3") {
+                measuredContrastSelectors.add(selector);
+              }
+
+              const citations = violation.id === "label" ? [citation, "wcag22-4.1.2"] : [citation];
+
+              for (const findingCitation of citations) {
+                const index = findings.length + 1;
+                const screenshotPath = await saveCrop(
+                  page,
+                  selector,
+                  outputDir,
+                  index,
+                  findingCitation,
+                );
+                const isNameFinding = findingCitation === "wcag22-4.1.2";
+
+                findings.push({
+                  id: isNameFinding ? `axe-label-name-${index}` : `axe-${violation.id}-${index}`,
+                  title: isNameFinding ? "Form field has no accessible name" : violation.help,
+                  citation: findingCitation,
+                  severity: isNameFinding ? 3 : severityFromImpact(violation.impact),
+                  confidence: "measured",
+                  evidence: {
+                    selector,
+                    screenshotPath,
+                    measuredValue: axeMeasuredValue(violation, node),
+                  },
+                  fix: axeFix(findingCitation),
+                });
+              }
+            } catch (error) {
+              recordError(`axe:${violation.id}`, selector, error);
+            }
+          }
         }
 
-        for (const node of violation.nodes) {
-          const selector = axeTargetSelector(node.target);
-          const index = findings.length + 1;
-          const screenshotPath = await saveCrop(page, selector, outputDir, index, citation);
+        for (const violation of axeResults.incomplete) {
+          if (violation.id !== "color-contrast") {
+            continue;
+          }
 
-          findings.push({
-            id: `axe-${violation.id}-${index}`,
-            title: violation.help,
-            citation,
-            severity: severityFromImpact(violation.impact),
-            confidence: "measured",
-            evidence: {
-              selector,
-              screenshotPath,
-              measuredValue: axeMeasuredValue(violation, node),
-            },
-            fix: axeFix(citation),
-          });
+          for (const node of violation.nodes) {
+            const selector = safeAxeTargetSelector(node.target);
+
+            if (measuredContrastSelectors.has(selector)) {
+              continue;
+            }
+
+            try {
+              const index = findings.length + 1;
+              const screenshotPath = await saveCrop(
+                page,
+                selector,
+                outputDir,
+                index,
+                "wcag22-1.4.3",
+              );
+              const message = node.any[0]?.message;
+              const measuredValue =
+                message === undefined || message.trim() === ""
+                  ? "Contrast could not be measured."
+                  : `Contrast could not be measured: ${message}`;
+
+              findings.push({
+                id: `contrast-unmeasured-${index}`,
+                title: "Contrast could not be measured, check by eye",
+                citation: "wcag22-1.4.3",
+                severity: 2,
+                confidence: "judged",
+                evidence: {
+                  selector,
+                  screenshotPath,
+                  measuredValue,
+                },
+                fix: "Check the text against its background by eye, then use colors that meet the 4.5:1 contrast minimum.",
+              });
+            } catch (error) {
+              recordError("axe:color-contrast", selector, error);
+            }
+          }
         }
       }
 
-      const viewportIssues = await runViewportChecks(page);
+      let viewportIssues: CustomIssues | null = null;
 
-      for (const issue of viewportIssues.targetSizes) {
-        const citation = "wcag22-2.5.8";
-        const index = findings.length + 1;
-        const screenshotPath = await saveCrop(page, issue.selector, outputDir, index, citation);
-
-        findings.push({
-          id: `target-size-${index}`,
-          title: "Target is smaller than 24 by 24 CSS pixels",
-          citation,
-          severity: 2,
-          confidence: "measured",
-          evidence: {
-            selector: issue.selector,
-            screenshotPath,
-            measuredValue: `${issue.width} x ${issue.height} CSS pixels (minimum 24 x 24)`,
-          },
-          fix: "Make the control at least 24 by 24 CSS pixels, or add enough spacing around it.",
-        });
+      try {
+        viewportIssues = await runViewportChecks(page);
+      } catch (error) {
+        recordError("viewport", "document", error);
       }
 
-      for (const issue of viewportIssues.focus) {
-        const citation = "wcag22-2.4.11";
-        const index = findings.length + 1;
-        const screenshotPath = await saveCrop(page, issue.selector, outputDir, index, citation);
-        const cover = issue.coveredBy === "" ? "page content" : issue.coveredBy;
+      if (viewportIssues !== null) {
+        errors.push(...viewportIssues.errors);
 
-        findings.push({
-          id: `focus-obscured-${index}`,
-          title: "Focused control is hidden by page content",
-          citation,
-          severity: 3,
-          confidence: "measured",
-          evidence: {
-            selector: issue.selector,
-            screenshotPath,
-            measuredValue: `${issue.visiblePoints} of ${issue.samplePoints} sample points visible, covered by ${cover}`,
-          },
-          fix: "Move or resize the covering content so the focused control stays visible.",
-        });
+        for (const issue of viewportIssues.targetSizes) {
+          try {
+            const citation = "wcag22-2.5.8";
+            const index = findings.length + 1;
+            const screenshotPath = await saveCrop(page, issue.selector, outputDir, index, citation);
+
+            findings.push({
+              id: `target-size-${index}`,
+              title: "Target is smaller than 24 by 24 CSS pixels",
+              citation,
+              severity: 2,
+              confidence: "measured",
+              evidence: {
+                selector: issue.selector,
+                screenshotPath,
+                measuredValue: `${issue.width} x ${issue.height} CSS pixels (minimum 24 x 24)`,
+              },
+              fix: "Make the control at least 24 by 24 CSS pixels, or add enough spacing around it.",
+            });
+          } catch (error) {
+            recordError("target-size", issue.selector, error);
+          }
+        }
+
+        for (const issue of viewportIssues.focus) {
+          try {
+            const citation = "wcag22-2.4.11";
+            const index = findings.length + 1;
+            const screenshotPath = await saveCrop(page, issue.selector, outputDir, index, citation);
+            const cover = issue.coveredBy === "" ? "page content" : issue.coveredBy;
+
+            findings.push({
+              id: `focus-obscured-${index}`,
+              title: "Focused control is hidden by page content",
+              citation,
+              severity: 3,
+              confidence: "measured",
+              evidence: {
+                selector: issue.selector,
+                screenshotPath,
+                measuredValue: `${issue.visiblePoints} of ${issue.samplePoints} sample points visible, covered by ${cover}`,
+              },
+              fix: "Move or resize the covering content so the focused control stays visible.",
+            });
+          } catch (error) {
+            recordError("focus", issue.selector, error);
+          }
+        }
+
+        for (const issue of viewportIssues.focusIndicators) {
+          try {
+            const citation = "wcag22-2.4.7";
+            const index = findings.length + 1;
+            const screenshotPath = await saveCrop(page, issue.selector, outputDir, index, citation);
+
+            findings.push({
+              id: `focus-visible-${index}`,
+              title: "Focused control has no visible focus indicator",
+              citation,
+              severity: 3,
+              confidence: "measured",
+              evidence: {
+                selector: issue.selector,
+                screenshotPath,
+                measuredValue:
+                  "no visible change to outline, border, background or text when focused",
+              },
+              fix: "Add a visible focus style such as an outline, ring or border.",
+            });
+          } catch (error) {
+            recordError("focus-visible", issue.selector, error);
+          }
+        }
       }
 
-      await page.setViewportSize({ width: 320, height: 900 });
-      await page.goto(url, { waitUntil: "load" });
+      try {
+        await page.setViewportSize({ width: 320, height: 900 });
+        await page.goto(url, { waitUntil: "load" });
 
-      const reflowIssue = await runReflowCheck(page);
+        const reflowIssue = await runReflowCheck(page);
 
-      if (reflowIssue !== null) {
-        const citation = "wcag22-1.4.10";
-        const index = findings.length + 1;
-        const screenshotPath = await saveCrop(
-          page,
-          reflowIssue.selector,
-          outputDir,
-          index,
-          citation,
-        );
+        if (reflowIssue !== null) {
+          try {
+            const citation = "wcag22-1.4.10";
+            const index = findings.length + 1;
+            const screenshotPath = await saveCrop(
+              page,
+              reflowIssue.selector,
+              outputDir,
+              index,
+              citation,
+            );
 
-        findings.push({
-          id: `reflow-${index}`,
-          title: "Page overflows at 320 CSS pixels",
-          citation,
-          severity: 2,
-          confidence: "measured",
-          evidence: {
-            selector: reflowIssue.selector,
-            screenshotPath,
-            measuredValue: `document width ${reflowIssue.scrollWidth} CSS pixels at a ${reflowIssue.viewportWidth} CSS pixel viewport`,
-          },
-          fix: "Let the content wrap or shrink so the page fits a 320 CSS pixel viewport.",
-        });
+            findings.push({
+              id: `reflow-${index}`,
+              title: "Page overflows at 320 CSS pixels",
+              citation,
+              severity: 2,
+              confidence: "measured",
+              evidence: {
+                selector: reflowIssue.selector,
+                screenshotPath,
+                measuredValue: `document width ${reflowIssue.scrollWidth} CSS pixels at a ${reflowIssue.viewportWidth} CSS pixel viewport`,
+              },
+              fix: "Let the content wrap or shrink so the page fits a 320 CSS pixel viewport.",
+            });
+          } catch (error) {
+            recordError("reflow", reflowIssue.selector, error);
+          }
+        }
+      } catch (error) {
+        recordError("reflow", "document", error);
       }
 
-      return findings;
+      return { errors, findings: mergeFindings(findings) };
     } finally {
       await context.close();
     }

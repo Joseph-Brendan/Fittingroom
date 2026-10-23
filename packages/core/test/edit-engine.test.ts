@@ -1,4 +1,4 @@
-import { cp, mkdtemp, readFile, rm } from "node:fs/promises";
+import { cp, mkdir, mkdtemp, readFile, rm, writeFile } from "node:fs/promises";
 import os from "node:os";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
@@ -55,7 +55,7 @@ const operationCases: Array<{ name: string; operation: EditOperation }> = [
 let temporaryDirectory: string;
 
 beforeAll(async () => {
-  temporaryDirectory = await mkdtemp(path.join(os.tmpdir(), "fitting-room-edits-"));
+  temporaryDirectory = await mkdtemp(path.join(os.tmpdir(), "fittingroom-edits-"));
 });
 
 afterAll(async () => {
@@ -152,5 +152,56 @@ describe("edit engine logging and undo", () => {
 
     expect(edited).toBe(expected);
     expect(Object.values(log.files)[0]?.edits).toHaveLength(1);
+  });
+});
+
+describe("edit engine state files", () => {
+  it("creates tokens.json and edits.json when .fittingroom is missing", async () => {
+    const projectRoot = path.join(temporaryDirectory, "missing-state");
+    const filePath = path.join(projectRoot, "variant.tsx");
+
+    await cp(path.join(fixtureRoot, "set-text", "before.tsx"), filePath);
+
+    await applyEdit(filePath, { op: "set-text", id: "title", text: "New title" }, { projectRoot });
+
+    const tokensFile = JSON.parse(
+      await readFile(path.join(projectRoot, ".fittingroom", "tokens.json"), "utf8"),
+    ) as { tokens?: { color?: Record<string, string> } };
+    const log = JSON.parse(
+      await readFile(path.join(projectRoot, ".fittingroom", "edits.json"), "utf8"),
+    ) as { version?: number; files?: Record<string, unknown> };
+
+    expect(tokensFile.tokens?.color).toEqual({});
+    expect(log.version).toBe(1);
+    expect(log.files).toBeDefined();
+  });
+
+  it("gives a plain error for corrupt tokens.json", async () => {
+    const projectRoot = path.join(temporaryDirectory, "corrupt-tokens");
+    const filePath = path.join(projectRoot, "variant.tsx");
+
+    await cp(path.join(fixtureRoot, "set-text", "before.tsx"), filePath);
+    await mkdir(path.join(projectRoot, ".fittingroom"), { recursive: true });
+    await writeFile(path.join(projectRoot, ".fittingroom", "tokens.json"), '{"tokens": ');
+
+    await expect(
+      applyEdit(filePath, { op: "set-text", id: "title", text: "New title" }, { projectRoot }),
+    ).rejects.toThrow(/tokens\.json.*not valid JSON.*Fix the file or delete it/);
+  });
+
+  it("gives a plain error for corrupt edits.json", async () => {
+    const projectRoot = path.join(temporaryDirectory, "corrupt-edits");
+    const filePath = path.join(projectRoot, "variant.tsx");
+
+    await cp(path.join(fixtureRoot, "set-text", "before.tsx"), filePath);
+    await mkdir(path.join(projectRoot, ".fittingroom"), { recursive: true });
+    await writeFile(
+      path.join(projectRoot, ".fittingroom", "edits.json"),
+      '{"version": 1, "files": ',
+    );
+
+    await expect(
+      applyEdit(filePath, { op: "set-text", id: "title", text: "New title" }, { projectRoot }),
+    ).rejects.toThrow(/edits\.json.*not valid JSON.*Fix the file or delete it/);
   });
 });

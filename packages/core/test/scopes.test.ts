@@ -1,4 +1,4 @@
-import { cp, mkdtemp, readFile, rm, utimes } from "node:fs/promises";
+import { cp, mkdir, mkdtemp, readFile, rm, utimes, writeFile } from "node:fs/promises";
 import os from "node:os";
 import path from "node:path";
 import { afterAll, beforeAll, describe, expect, it } from "vitest";
@@ -21,7 +21,7 @@ let temporaryDirectory: string;
 let projectRoot: string;
 
 beforeAll(async () => {
-  temporaryDirectory = await mkdtemp(path.join(os.tmpdir(), "fitting-room-scopes-"));
+  temporaryDirectory = await mkdtemp(path.join(os.tmpdir(), "fittingroom-scopes-"));
   projectRoot = path.join(temporaryDirectory, "scope-app");
 
   await cp(scopeFixture, projectRoot, { recursive: true });
@@ -33,7 +33,7 @@ afterAll(async () => {
 
 describe("scope definitions", () => {
   it("builds five default scopes from the 14-route fixture", async () => {
-    const config = await loadScopes(scopeFixture);
+    const config = await loadScopes(projectRoot);
     const auth = config.scopes.find((scope) => scope.id === "auth");
 
     expect(config.scopes).toHaveLength(5);
@@ -91,7 +91,11 @@ describe("scope definitions", () => {
 
 describe("default scope selection", () => {
   it("prefers the dev server request over the last edited route", async () => {
-    const config = await loadScopes(scopeFixture);
+    const selectionRoot = path.join(temporaryDirectory, "scope-default-config");
+
+    await cp(scopeFixture, selectionRoot, { recursive: true });
+
+    const config = await loadScopes(selectionRoot);
     const fromRequest = resolveDefaultScope(config, {
       lastRequestedRoute: "/login",
       lastEditedRoute: "/settings/security",
@@ -114,7 +118,7 @@ describe("default scope selection", () => {
     expect(resolveDefaultScope(config, {})).toBeNull();
   });
 
-  it("reads the tracked dev request and newest edited route", async () => {
+  it("reads the tracked dev request and uses an explicit last edited route", async () => {
     const isolatedRoot = path.join(temporaryDirectory, "scope-defaults");
 
     await cp(scopeFixture, isolatedRoot, { recursive: true });
@@ -134,16 +138,82 @@ describe("default scope selection", () => {
 
     await utimes(path.join(isolatedRoot, verifyFile), newer, newer);
 
+    const lastEditedRoute = await findLastEditedRoute(isolatedRoot, routes);
+
     expect(await readDevServerLastRequest(isolatedRoot)).toBe("/login");
-    expect(await findLastEditedRoute(isolatedRoot, routes)).toBe("/verify");
+    expect(lastEditedRoute).toBe("/verify");
     expect(
       await detectDefaultScope(isolatedRoot, config, routes, {
         lastRequestedRoute: null,
+        lastEditedRoute,
       }),
     ).toMatchObject({
       route: "/verify",
       source: "last-edited",
       scope: { id: "auth" },
     });
+    expect(
+      await detectDefaultScope(isolatedRoot, config, routes, {
+        lastRequestedRoute: null,
+      }),
+    ).toBeNull();
+  });
+});
+
+describe("scope state files", () => {
+  it("creates scopes.json with valid defaults when it is missing", async () => {
+    const root = path.join(temporaryDirectory, "missing-scopes");
+
+    await cp(scopeFixture, root, { recursive: true });
+    await rm(path.join(root, ".fittingroom"), { force: true, recursive: true });
+
+    const config = await loadScopes(root);
+    const filePath = path.join(root, ".fittingroom", "scopes.json");
+
+    expect(config.scopes).toHaveLength(5);
+    expect(JSON.parse(await readFile(filePath, "utf8"))).toEqual(config);
+  });
+
+  it("does not overwrite an existing scopes.json", async () => {
+    const root = path.join(temporaryDirectory, "existing-scopes");
+    const existing = {
+      version: 1,
+      scopes: [{ id: "custom", name: "Custom", routes: ["/"] }],
+    };
+
+    await cp(scopeFixture, root, { recursive: true });
+    await mkdir(path.join(root, ".fittingroom"), { recursive: true });
+    await writeFile(
+      path.join(root, ".fittingroom", "scopes.json"),
+      `${JSON.stringify(existing, null, 2)}\n`,
+    );
+
+    expect(await loadScopes(root)).toEqual(existing);
+    expect(
+      JSON.parse(await readFile(path.join(root, ".fittingroom", "scopes.json"), "utf8")),
+    ).toEqual(existing);
+  });
+
+  it("creates last-request.json with a null path when it is missing", async () => {
+    const root = path.join(temporaryDirectory, "missing-last-request");
+
+    await mkdir(root, { recursive: true });
+
+    expect(await readDevServerLastRequest(root)).toBeNull();
+    expect(
+      JSON.parse(await readFile(path.join(root, ".fittingroom", "last-request.json"), "utf8")),
+    ).toEqual({ path: null });
+  });
+
+  it("gives a plain error for corrupt scopes.json", async () => {
+    const root = path.join(temporaryDirectory, "corrupt-scopes");
+
+    await cp(scopeFixture, root, { recursive: true });
+    await mkdir(path.join(root, ".fittingroom"), { recursive: true });
+    await writeFile(path.join(root, ".fittingroom", "scopes.json"), '{"version": 1, "scopes": ');
+
+    await expect(loadScopes(root)).rejects.toThrow(
+      /scopes\.json.*not valid JSON.*Fix the file or delete it/,
+    );
   });
 });

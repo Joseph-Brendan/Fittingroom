@@ -92,3 +92,31 @@ describe("design system banner", () => {
     expect(none).toContain("Design system not found.");
   });
 });
+
+describe("empty board", () => {
+  it("shows the page group picker, design system banner and empty state", () => {
+    const html = renderToStaticMarkup(
+      <App
+        initialState={{
+          scope: { id: "marketing", name: "Marketing" },
+          scopes: [
+            { id: "marketing", name: "Marketing" },
+            { id: "auth", name: "Authentication" },
+          ],
+          variants: [],
+          findings: [],
+          previousRounds: [],
+        }}
+        token="test-token"
+      />,
+    );
+
+    expect(html).toContain("Page group");
+    expect(html).toContain("Design system not found.");
+    expect(html).toContain("No directions yet.");
+    expect(html).toContain("Run an audit and generate directions, or click Generate directions.");
+    expect(html).toContain("Generate directions");
+    expect(html).toContain("Marketing");
+    expect(html).toContain("Authentication");
+  });
+});

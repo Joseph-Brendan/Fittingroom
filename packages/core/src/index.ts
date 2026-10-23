@@ -4,6 +4,7 @@ export * from "./content-inventory";
 export * from "./design-system";
 export * from "./dev-server";
 export * from "./edit-engine";
+export * from "./fittingroom-store";
 export * from "./handoff";
 export * from "./regeneration";
 export * from "./routes";

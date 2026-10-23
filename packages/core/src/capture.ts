@@ -130,7 +130,17 @@ async function getSlopEvidence(page: Page, pagePath: string): Promise<SlopEviden
         const text = (element.textContent ?? "").trim().slice(0, 240);
         const attributes: Record<string, string> = {};
 
-        for (const name of ["aria-label", "alt", "id", "role", "src", "type"]) {
+        for (const name of [
+          "aria-label",
+          "alt",
+          "data-confirm",
+          "data-state",
+          "id",
+          "onclick",
+          "role",
+          "src",
+          "type",
+        ]) {
           const value = element.getAttribute(name);
 
           if (value !== null) {

@@ -43,6 +43,7 @@ export interface BoardState {
     id: string;
     name: string;
   };
+  scopes?: Array<{ id: string; name: string }>;
   designSystem?: BoardDesignSystem;
   surface?: "marketing" | "app" | "dashboard";
   variants: BoardVariant[];

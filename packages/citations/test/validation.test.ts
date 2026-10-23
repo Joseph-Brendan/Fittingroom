@@ -107,4 +107,24 @@ describe("finding validation", () => {
   it("accepts a finding with a known citation and evidence", () => {
     expect(validate(validFinding)).toEqual({ valid: true, errors: [] });
   });
+
+  it("accepts related citations that are in the registry", () => {
+    const result = validate({ ...validFinding, related: ["wcag22-4.1.2"] });
+
+    expect(result).toEqual({ valid: true, errors: [] });
+  });
+
+  it("rejects a related citation that is not in the registry", () => {
+    const result = validate({ ...validFinding, related: ["wcag22-9.9.9"] });
+
+    expect(result.valid).toBe(false);
+    expect(result.errors.join(" ")).toContain("wcag22-9.9.9");
+  });
+
+  it("rejects a related citation that repeats the primary citation", () => {
+    const result = validate({ ...validFinding, related: ["wcag22-1.4.3"] });
+
+    expect(result.valid).toBe(false);
+    expect(result.errors.join(" ")).toContain("primary citation");
+  });
 });

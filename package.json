@@ -1,5 +1,5 @@
 {
-  "name": "fitting-room",
+  "name": "fittingroom",
   "version": "0.0.0",
   "private": true,
   "description": "Try your UI on before you ship it.",
@@ -17,6 +17,8 @@
   "scripts": {
     "build": "pnpm -r build",
     "changeset": "changeset",
+    "fixture:bad": "pnpm --filter ./fixtures/bad-ui dev",
+    "fixture:good": "pnpm --filter ./fixtures/good-ui dev",
     "format": "biome format --write .",
     "lint": "biome check .",
     "lint:fix": "biome check --write .",

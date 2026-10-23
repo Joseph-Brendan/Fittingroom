@@ -1,5 +1,6 @@
-import { mkdir, readFile, stat, writeFile } from "node:fs/promises";
+import { stat } from "node:fs/promises";
 import path from "node:path";
+import { loadFittingRoomFile, writeFittingRoomJson } from "./fittingroom-store";
 import {
   type DiscoveredRoute,
   discoverRoutes,
@@ -27,6 +28,11 @@ export interface ScopeDefinition {
 export interface ScopesConfig {
   version: 1;
   scopes: ScopeDefinition[];
+}
+
+export interface LoadScopesOptions {
+  fallbackUrl?: string;
+  routes?: readonly DiscoveredRoute[];
 }
 
 export interface ScopeChecklistEntry extends ScopeDefinition {
@@ -171,27 +177,35 @@ export function scopeConfigPath(projectRoot: string): string {
   return path.join(projectRoot, ".fittingroom", "scopes.json");
 }
 
-export async function recordDevServerRequest(projectRoot: string, route: string): Promise<void> {
-  const requestPath = path.join(projectRoot, ".fittingroom", "last-request.json");
+interface LastRequestFile {
+  path: string | null;
+}
 
-  await mkdir(path.dirname(requestPath), { recursive: true });
-  await writeFile(requestPath, `${JSON.stringify({ path: normalizePagePath(route) }, null, 2)}\n`);
+function parseLastRequest(value: unknown): LastRequestFile {
+  if (!isRecord(value) || (value.path !== null && typeof value.path !== "string")) {
+    throw new Error("The last request file needs a path string or null.");
+  }
+
+  return {
+    path: value.path === null ? null : normalizePagePath(value.path),
+  };
+}
+
+export async function recordDevServerRequest(projectRoot: string, route: string): Promise<void> {
+  await writeFittingRoomJson(projectRoot, "last-request.json", {
+    path: normalizePagePath(route),
+  });
 }
 
 export async function readDevServerLastRequest(projectRoot: string): Promise<string | null> {
-  const requestPath = path.join(projectRoot, ".fittingroom", "last-request.json");
+  const file = await loadFittingRoomFile({
+    projectRoot,
+    fileName: "last-request.json",
+    schema: parseLastRequest,
+    defaultValue: () => ({ path: null }),
+  });
 
-  try {
-    const raw = JSON.parse(await readFile(requestPath, "utf8")) as unknown;
-
-    if (isRecord(raw) && typeof raw.path === "string") {
-      return normalizePagePath(raw.path);
-    }
-  } catch {
-    return null;
-  }
-
-  return null;
+  return file.path;
 }
 
 export async function findLastEditedRoute(
@@ -227,10 +241,13 @@ export async function detectDefaultScope(
     overrides.lastRequestedRoute === undefined
       ? await readDevServerLastRequest(projectRoot)
       : overrides.lastRequestedRoute;
+  const requestedLastEditedRoute = overrides.lastEditedRoute ?? null;
   const lastEditedRoute =
-    overrides.lastEditedRoute === undefined
-      ? await findLastEditedRoute(projectRoot, routes)
-      : overrides.lastEditedRoute;
+    requestedLastEditedRoute === null
+      ? null
+      : routes.some((route) => route.path === normalizePagePath(requestedLastEditedRoute))
+        ? normalizePagePath(requestedLastEditedRoute)
+        : null;
 
   return resolveDefaultScope(config, {
     lastRequestedRoute,
@@ -283,30 +300,34 @@ function validateScopes(value: unknown): ScopesConfig {
   return { version: 1, scopes };
 }
 
-export async function loadScopes(projectRoot: string): Promise<ScopesConfig> {
-  let content: string;
+export async function loadScopes(
+  projectRoot: string,
+  options: LoadScopesOptions = {},
+): Promise<ScopesConfig> {
+  return loadFittingRoomFile({
+    projectRoot,
+    fileName: "scopes.json",
+    schema: validateScopes,
+    defaultValue: async () => {
+      const routes =
+        options.routes ??
+        (await discoverRoutes(
+          projectRoot,
+          options.fallbackUrl === undefined ? {} : { fallbackUrl: options.fallbackUrl },
+        ));
 
-  try {
-    content = await readFile(scopeConfigPath(projectRoot), "utf8");
-  } catch (error) {
-    if ((error as NodeJS.ErrnoException).code !== "ENOENT") {
-      throw error;
-    }
-
-    return {
-      version: 1,
-      scopes: defaultScopes(await discoverRoutes(projectRoot)),
-    };
-  }
-
-  return validateScopes(JSON.parse(content) as unknown);
+      return {
+        version: 1,
+        scopes: defaultScopes(routes),
+      };
+    },
+  });
 }
 
 export async function saveScopes(projectRoot: string, config: ScopesConfig): Promise<ScopesConfig> {
   const validated = validateScopes(config);
 
-  await mkdir(path.dirname(scopeConfigPath(projectRoot)), { recursive: true });
-  await writeFile(scopeConfigPath(projectRoot), `${JSON.stringify(validated, null, 2)}\n`);
+  await writeFittingRoomJson(projectRoot, "scopes.json", validated);
 
   return validated;
 }

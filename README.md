@@ -93,6 +93,10 @@ returns a summary such as:
 Capturing: Authentication (4 pages): /login /signup /forgot-password /verify, at 375, 768 and 1440 px.
 ```
 
+When the audit finishes, it saves `.fittingroom/audits/<scope>/findings.json` and
+`.fittingroom/audits/<scope>/report.html`. The CLI prints both full paths. Findings for the same
+element and root problem merge into one finding with a primary citation and a related list.
+
 Call `recordDevServerRequest` from a local dev server hook to update `.fittingroom/last-request.json`.
 Set `FITTINGROOM_CURRENT_PATH` to supply the current route directly.
 

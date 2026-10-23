@@ -126,7 +126,7 @@ const cases: DetectionCase[] = [
 let temporaryDirectory: string;
 
 beforeAll(async () => {
-  temporaryDirectory = await mkdtemp(path.join(os.tmpdir(), "fitting-room-design-system-"));
+  temporaryDirectory = await mkdtemp(path.join(os.tmpdir(), "fittingroom-design-system-"));
 });
 
 afterAll(async () => {

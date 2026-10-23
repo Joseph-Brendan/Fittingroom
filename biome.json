@@ -12,7 +12,9 @@
       "!pnpm-lock.yaml",
       "!AGENTS.md",
       "!.changeset/*.md",
-      "!packages/core/test/fixtures"
+      "!packages/core/test/fixtures",
+      "!fixtures/bad-ui/null-data.html",
+      "!fixtures/bad-ui/pricing.html"
     ]
   },
   "formatter": {

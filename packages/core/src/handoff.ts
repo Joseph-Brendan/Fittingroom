@@ -4,6 +4,7 @@ import path from "node:path";
 import pixelmatch from "pixelmatch";
 import { chromium } from "playwright";
 import { PNG } from "pngjs";
+import { writeJsonAtomic } from "./fittingroom-store";
 
 export const HANDOFF_WIDTHS = [375, 768, 1440] as const;
 export const HANDOFF_HEIGHT = 900;
@@ -252,7 +253,7 @@ export async function writeHandoff(input: WriteHandoffInput): Promise<HandoffRes
   };
   const brief = briefFor(manifest);
 
-  await writeFile(path.join(folder, "handoff.json"), `${JSON.stringify(manifest, null, 2)}\n`);
+  await writeJsonAtomic(path.join(folder, "handoff.json"), manifest);
   await writeFile(path.join(folder, "brief.md"), `${brief}\n`);
 
   return { brief, folder, handoffId, manifest };
@@ -395,9 +396,20 @@ export interface VerifyImplementationInput {
 export async function verifyImplementation(
   input: VerifyImplementationInput,
 ): Promise<VerifyReport> {
-  const manifest = JSON.parse(
-    await readFile(path.join(input.handoffDir, "handoff.json"), "utf8"),
-  ) as HandoffManifest;
+  const handoffPath = path.join(input.handoffDir, "handoff.json");
+  let manifest: HandoffManifest;
+
+  try {
+    manifest = JSON.parse(await readFile(handoffPath, "utf8")) as HandoffManifest;
+  } catch (error) {
+    if ((error as NodeJS.ErrnoException).code === "ENOENT") {
+      throw new Error(`Could not find ${handoffPath}. Run fr_handoff first.`);
+    }
+
+    throw new Error(
+      `Could not read ${handoffPath}. The file is not valid JSON. Fix the file or delete it and run the command again.`,
+    );
+  }
   const actualFolder = path.join(input.outputDir, "actual");
   const diffFolder = path.join(input.outputDir, "diff");
   const screenshotFolder = path.join(input.outputDir, "reference");

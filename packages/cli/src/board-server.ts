@@ -55,6 +55,7 @@ export interface BoardState {
     id: string;
     name: string;
   };
+  scopes?: Array<{ id: string; name: string }>;
   surface?: "marketing" | "app" | "dashboard";
   designSystem?: BoardDesignSystem;
   variants: BoardVariant[];
@@ -160,7 +161,7 @@ function withPreviewBridge(html: string, slug: string): string {
           label: (child.textContent ?? "").trim().slice(0, 40),
         }));
       window.parent.postMessage({
-        type: "fitting-room:select",
+        type: "fittingroom:select",
         slug: ${JSON.stringify(slug)},
         id: element.getAttribute("data-fr-id") ?? "",
         label: (element.textContent ?? "").trim().slice(0, 40),
@@ -206,6 +207,7 @@ export async function startBoardServer(options: BoardServerOptions): Promise<Run
       hmr: false,
       host: "127.0.0.1",
       middlewareMode: true,
+      ws: false,
     },
   });
   const httpServer = createHttpServer((request, response) => {

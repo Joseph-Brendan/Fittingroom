@@ -153,7 +153,7 @@ beforeAll(async () => {
     currentPath: "/login",
     projectRoot,
   });
-  client = new Client({ name: "fitting-room-directions-test", version: "0.0.0" });
+  client = new Client({ name: "fittingroom-directions-test", version: "0.0.0" });
   const [clientTransport, serverTransport] = InMemoryTransport.createLinkedPair();
 
   await Promise.all([server.connect(serverTransport), client.connect(clientTransport)]);

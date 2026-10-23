@@ -12,3 +12,4 @@ blob-report/
 *.tsbuildinfo
 .tmp-*/
 e2e/.board-session.json
+e2e/.empty-board-session.json

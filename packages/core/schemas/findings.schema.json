@@ -1,0 +1,74 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Fitting Room findings report",
+  "description": "The findings JSON saved at the end of a Fitting Room audit.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["scope", "generatedAt", "findings", "errors"],
+  "properties": {
+    "scope": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "name", "pages"],
+      "properties": {
+        "id": { "type": "string", "minLength": 1 },
+        "name": { "type": "string", "minLength": 1 },
+        "pages": {
+          "type": "array",
+          "items": { "type": "string", "minLength": 1 }
+        }
+      }
+    },
+    "generatedAt": { "type": "string", "format": "date-time" },
+    "findings": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/finding" }
+    },
+    "errors": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/checkError" }
+    }
+  },
+  "$defs": {
+    "finding": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "title", "citation", "severity", "confidence", "evidence", "fix", "page"],
+      "properties": {
+        "id": { "type": "string", "minLength": 1 },
+        "title": { "type": "string", "minLength": 1 },
+        "citation": { "type": "string", "minLength": 1 },
+        "related": {
+          "type": "array",
+          "items": { "type": "string", "minLength": 1 },
+          "uniqueItems": true
+        },
+        "severity": { "type": "integer", "minimum": 0, "maximum": 4 },
+        "confidence": { "enum": ["measured", "judged"] },
+        "evidence": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["selector", "screenshotPath", "measuredValue"],
+          "properties": {
+            "selector": { "type": "string", "minLength": 1 },
+            "screenshotPath": { "type": "string", "minLength": 1 },
+            "measuredValue": { "type": "string", "minLength": 1 }
+          }
+        },
+        "fix": { "type": "string", "minLength": 1 },
+        "page": { "type": "string", "minLength": 1 }
+      }
+    },
+    "checkError": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["check", "message", "selector", "page"],
+      "properties": {
+        "check": { "type": "string", "minLength": 1 },
+        "message": { "type": "string", "minLength": 1 },
+        "selector": { "type": "string", "minLength": 1 },
+        "page": { "type": "string", "minLength": 1 }
+      }
+    }
+  }
+}

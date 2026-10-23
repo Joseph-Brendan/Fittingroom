@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Contrast cases</title>
+    <style>
+      body {
+        margin: 0;
+        padding: 24px;
+        font-family: system-ui, sans-serif;
+      }
+
+      .case {
+        margin-bottom: 24px;
+        font-size: 20px;
+      }
+
+      #gradient {
+        background: linear-gradient(#777777, #777777);
+        color: #999999;
+      }
+
+      #image-bg {
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='10'%3E%3Crect width='10' height='10' fill='%23777777'/%3E%3C/svg%3E");
+        color: #999999;
+      }
+
+      #transparent-layer {
+        position: relative;
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='10'%3E%3Crect width='10' height='10' fill='%23777777'/%3E%3C/svg%3E");
+      }
+
+      #transparent-text {
+        background-color: transparent;
+        color: #999999;
+      }
+
+      #canvas-layer {
+        position: relative;
+        width: 300px;
+        height: 50px;
+      }
+
+      #canvas-layer canvas {
+        position: absolute;
+        inset: 0;
+      }
+
+      #canvas-text {
+        position: relative;
+        color: #999999;
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <div id="gradient" class="case">Text on a gradient</div>
+      <div id="image-bg" class="case">Text on an image</div>
+      <div id="transparent-layer" class="case">
+        <span id="transparent-text">Text on a transparent layer</span>
+      </div>
+      <div id="canvas-layer" class="case">
+        <canvas width="300" height="50"></canvas>
+        <span id="canvas-text">Text on a canvas</span>
+      </div>
+      <svg id="svg-layer" width="300" height="50">
+        <title>Text inside an svg</title>
+        <rect width="300" height="50" fill="#777777"></rect>
+        <text id="svg-text" x="10" y="30" fill="#999999" font-size="20">Text inside an svg</text>
+      </svg>
+    </main>
+  </body>
+</html>

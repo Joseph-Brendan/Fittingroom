@@ -59,7 +59,7 @@ let temporaryDirectory: string;
 
 beforeAll(async () => {
   fixture = await startFixtureServer(fixturePath("bad-ui"));
-  temporaryDirectory = await mkdtemp(path.join(os.tmpdir(), "fitting-room-mcp-"));
+  temporaryDirectory = await mkdtemp(path.join(os.tmpdir(), "fittingroom-mcp-"));
   server = createFittingRoomServer({
     appUrl: fixture.origin,
     auditOutputDir: path.join(temporaryDirectory, "audits"),
@@ -67,7 +67,7 @@ beforeAll(async () => {
     currentPath: "/login",
     projectRoot: fixturePath("bad-ui"),
   });
-  client = new Client({ name: "fitting-room-tools-test", version: "0.0.0" });
+  client = new Client({ name: "fittingroom-tools-test", version: "0.0.0" });
   const [clientTransport, serverTransport] = InMemoryTransport.createLinkedPair();
 
   await Promise.all([server.connect(serverTransport), client.connect(clientTransport)]);
@@ -186,7 +186,9 @@ describe("Fitting Room MCP tools", () => {
       expect(file.size).toBeGreaterThan(0);
     }
 
-    const pageRequests = new Set(fixture.requests.filter((request) => request !== "/favicon.ico"));
+    const pageRequests = new Set(
+      fixture.requests.filter((request) => request !== "/favicon.ico" && request !== "/styles.css"),
+    );
 
     expect(pageRequests).toEqual(new Set(["/login", "/signup"]));
   });
@@ -202,12 +204,11 @@ describe("Fitting Room MCP tools", () => {
     expect(audit.summary.name).toBe("Marketing");
     expect(audit.summary.pages).toEqual(["/", "/pricing"]);
     expect(audit.screenshots.length).toBeGreaterThan(0);
-    expect(audit.findings).toHaveLength(4);
+    expect(audit.findings).toHaveLength(3);
     expect(audit.findings.map((finding) => finding.citation).sort()).toEqual([
-      "wcag22-1.4.10",
+      "wcag22-1.1.1",
       "wcag22-1.4.3",
       "wcag22-2.4.11",
-      "wcag22-2.5.8",
     ]);
     expect(audit.critiqueBrief).toContain("Nielsen's 10 heuristics");
     expect(audit.critiqueBrief).toContain("fr_submit_findings");
@@ -261,7 +262,50 @@ describe("Fitting Room MCP tools", () => {
     });
     const submit = parseJson<SubmitPayload>(merged.content);
 
-    expect(submit.counts).toEqual({ automated: 4, judged: 1, total: 5 });
+    expect(submit.counts).toEqual({ automated: 3, judged: 1, total: 4 });
     expect(submit.findings.find((finding) => finding.id === "judged-1")?.confidence).toBe("judged");
+  });
+
+  it("includes screenshots and page details for judged review", async () => {
+    const settingsResult = await client.callTool({
+      name: "fr_audit",
+      arguments: { scope: "settings" },
+    });
+    const settings = parseJson<AuditPayload>(settingsResult.content);
+    const settingsPage = settings.pages.find((page) => page.path === "/settings");
+
+    expect(settings.findings).toEqual([]);
+    expect(settingsPage).toBeDefined();
+
+    if (settingsPage === undefined) {
+      throw new Error("The audit did not include the settings page.");
+    }
+
+    for (const screenshot of settingsPage.screenshots) {
+      expect(settings.critiqueBrief).toContain(screenshot.path);
+    }
+
+    expect(settings.critiqueBrief).toMatch(/button "Delete project"[^\n]*confirm: none/);
+    expect(settings.critiqueBrief).toMatch(/button "Save changes"[^\n]*state: none/);
+
+    const dashboardResult = await client.callTool({
+      name: "fr_audit",
+      arguments: { scope: "dashboard" },
+    });
+    const dashboard = parseJson<AuditPayload>(dashboardResult.content);
+    const dashboardPage = dashboard.pages.find((page) => page.path === "/dashboard");
+
+    expect(dashboard.findings).toEqual([]);
+    expect(dashboardPage).toBeDefined();
+
+    if (dashboardPage === undefined) {
+      throw new Error("The audit did not include the dashboard page.");
+    }
+
+    for (const screenshot of dashboardPage.screenshots) {
+      expect(dashboard.critiqueBrief).toContain(screenshot.path);
+    }
+
+    expect(dashboard.critiqueBrief).toContain("Instantiate a new telemetry pipeline");
   });
 });

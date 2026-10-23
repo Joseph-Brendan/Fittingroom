@@ -54,7 +54,12 @@ export async function startFixtureServer(fixtureRoot: string): Promise<FixtureSe
       return;
     }
 
-    const relativePath = pathname === "/" ? "index.html" : `${pathname.replace(/^\/+/, "")}.html`;
+    const relativePath =
+      pathname === "/"
+        ? "index.html"
+        : path.extname(pathname) === ""
+          ? `${pathname.replace(/^\/+/, "")}.html`
+          : pathname.replace(/^\/+/, "");
     const filePath = path.resolve(root, relativePath);
 
     if (!filePath.startsWith(`${root}${path.sep}`)) {
@@ -64,13 +69,14 @@ export async function startFixtureServer(fixtureRoot: string): Promise<FixtureSe
     }
 
     try {
-      const html = await readFile(filePath, "utf8");
+      const body = await readFile(filePath, "utf8");
+      const contentType = relativePath.endsWith(".css") ? "text/css" : "text/html";
 
       response.writeHead(200, {
         "cache-control": "no-store",
-        "content-type": "text/html; charset=utf-8",
+        "content-type": `${contentType}; charset=utf-8`,
       });
-      response.end(request.method === "HEAD" ? undefined : html);
+      response.end(request.method === "HEAD" ? undefined : body);
     } catch {
       response.writeHead(404, { "content-type": "text/plain; charset=utf-8" });
       response.end("Not found");
@@ -85,6 +91,6 @@ export async function startFixtureServer(fixtureRoot: string): Promise<FixtureSe
   };
 }
 
-export function fixturePath(name: "scope-app"): string {
+export function fixturePath(name: "bad-ui" | "good-ui" | "scope-app"): string {
   return fileURLToPath(new URL(`../../../../fixtures/${name}`, import.meta.url));
 }

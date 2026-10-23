@@ -83,7 +83,7 @@ async function callJson<T>(name: string, args: Record<string, unknown>): Promise
 
 beforeAll(async () => {
   fixture = await startFixtureServer(fixturePath("scope-app"));
-  temporaryDirectory = await mkdtemp(path.join(os.tmpdir(), "fitting-room-regenerate-"));
+  temporaryDirectory = await mkdtemp(path.join(os.tmpdir(), "fittingroom-regenerate-"));
   projectRoot = path.join(temporaryDirectory, "scope-app");
   await cp(fixturePath("scope-app"), projectRoot, { recursive: true });
   server = createFittingRoomServer({
@@ -93,7 +93,7 @@ beforeAll(async () => {
     currentPath: "/login",
     projectRoot,
   });
-  client = new Client({ name: "fitting-room-regenerate-test", version: "0.0.0" });
+  client = new Client({ name: "fittingroom-regenerate-test", version: "0.0.0" });
   const [clientTransport, serverTransport] = InMemoryTransport.createLinkedPair();
 
   await Promise.all([server.connect(serverTransport), client.connect(clientTransport)]);

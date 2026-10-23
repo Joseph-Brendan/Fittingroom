@@ -1,5 +1,6 @@
-import { mkdir, readdir, readFile, writeFile } from "node:fs/promises";
+import { readdir, readFile } from "node:fs/promises";
 import path from "node:path";
+import { writeFittingRoomJson } from "./fittingroom-store";
 
 export const tokenCategories = ["color", "space", "radius", "font", "fontSize", "shadow"] as const;
 
@@ -15,11 +16,20 @@ export interface DesignSystemInfo {
   missing: TokenCategory[];
 }
 
-interface TokensFile {
+export interface TokensFile {
   version: 1;
   status: Exclude<DesignSystemStatus, "connected">;
   tokens: DesignTokens;
   missing: TokenCategory[];
+}
+
+export function defaultTokensFile(): TokensFile {
+  return {
+    version: 1,
+    status: "none",
+    tokens: emptyDesignTokens(),
+    missing: [...tokenCategories],
+  };
 }
 
 const skipDirectories = new Set([
@@ -58,7 +68,7 @@ const shadcnColorTokens = new Set([
   "chart-5",
 ]);
 
-function emptyTokens(): DesignTokens {
+export function emptyDesignTokens(): DesignTokens {
   return {
     color: {},
     space: {},
@@ -380,15 +390,11 @@ async function writeMissingTokens(
     missing,
   };
 
-  await mkdir(path.join(projectRoot, ".fittingroom"), { recursive: true });
-  await writeFile(
-    path.join(projectRoot, ".fittingroom", "tokens.json"),
-    `${JSON.stringify(file, null, 2)}\n`,
-  );
+  await writeFittingRoomJson(projectRoot, "tokens.json", file);
 }
 
 export async function detectDesignSystem(projectRoot: string): Promise<DesignSystemInfo> {
-  const tokens = emptyTokens();
+  const tokens = emptyDesignTokens();
   const sources: string[] = [];
   const components: string[] = [];
   const files = await collectFiles(projectRoot, projectRoot);

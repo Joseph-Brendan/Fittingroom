@@ -1,5 +1,5 @@
 import { randomUUID } from "node:crypto";
-import { copyFile, mkdir, readFile, writeFile } from "node:fs/promises";
+import { copyFile, mkdir } from "node:fs/promises";
 import path from "node:path";
 import {
   type DesignDirection,
@@ -7,6 +7,7 @@ import {
   directionLibrary,
   getDirection,
 } from "@fittingroom/directions";
+import { loadFittingRoomFile, writeFittingRoomJson } from "./fittingroom-store";
 
 export type RefinedMode = "light" | "deep";
 export type VariantRole = "refined" | "native" | "bold" | "wildcard";
@@ -430,34 +431,32 @@ export function historyPath(projectRoot: string): string {
   return path.join(projectRoot, ".fittingroom", "history.json");
 }
 
-export async function readRegenerationHistory(projectRoot: string): Promise<RegenerationHistory> {
-  try {
-    const raw = JSON.parse(await readFile(historyPath(projectRoot), "utf8")) as unknown;
+function isRecord(value: unknown): value is Record<string, unknown> {
+  return typeof value === "object" && value !== null && !Array.isArray(value);
+}
 
-    if (
-      typeof raw === "object" &&
-      raw !== null &&
-      "version" in raw &&
-      raw.version === 1 &&
-      "scopes" in raw &&
-      typeof raw.scopes === "object" &&
-      raw.scopes !== null
-    ) {
-      return raw as RegenerationHistory;
-    }
-  } catch {
-    return { version: 1, scopes: {} };
+function parseRegenerationHistory(value: unknown): RegenerationHistory {
+  if (!isRecord(value) || value.version !== 1 || !isRecord(value.scopes)) {
+    throw new Error("The history file needs version 1 and a scopes object.");
   }
 
-  return { version: 1, scopes: {} };
+  return value as unknown as RegenerationHistory;
+}
+
+export async function readRegenerationHistory(projectRoot: string): Promise<RegenerationHistory> {
+  return loadFittingRoomFile({
+    projectRoot,
+    fileName: "history.json",
+    schema: parseRegenerationHistory,
+    defaultValue: () => ({ version: 1, scopes: {} }),
+  });
 }
 
 export async function writeRegenerationHistory(
   projectRoot: string,
   history: RegenerationHistory,
 ): Promise<void> {
-  await mkdir(path.dirname(historyPath(projectRoot)), { recursive: true });
-  await writeFile(historyPath(projectRoot), `${JSON.stringify(history, null, 2)}\n`);
+  await writeFittingRoomJson(projectRoot, "history.json", history);
 }
 
 export async function regenerateScope(input: RegenerateScopeInput): Promise<RegenerationResult> {

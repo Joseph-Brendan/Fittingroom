@@ -1,2 +1,4 @@
 packages:
   - "packages/*"
+  - "fixtures/bad-ui"
+  - "fixtures/good-ui"

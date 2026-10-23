@@ -11,7 +11,7 @@
     "dist"
   ],
   "scripts": {
-    "build": "tsup src/index.ts --format esm --dts --clean --sourcemap --external @fittingroom/core --external @fittingroom/directions",
+    "build": "tsup src/index.ts --format esm --dts --clean --sourcemap --external @fittingroom/citations --external @fittingroom/core --external @fittingroom/directions",
     "test": "vitest run",
     "typecheck": "tsc --noEmit"
   },
@@ -22,10 +22,11 @@
     "access": "public"
   },
   "dependencies": {
-    "@fittingroom/core": "workspace:*",
     "@fittingroom/board": "workspace:*",
+    "@fittingroom/citations": "workspace:*",
+    "@fittingroom/core": "workspace:*",
+    "@fittingroom/directions": "workspace:*",
     "vite": "^7.3.7",
-    "ws": "^8.22.0",
-    "@fittingroom/directions": "workspace:*"
+    "ws": "^8.22.0"
   }
 }

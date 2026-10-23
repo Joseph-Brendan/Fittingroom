@@ -16,10 +16,18 @@ export default defineConfig({
       use: { ...devices["Desktop Chrome"] },
     },
   ],
-  webServer: {
-    command: "pnpm exec tsx e2e/board-server.mts",
-    url: "http://127.0.0.1:4173/health",
-    reuseExistingServer: false,
-    timeout: 120_000,
-  },
+  webServer: [
+    {
+      command: "pnpm exec tsx e2e/board-server.mts",
+      url: "http://127.0.0.1:4173/health",
+      reuseExistingServer: false,
+      timeout: 120_000,
+    },
+    {
+      command: "pnpm exec tsx e2e/empty-board-server.mts",
+      url: "http://127.0.0.1:4174/health",
+      reuseExistingServer: false,
+      timeout: 120_000,
+    },
+  ],
 });

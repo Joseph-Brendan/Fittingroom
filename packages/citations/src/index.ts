@@ -47,6 +47,7 @@ export interface Finding {
   id: string;
   title: string;
   citation: string;
+  related?: string[];
   severity: number;
   confidence: FindingConfidence;
   evidence: string | FindingEvidence;
@@ -200,6 +201,31 @@ export function validate(finding: Finding): ValidationResult {
 
   if (!citationIds.has(finding.citation)) {
     errors.push(`Citation ${finding.citation} is not in the registry.`);
+  }
+
+  if (finding.related !== undefined) {
+    if (!Array.isArray(finding.related)) {
+      errors.push("Related citations must be an array.");
+    } else {
+      const seen = new Set<string>();
+
+      for (const related of finding.related) {
+        if (typeof related !== "string" || !citationIds.has(related)) {
+          errors.push(`Related citation ${String(related)} is not in the registry.`);
+          continue;
+        }
+
+        if (related === finding.citation) {
+          errors.push("Related citations must not repeat the primary citation.");
+        }
+
+        if (seen.has(related)) {
+          errors.push(`Related citation ${related} is repeated.`);
+        }
+
+        seen.add(related);
+      }
+    }
   }
 
   errors.push(...validateEvidence(finding.evidence));
