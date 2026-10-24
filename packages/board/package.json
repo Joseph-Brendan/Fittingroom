@@ -26,5 +26,6 @@
   },
   "exports": {
     "./package.json": "./package.json"
-  }
+  },
+  "private": true
 }

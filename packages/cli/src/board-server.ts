@@ -1,13 +1,12 @@
 import { randomBytes } from "node:crypto";
-import { readFile } from "node:fs/promises";
+import { access, readFile } from "node:fs/promises";
 import {
   createServer as createHttpServer,
   type IncomingMessage,
   type ServerResponse,
 } from "node:http";
-import { createRequire } from "node:module";
 import path from "node:path";
-import { createServer as createViteServer } from "vite";
+import { fileURLToPath } from "node:url";
 import { type WebSocket, WebSocketServer } from "ws";
 
 export interface BoardFinding {
@@ -122,8 +121,6 @@ export interface RunningBoardServer {
   url: string;
 }
 
-const require = createRequire(import.meta.url);
-
 function closeHttpServer(server: ReturnType<typeof createHttpServer>): Promise<void> {
   return new Promise((resolve, reject) => {
     server.close((error) => {
@@ -143,6 +140,81 @@ export function createSessionToken(): string {
 
 function authorized(url: URL, token: string): boolean {
   return url.searchParams.get("token") === token;
+}
+
+async function resolveBoardRoot(): Promise<string> {
+  const serverDirectory = path.dirname(fileURLToPath(import.meta.url));
+  const candidates = [
+    path.join(serverDirectory, "board"),
+    path.join(serverDirectory, "..", "dist", "board"),
+    path.join(serverDirectory, "..", "..", "board", "dist"),
+    path.join(serverDirectory, "..", "..", "board"),
+  ];
+
+  for (const candidate of candidates) {
+    try {
+      await access(path.join(candidate, "index.html"));
+      return candidate;
+    } catch {}
+  }
+
+  throw new Error("The board build was not found. Run pnpm build.");
+}
+
+function boardContentType(filePath: string): string {
+  switch (path.extname(filePath)) {
+    case ".css":
+      return "text/css; charset=utf-8";
+    case ".html":
+      return "text/html; charset=utf-8";
+    case ".js":
+      return "text/javascript; charset=utf-8";
+    case ".json":
+      return "application/json; charset=utf-8";
+    case ".png":
+      return "image/png";
+    case ".svg":
+      return "image/svg+xml";
+    case ".woff2":
+      return "font/woff2";
+    default:
+      return "application/octet-stream";
+  }
+}
+
+async function serveBoardFile(
+  response: ServerResponse,
+  boardRoot: string,
+  pathname: string,
+): Promise<void> {
+  const relative = pathname.replace(/^\/+/, "");
+
+  if (relative === "") {
+    response.writeHead(404, { "content-type": "text/plain; charset=utf-8" });
+    response.end("Not found");
+    return;
+  }
+
+  const filePath = path.resolve(boardRoot, relative);
+
+  if (!filePath.startsWith(`${boardRoot}${path.sep}`)) {
+    response.writeHead(403, { "content-type": "text/plain; charset=utf-8" });
+    response.end("Forbidden");
+    return;
+  }
+
+  try {
+    const content = await readFile(filePath);
+
+    response.writeHead(200, {
+      "cache-control": "no-store",
+      "content-type": boardContentType(filePath),
+    });
+    response.end(content);
+  } catch {
+    response.writeHead(404, { "content-type": "text/plain; charset=utf-8" });
+    response.end("Not found");
+  }
 }
 
 function withPreviewBridge(html: string, slug: string): string {
@@ -199,17 +271,7 @@ export async function startBoardServer(options: BoardServerOptions): Promise<Run
   const requests: DirectionRequest[] = [];
   const editRequests: BoardEditOperation[] = [];
   let state = options.state;
-  const boardRoot = path.dirname(require.resolve("@fittingroom/board/package.json"));
-  const vite = await createViteServer({
-    appType: "custom",
-    root: boardRoot,
-    server: {
-      hmr: false,
-      host: "127.0.0.1",
-      middlewareMode: true,
-      ws: false,
-    },
-  });
+  const boardRoot = await resolveBoardRoot();
   const httpServer = createHttpServer((request, response) => {
     void (async () => {
       const url = new URL(request.url ?? "/", "http://127.0.0.1");
@@ -230,13 +292,12 @@ export async function startBoardServer(options: BoardServerOptions): Promise<Run
         }
 
         const html = await readFile(path.join(boardRoot, "index.html"), "utf8");
-        const transformed = await vite.transformIndexHtml(url.pathname, html);
 
         response.writeHead(200, {
           "cache-control": "no-store",
           "content-type": "text/html; charset=utf-8",
         });
-        response.end(transformed);
+        response.end(html);
         return;
       }
 
@@ -434,10 +495,13 @@ export async function startBoardServer(options: BoardServerOptions): Promise<Run
         return;
       }
 
-      vite.middlewares(request, response, () => {
-        response.writeHead(404, { "content-type": "text/plain; charset=utf-8" });
-        response.end("Not found");
-      });
+      if (request.method === "GET") {
+        await serveBoardFile(response, boardRoot, url.pathname);
+        return;
+      }
+
+      response.writeHead(404, { "content-type": "text/plain; charset=utf-8" });
+      response.end("Not found");
     })().catch((error: unknown) => {
       response.writeHead(500, { "content-type": "text/plain; charset=utf-8" });
       response.end(error instanceof Error ? error.message : "Board server error.");
@@ -521,7 +585,6 @@ export async function startBoardServer(options: BoardServerOptions): Promise<Run
       await new Promise<void>((resolve) => {
         sockets.close(() => resolve());
       });
-      await vite.close();
       await closeHttpServer(httpServer);
     },
   };

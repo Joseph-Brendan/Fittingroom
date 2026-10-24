@@ -122,15 +122,19 @@ the board edit API and reloads the iframe. Undo restores the previous edit.
 
 ## Run the MCP server
 
+Install the package once.
+
+```bash
+npm install -g fitting-room
+```
+
 Start the server from the folder of the app you are testing. This keeps route discovery and file paths inside your project.
 
 ```bash
-npx @fittingroom/mcp
+fitroom mcp
 ```
 
-If you installed the package locally, run `./node_modules/.bin/fittingroom-mcp`.
-
-Add it to your MCP client config with command `npx` and args `["@fittingroom/mcp"]`. Set the working directory to your app folder.
+Add it to your MCP client config with command `fitroom` and args `["mcp"]`. Set the working directory to your app folder.
 
 ## MCP tools
 

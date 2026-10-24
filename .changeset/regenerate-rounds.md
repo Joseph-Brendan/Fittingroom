@@ -1,7 +1,7 @@
 ---
 "@fittingroom/core": minor
 "@fittingroom/board": minor
-"@fittingroom/cli": minor
+"fitting-room": minor
 "@fittingroom/mcp": minor
 ---
 

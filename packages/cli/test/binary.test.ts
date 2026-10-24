@@ -249,16 +249,8 @@ async function startBoard(args: string[]): Promise<RunningBoard> {
 }
 
 beforeAll(async () => {
-  await execFileAsync(pnpmCommand, ["--filter", "@fittingroom/citations", "build"], {
-    cwd: repoRoot,
-  });
-  await execFileAsync(pnpmCommand, ["--filter", "@fittingroom/core", "build"], {
-    cwd: repoRoot,
-  });
-  await execFileAsync(pnpmCommand, ["--filter", "@fittingroom/cli", "build"], {
-    cwd: repoRoot,
-  });
-}, 120_000);
+  await execFileAsync(pnpmCommand, ["build"], { cwd: repoRoot });
+}, 300_000);
 
 afterAll(async () => {
   await stopBadUiDevServer();

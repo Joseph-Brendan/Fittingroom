@@ -1,5 +1,5 @@
 {
-  "name": "@fittingroom/cli",
+  "name": "fitting-room",
   "version": "0.0.0",
   "description": "The fitroom command for Fitting Room.",
   "license": "Apache-2.0",
@@ -11,7 +11,7 @@
     "dist"
   ],
   "scripts": {
-    "build": "tsup src/index.ts --format esm --dts --clean --sourcemap --external @fittingroom/citations --external @fittingroom/core --external @fittingroom/directions",
+    "build": "pnpm --filter @fittingroom/board build && tsup && node scripts/copy-board.mjs",
     "test": "vitest run",
     "typecheck": "tsc --noEmit"
   },
@@ -22,11 +22,24 @@
     "access": "public"
   },
   "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.32.1",
+    "axe-core": "^4.14.0",
+    "esbuild": "^0.27.7",
+    "pixelmatch": "8.0.0",
+    "playwright": "1.64.1",
+    "pngjs": "7.0.0",
+    "react": "^19.3.1",
+    "react-dom": "^19.3.1",
+    "ts-morph": "^28.0.0",
+    "typescript": "^5.9.3",
+    "ws": "^8.22.0",
+    "zod": "^4.6.7"
+  },
+  "devDependencies": {
     "@fittingroom/board": "workspace:*",
     "@fittingroom/citations": "workspace:*",
     "@fittingroom/core": "workspace:*",
     "@fittingroom/directions": "workspace:*",
-    "vite": "^7.3.7",
-    "ws": "^8.22.0"
+    "@fittingroom/mcp": "workspace:*"
   }
 }

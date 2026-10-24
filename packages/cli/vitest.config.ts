@@ -11,6 +11,7 @@ export default defineConfig({
       "@fittingroom/directions": fileURLToPath(
         new URL("../directions/src/index.ts", import.meta.url),
       ),
+      "@fittingroom/mcp": fileURLToPath(new URL("../mcp/src/index.ts", import.meta.url)),
     },
   },
   test: {

@@ -8,6 +8,7 @@ const helpText = [
   "  audit [options]                    Audit one page group.",
   "  board [options]                    Serve the local comparison board.",
   "  scopes [action] [options]          List or edit saved page groups.",
+  "  mcp                                Start the MCP server over stdio.",
   "",
   "Command options:",
   "  --url <url>       Set the app URL for audit or board.",
@@ -80,9 +81,21 @@ const scopesHelpText = [
   "  fitroom scopes split auth --name Verification --pages /verify",
 ].join("\n");
 
+const mcpHelpText = [
+  "Usage: fitroom mcp",
+  "",
+  "Start the MCP server over stdio.",
+  "",
+  "Run it from the folder of the app you are testing.",
+  "",
+  "Options:",
+  "  -h, --help        Show this help.",
+].join("\n");
+
 const commandHelp: Record<string, string> = {
   audit: auditHelpText,
   board: boardHelpText,
+  mcp: mcpHelpText,
   scopes: scopesHelpText,
 };
 

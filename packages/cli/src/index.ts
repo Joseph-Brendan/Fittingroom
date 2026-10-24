@@ -2,6 +2,7 @@
 import { runAuditCommand } from "./audit.js";
 import { runBoardCommand } from "./board-command.js";
 import { getHelpText, getVersion } from "./help.js";
+import { runMcpCommand } from "./mcp.js";
 import { runScopesCommand } from "./scopes.js";
 
 interface AuditFlags {
@@ -157,6 +158,11 @@ async function main(args: string[]): Promise<void> {
 
   if (command === "scopes") {
     await runScopesCommand(rest);
+    return;
+  }
+
+  if (command === "mcp") {
+    await runMcpCommand();
     return;
   }
 

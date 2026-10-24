@@ -1,6 +1,6 @@
 ---
 "@fittingroom/core": minor
-"@fittingroom/cli": minor
+"fitting-room": minor
 "@fittingroom/mcp": minor
 "@fittingroom/citations": minor
 ---

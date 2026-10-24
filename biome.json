@@ -11,6 +11,7 @@
       "!**/.fittingroom",
       "!pnpm-lock.yaml",
       "!AGENTS.md",
+      "!docs/DECISIONS.md",
       "!.changeset/*.md",
       "!packages/core/test/fixtures",
       "!fixtures/bad-ui/null-data.html",
