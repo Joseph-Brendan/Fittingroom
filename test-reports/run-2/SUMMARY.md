@@ -17,7 +17,7 @@
 | `9bf693b`           | Baseline D1 commit at the start of run 2         |
 | `1d0086d`           | D2 to D7 workflow, fixes, tests and changeset    |
 | `b19675a`           | Real app evidence, screenshots and round reports |
-| This summary commit | Final summary with hashes and run 1 comparison   |
+| `f5f03ca`           | Run 2 summary                                    |
 
 ## Final checks
 
