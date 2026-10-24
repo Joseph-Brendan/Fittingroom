@@ -1,0 +1,688 @@
+{
+  "route": "/login",
+  "surface": "app",
+  "slots": [
+    {
+      "slot": 1,
+      "role": "refined",
+      "direction": {
+        "slug": "refined",
+        "name": "Refined",
+        "surfaces": ["app"],
+        "description": "Keep the current design and fix audit findings, spacing and hierarchy in the existing style.",
+        "modes": ["light", "deep"]
+      },
+      "screenshots": [
+        {
+          "width": 375,
+          "path": "/Users/josephbrendan/Documents/fr-test-apps/shop-app/.fittingroom/captures/auth/login/375.png"
+        },
+        {
+          "width": 768,
+          "path": "/Users/josephbrendan/Documents/fr-test-apps/shop-app/.fittingroom/captures/auth/login/768.png"
+        },
+        {
+          "width": 1440,
+          "path": "/Users/josephbrendan/Documents/fr-test-apps/shop-app/.fittingroom/captures/auth/login/1440.png"
+        }
+      ],
+      "contentInventory": [
+        {
+          "role": "heading",
+          "text": "Welcome back to Northwind"
+        },
+        {
+          "role": "textbox",
+          "text": "Email"
+        },
+        {
+          "role": "textbox",
+          "text": "Password"
+        },
+        {
+          "role": "button",
+          "text": "Log in"
+        }
+      ],
+      "designSystem": {
+        "status": "connected",
+        "sources": ["tailwind-v4", "shadcn"],
+        "tokens": {
+          "color": {
+            "brand": "#0f766e",
+            "brand-dark": "#115e59",
+            "ink": "#0d2b28",
+            "paper": "#f4fbf9",
+            "card": "#ffffff",
+            "line": "#d7e3df",
+            "background": "#f4fbf9",
+            "foreground": "#0d2b28",
+            "card-foreground": "#0d2b28",
+            "primary": "#0f766e",
+            "primary-foreground": "#ffffff",
+            "secondary": "#d9f0eb",
+            "secondary-foreground": "#0d2b28",
+            "muted": "#eef7f4",
+            "muted-foreground": "#4f6b66",
+            "accent": "#f59e0b",
+            "accent-foreground": "#3a2500",
+            "destructive": "#b42318",
+            "border": "#d7e3df",
+            "input": "#d7e3df",
+            "ring": "#0f766e"
+          },
+          "space": {
+            "1": "4px",
+            "2": "8px",
+            "3": "12px",
+            "4": "16px",
+            "6": "24px",
+            "8": "32px",
+            "12": "48px",
+            "16": "64px"
+          },
+          "radius": {
+            "control": "10px",
+            "card": "18px"
+          },
+          "font": {
+            "sans": "\"Inter\", system-ui, sans-serif"
+          },
+          "fontSize": {
+            "sm": "0.875rem",
+            "base": "1rem",
+            "lg": "1.25rem",
+            "2xl": "2rem",
+            "4xl": "3rem"
+          },
+          "shadow": {
+            "card": "0 18px 40px rgba(15, 118, 110, 0.14)"
+          }
+        },
+        "components": ["button"],
+        "missing": [],
+        "summary": "Design system connected: Tailwind v4 @theme, shadcn/ui."
+      },
+      "writingRules": [
+        "Write one file per variant.",
+        "Use React and Tailwind.",
+        "Use project components where they exist.",
+        "Keep all real content.",
+        "Do not use placeholder or lorem copy."
+      ]
+    },
+    {
+      "slot": 2,
+      "role": "native",
+      "direction": {
+        "slug": "clean-ui",
+        "name": "Clean UI",
+        "surfaces": ["app"],
+        "description": "Calm neutrals, precise spacing and clear interaction states.",
+        "bestFor": ["SaaS", "productivity"],
+        "typePair": {
+          "display": "Inter, system-ui, sans-serif",
+          "body": "Inter, system-ui, sans-serif"
+        },
+        "typeScale": {
+          "base": 16,
+          "ratio": 1.2,
+          "steps": [12, 14, 16, 19, 23, 28]
+        },
+        "radius": {
+          "control": "6px",
+          "panel": "12px"
+        },
+        "border": "1px solid",
+        "shadow": "0 1px 2px rgba(17, 24, 39, 0.08)",
+        "colorRecipe": {
+          "background": "#FFFFFF",
+          "surface": "#F8FAFC",
+          "text": "#111827",
+          "mutedText": "#475569",
+          "accent": "#1D4ED8",
+          "accentText": "#FFFFFF",
+          "border": "#CBD5E1",
+          "focus": "#1D4ED8",
+          "contrastPairs": [
+            {
+              "foreground": "#111827",
+              "background": "#FFFFFF",
+              "ratio": 17.74,
+              "usage": "text on background"
+            },
+            {
+              "foreground": "#475569",
+              "background": "#FFFFFF",
+              "ratio": 7.58,
+              "usage": "muted text on background"
+            },
+            {
+              "foreground": "#111827",
+              "background": "#F8FAFC",
+              "ratio": 16.96,
+              "usage": "text on surface"
+            },
+            {
+              "foreground": "#475569",
+              "background": "#F8FAFC",
+              "ratio": 7.24,
+              "usage": "muted text on surface"
+            },
+            {
+              "foreground": "#FFFFFF",
+              "background": "#1D4ED8",
+              "ratio": 6.7,
+              "usage": "accent text on accent"
+            },
+            {
+              "foreground": "#1D4ED8",
+              "background": "#FFFFFF",
+              "ratio": 6.7,
+              "usage": "accent text on background"
+            },
+            {
+              "foreground": "#1D4ED8",
+              "background": "#FFFFFF",
+              "ratio": 6.7,
+              "usage": "focus ring on background"
+            }
+          ]
+        },
+        "density": 5,
+        "motion": 2,
+        "layoutRules": [
+          "Use an eight-point spacing scale.",
+          "Keep one primary action per screen.",
+          "Separate panels with borders before shadows."
+        ],
+        "do": ["Make every state visibly different.", "Keep controls at least 44px tall."],
+        "dont": ["Flatten primary and secondary actions.", "Hide focus behind subtle styling."],
+        "a11yRisk": "Low-contrast neutrals and understated focus states can make a calm interface hard to navigate."
+      },
+      "screenshots": [
+        {
+          "width": 375,
+          "path": "/Users/josephbrendan/Documents/fr-test-apps/shop-app/.fittingroom/captures/auth/login/375.png"
+        },
+        {
+          "width": 768,
+          "path": "/Users/josephbrendan/Documents/fr-test-apps/shop-app/.fittingroom/captures/auth/login/768.png"
+        },
+        {
+          "width": 1440,
+          "path": "/Users/josephbrendan/Documents/fr-test-apps/shop-app/.fittingroom/captures/auth/login/1440.png"
+        }
+      ],
+      "contentInventory": [
+        {
+          "role": "heading",
+          "text": "Welcome back to Northwind"
+        },
+        {
+          "role": "textbox",
+          "text": "Email"
+        },
+        {
+          "role": "textbox",
+          "text": "Password"
+        },
+        {
+          "role": "button",
+          "text": "Log in"
+        }
+      ],
+      "designSystem": {
+        "status": "connected",
+        "sources": ["tailwind-v4", "shadcn"],
+        "tokens": {
+          "color": {
+            "brand": "#0f766e",
+            "brand-dark": "#115e59",
+            "ink": "#0d2b28",
+            "paper": "#f4fbf9",
+            "card": "#ffffff",
+            "line": "#d7e3df",
+            "background": "#f4fbf9",
+            "foreground": "#0d2b28",
+            "card-foreground": "#0d2b28",
+            "primary": "#0f766e",
+            "primary-foreground": "#ffffff",
+            "secondary": "#d9f0eb",
+            "secondary-foreground": "#0d2b28",
+            "muted": "#eef7f4",
+            "muted-foreground": "#4f6b66",
+            "accent": "#f59e0b",
+            "accent-foreground": "#3a2500",
+            "destructive": "#b42318",
+            "border": "#d7e3df",
+            "input": "#d7e3df",
+            "ring": "#0f766e"
+          },
+          "space": {
+            "1": "4px",
+            "2": "8px",
+            "3": "12px",
+            "4": "16px",
+            "6": "24px",
+            "8": "32px",
+            "12": "48px",
+            "16": "64px"
+          },
+          "radius": {
+            "control": "10px",
+            "card": "18px"
+          },
+          "font": {
+            "sans": "\"Inter\", system-ui, sans-serif"
+          },
+          "fontSize": {
+            "sm": "0.875rem",
+            "base": "1rem",
+            "lg": "1.25rem",
+            "2xl": "2rem",
+            "4xl": "3rem"
+          },
+          "shadow": {
+            "card": "0 18px 40px rgba(15, 118, 110, 0.14)"
+          }
+        },
+        "components": ["button"],
+        "missing": [],
+        "summary": "Design system connected: Tailwind v4 @theme, shadcn/ui."
+      },
+      "writingRules": [
+        "Write one file per variant.",
+        "Use React and Tailwind.",
+        "Use project components where they exist.",
+        "Keep all real content.",
+        "Do not use placeholder or lorem copy."
+      ]
+    },
+    {
+      "slot": 3,
+      "role": "bold",
+      "direction": {
+        "slug": "dark-first",
+        "name": "Dark-First",
+        "surfaces": ["app"],
+        "description": "Dark surfaces with light used only for hierarchy and focus.",
+        "bestFor": ["media", "dev tools", "creative apps"],
+        "typePair": {
+          "display": "Inter, system-ui, sans-serif",
+          "body": "Inter, system-ui, sans-serif"
+        },
+        "typeScale": {
+          "base": 16,
+          "ratio": 1.25,
+          "steps": [12, 14, 16, 20, 25, 31]
+        },
+        "radius": {
+          "control": "6px",
+          "panel": "12px"
+        },
+        "border": "1px solid",
+        "shadow": "0 18px 50px rgba(0, 0, 0, 0.45)",
+        "colorRecipe": {
+          "background": "#0B1220",
+          "surface": "#111827",
+          "text": "#F8FAFC",
+          "mutedText": "#CBD5E1",
+          "accent": "#93C5FD",
+          "accentText": "#0B1220",
+          "border": "#334155",
+          "focus": "#93C5FD",
+          "contrastPairs": [
+            {
+              "foreground": "#F8FAFC",
+              "background": "#0B1220",
+              "ratio": 17.89,
+              "usage": "text on background"
+            },
+            {
+              "foreground": "#CBD5E1",
+              "background": "#0B1220",
+              "ratio": 12.61,
+              "usage": "muted text on background"
+            },
+            {
+              "foreground": "#F8FAFC",
+              "background": "#111827",
+              "ratio": 16.96,
+              "usage": "text on surface"
+            },
+            {
+              "foreground": "#CBD5E1",
+              "background": "#111827",
+              "ratio": 11.95,
+              "usage": "muted text on surface"
+            },
+            {
+              "foreground": "#0B1220",
+              "background": "#93C5FD",
+              "ratio": 10.38,
+              "usage": "accent text on accent"
+            },
+            {
+              "foreground": "#93C5FD",
+              "background": "#0B1220",
+              "ratio": 10.38,
+              "usage": "accent text on background"
+            },
+            {
+              "foreground": "#93C5FD",
+              "background": "#0B1220",
+              "ratio": 10.38,
+              "usage": "focus ring on background"
+            }
+          ]
+        },
+        "density": 5,
+        "motion": 2,
+        "layoutRules": [
+          "Use two dark surface levels, not five.",
+          "Reserve the lightest text for headings and active labels.",
+          "Keep one accent for selection and focus."
+        ],
+        "do": [
+          "Use near-black surfaces instead of pure black.",
+          "Keep borders visible on every panel."
+        ],
+        "dont": [
+          "Use pure white text at full weight everywhere.",
+          "Rely on color alone for errors."
+        ],
+        "a11yRisk": "Dark themes hide weak contrast in muted text, borders and disabled controls."
+      },
+      "screenshots": [
+        {
+          "width": 375,
+          "path": "/Users/josephbrendan/Documents/fr-test-apps/shop-app/.fittingroom/captures/auth/login/375.png"
+        },
+        {
+          "width": 768,
+          "path": "/Users/josephbrendan/Documents/fr-test-apps/shop-app/.fittingroom/captures/auth/login/768.png"
+        },
+        {
+          "width": 1440,
+          "path": "/Users/josephbrendan/Documents/fr-test-apps/shop-app/.fittingroom/captures/auth/login/1440.png"
+        }
+      ],
+      "contentInventory": [
+        {
+          "role": "heading",
+          "text": "Welcome back to Northwind"
+        },
+        {
+          "role": "textbox",
+          "text": "Email"
+        },
+        {
+          "role": "textbox",
+          "text": "Password"
+        },
+        {
+          "role": "button",
+          "text": "Log in"
+        }
+      ],
+      "designSystem": {
+        "status": "connected",
+        "sources": ["tailwind-v4", "shadcn"],
+        "tokens": {
+          "color": {
+            "brand": "#0f766e",
+            "brand-dark": "#115e59",
+            "ink": "#0d2b28",
+            "paper": "#f4fbf9",
+            "card": "#ffffff",
+            "line": "#d7e3df",
+            "background": "#f4fbf9",
+            "foreground": "#0d2b28",
+            "card-foreground": "#0d2b28",
+            "primary": "#0f766e",
+            "primary-foreground": "#ffffff",
+            "secondary": "#d9f0eb",
+            "secondary-foreground": "#0d2b28",
+            "muted": "#eef7f4",
+            "muted-foreground": "#4f6b66",
+            "accent": "#f59e0b",
+            "accent-foreground": "#3a2500",
+            "destructive": "#b42318",
+            "border": "#d7e3df",
+            "input": "#d7e3df",
+            "ring": "#0f766e"
+          },
+          "space": {
+            "1": "4px",
+            "2": "8px",
+            "3": "12px",
+            "4": "16px",
+            "6": "24px",
+            "8": "32px",
+            "12": "48px",
+            "16": "64px"
+          },
+          "radius": {
+            "control": "10px",
+            "card": "18px"
+          },
+          "font": {
+            "sans": "\"Inter\", system-ui, sans-serif"
+          },
+          "fontSize": {
+            "sm": "0.875rem",
+            "base": "1rem",
+            "lg": "1.25rem",
+            "2xl": "2rem",
+            "4xl": "3rem"
+          },
+          "shadow": {
+            "card": "0 18px 40px rgba(15, 118, 110, 0.14)"
+          }
+        },
+        "components": ["button"],
+        "missing": [],
+        "summary": "Design system connected: Tailwind v4 @theme, shadcn/ui."
+      },
+      "writingRules": [
+        "Write one file per variant.",
+        "Use React and Tailwind.",
+        "Use project components where they exist.",
+        "Keep all real content.",
+        "Do not use placeholder or lorem copy."
+      ]
+    },
+    {
+      "slot": 4,
+      "role": "wildcard",
+      "direction": {
+        "slug": "spatial",
+        "name": "Spatial",
+        "surfaces": ["app"],
+        "description": "Layered panels with depth, light and optional spatial motion.",
+        "bestFor": ["visionOS style", "immersive apps"],
+        "typePair": {
+          "display": "Manrope, system-ui, sans-serif",
+          "body": "Nunito Sans, system-ui, sans-serif"
+        },
+        "typeScale": {
+          "base": 16,
+          "ratio": 1.25,
+          "steps": [12, 14, 16, 20, 25, 31]
+        },
+        "radius": {
+          "control": "16px",
+          "panel": "28px"
+        },
+        "border": "1px solid",
+        "shadow": "0 22px 70px rgba(16, 32, 61, 0.18)",
+        "colorRecipe": {
+          "background": "#EEF4FF",
+          "surface": "#DCE8FF",
+          "text": "#10203D",
+          "mutedText": "#40516E",
+          "accent": "#0B5CAD",
+          "accentText": "#FFFFFF",
+          "border": "#A9BFE0",
+          "focus": "#0B5CAD",
+          "contrastPairs": [
+            {
+              "foreground": "#10203D",
+              "background": "#EEF4FF",
+              "ratio": 14.68,
+              "usage": "text on background"
+            },
+            {
+              "foreground": "#40516E",
+              "background": "#EEF4FF",
+              "ratio": 7.26,
+              "usage": "muted text on background"
+            },
+            {
+              "foreground": "#10203D",
+              "background": "#DCE8FF",
+              "ratio": 13.14,
+              "usage": "text on surface"
+            },
+            {
+              "foreground": "#40516E",
+              "background": "#DCE8FF",
+              "ratio": 6.5,
+              "usage": "muted text on surface"
+            },
+            {
+              "foreground": "#FFFFFF",
+              "background": "#0B5CAD",
+              "ratio": 6.67,
+              "usage": "accent text on accent"
+            },
+            {
+              "foreground": "#0B5CAD",
+              "background": "#EEF4FF",
+              "ratio": 6.04,
+              "usage": "accent text on background"
+            },
+            {
+              "foreground": "#0B5CAD",
+              "background": "#EEF4FF",
+              "ratio": 6.04,
+              "usage": "focus ring on background"
+            }
+          ]
+        },
+        "density": 4,
+        "motion": 5,
+        "layoutRules": [
+          "Limit the scene to three depth planes.",
+          "Keep every action reachable in a flat 2D fallback.",
+          "Give text panels a solid, opaque surface."
+        ],
+        "do": ["Make depth optional and readable.", "Respect reduced-motion settings."],
+        "dont": [
+          "Put body text in a moving 3D layer.",
+          "Use motion as the only cue for hierarchy."
+        ],
+        "a11yRisk": "Depth and camera motion can cause discomfort and make focus and z-order unpredictable."
+      },
+      "screenshots": [
+        {
+          "width": 375,
+          "path": "/Users/josephbrendan/Documents/fr-test-apps/shop-app/.fittingroom/captures/auth/login/375.png"
+        },
+        {
+          "width": 768,
+          "path": "/Users/josephbrendan/Documents/fr-test-apps/shop-app/.fittingroom/captures/auth/login/768.png"
+        },
+        {
+          "width": 1440,
+          "path": "/Users/josephbrendan/Documents/fr-test-apps/shop-app/.fittingroom/captures/auth/login/1440.png"
+        }
+      ],
+      "contentInventory": [
+        {
+          "role": "heading",
+          "text": "Welcome back to Northwind"
+        },
+        {
+          "role": "textbox",
+          "text": "Email"
+        },
+        {
+          "role": "textbox",
+          "text": "Password"
+        },
+        {
+          "role": "button",
+          "text": "Log in"
+        }
+      ],
+      "designSystem": {
+        "status": "connected",
+        "sources": ["tailwind-v4", "shadcn"],
+        "tokens": {
+          "color": {
+            "brand": "#0f766e",
+            "brand-dark": "#115e59",
+            "ink": "#0d2b28",
+            "paper": "#f4fbf9",
+            "card": "#ffffff",
+            "line": "#d7e3df",
+            "background": "#f4fbf9",
+            "foreground": "#0d2b28",
+            "card-foreground": "#0d2b28",
+            "primary": "#0f766e",
+            "primary-foreground": "#ffffff",
+            "secondary": "#d9f0eb",
+            "secondary-foreground": "#0d2b28",
+            "muted": "#eef7f4",
+            "muted-foreground": "#4f6b66",
+            "accent": "#f59e0b",
+            "accent-foreground": "#3a2500",
+            "destructive": "#b42318",
+            "border": "#d7e3df",
+            "input": "#d7e3df",
+            "ring": "#0f766e"
+          },
+          "space": {
+            "1": "4px",
+            "2": "8px",
+            "3": "12px",
+            "4": "16px",
+            "6": "24px",
+            "8": "32px",
+            "12": "48px",
+            "16": "64px"
+          },
+          "radius": {
+            "control": "10px",
+            "card": "18px"
+          },
+          "font": {
+            "sans": "\"Inter\", system-ui, sans-serif"
+          },
+          "fontSize": {
+            "sm": "0.875rem",
+            "base": "1rem",
+            "lg": "1.25rem",
+            "2xl": "2rem",
+            "4xl": "3rem"
+          },
+          "shadow": {
+            "card": "0 18px 40px rgba(15, 118, 110, 0.14)"
+          }
+        },
+        "components": ["button"],
+        "missing": [],
+        "summary": "Design system connected: Tailwind v4 @theme, shadcn/ui."
+      },
+      "writingRules": [
+        "Write one file per variant.",
+        "Use React and Tailwind.",
+        "Use project components where they exist.",
+        "Keep all real content.",
+        "Do not use placeholder or lorem copy."
+      ]
+    }
+  ]
+}

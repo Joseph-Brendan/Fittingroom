@@ -1,0 +1,31 @@
+{
+  "currentPage": "/dashboard",
+  "currentGroup": "dashboard",
+  "defaultScope": {
+    "id": "dashboard",
+    "name": "Dashboard",
+    "routes": ["/analytics", "/dashboard"]
+  },
+  "defaultSource": "dev-server",
+  "needsChoice": false,
+  "scopes": [
+    {
+      "id": "marketing",
+      "name": "Marketing",
+      "routes": ["/"],
+      "selected": false
+    },
+    {
+      "id": "dashboard",
+      "name": "Dashboard",
+      "routes": ["/analytics", "/dashboard"],
+      "selected": true
+    },
+    {
+      "id": "app",
+      "name": "App screens",
+      "routes": ["/reports"],
+      "selected": false
+    }
+  ]
+}

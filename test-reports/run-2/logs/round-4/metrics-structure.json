@@ -1,0 +1,17 @@
+{
+  "scope": "dashboard",
+  "page": "/dashboard",
+  "density": "dense",
+  "blocks": [
+    {
+      "id": "fr-div-1",
+      "label": "Team dashboard",
+      "kind": "other",
+      "order": 1,
+      "visible": true,
+      "priority": "normal",
+      "group": null,
+      "collapse": "none"
+    }
+  ]
+}

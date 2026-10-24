@@ -1,0 +1,1833 @@
+{
+  "app": "metrics-dashboard",
+  "steps": {
+    "scopes": {
+      "currentPage": "/dashboard",
+      "currentGroup": "dashboard",
+      "defaultScope": {
+        "id": "dashboard",
+        "name": "Dashboard",
+        "routes": ["/analytics", "/dashboard"]
+      },
+      "defaultSource": "dev-server",
+      "needsChoice": false,
+      "scopes": [
+        {
+          "id": "marketing",
+          "name": "Marketing",
+          "routes": ["/"],
+          "selected": false
+        },
+        {
+          "id": "dashboard",
+          "name": "Dashboard",
+          "routes": ["/analytics", "/dashboard"],
+          "selected": true
+        },
+        {
+          "id": "app",
+          "name": "App screens",
+          "routes": ["/reports"],
+          "selected": false
+        }
+      ]
+    },
+    "board": {
+      "version": 1,
+      "pid": 58037,
+      "port": 4173,
+      "token": "t9gE2O3IInvcwNLgT3wEXqhDhLBTauth",
+      "url": "http://127.0.0.1:4173/?token=t9gE2O3IInvcwNLgT3wEXqhDhLBTauth",
+      "scopeId": "marketing",
+      "createdAt": "2026-10-24T22:35:20.858Z",
+      "started": true
+    },
+    "generateRequest": {
+      "timedOut": false,
+      "board": {
+        "version": 2,
+        "scope": {
+          "id": "marketing",
+          "name": "Marketing"
+        },
+        "scopes": [
+          {
+            "id": "marketing",
+            "name": "Marketing"
+          },
+          {
+            "id": "dashboard",
+            "name": "Dashboard"
+          },
+          {
+            "id": "app",
+            "name": "App screens"
+          }
+        ],
+        "round": 0,
+        "status": "generating",
+        "variants": [],
+        "findings": [],
+        "previousRounds": [],
+        "selected": null,
+        "approved": null
+      },
+      "request": {
+        "id": "req-712b9a09",
+        "type": "generate",
+        "slot": null,
+        "scopeId": "marketing",
+        "round": 0,
+        "createdAt": "2026-10-24T22:35:21.576Z"
+      }
+    },
+    "audit": {
+      "summary": {
+        "id": "dashboard",
+        "name": "Dashboard",
+        "pages": ["/analytics", "/dashboard"],
+        "estimatedSeconds": 12,
+        "message": "Capturing: Dashboard (2 pages): /analytics /dashboard, at 375, 768 and 1440 px."
+      },
+      "screenshots": [
+        "/Users/josephbrendan/Documents/fr-test-apps/metrics-dashboard/.fittingroom/captures/dashboard/analytics/375.png",
+        "/Users/josephbrendan/Documents/fr-test-apps/metrics-dashboard/.fittingroom/captures/dashboard/analytics/768.png",
+        "/Users/josephbrendan/Documents/fr-test-apps/metrics-dashboard/.fittingroom/captures/dashboard/analytics/1440.png",
+        "/Users/josephbrendan/Documents/fr-test-apps/metrics-dashboard/.fittingroom/captures/dashboard/dashboard/375.png",
+        "/Users/josephbrendan/Documents/fr-test-apps/metrics-dashboard/.fittingroom/captures/dashboard/dashboard/768.png",
+        "/Users/josephbrendan/Documents/fr-test-apps/metrics-dashboard/.fittingroom/captures/dashboard/dashboard/1440.png"
+      ],
+      "pages": [
+        {
+          "path": "/analytics",
+          "url": "http://127.0.0.1:3200/analytics",
+          "screenshots": [
+            {
+              "width": 375,
+              "path": "/Users/josephbrendan/Documents/fr-test-apps/metrics-dashboard/.fittingroom/captures/dashboard/analytics/375.png"
+            },
+            {
+              "width": 768,
+              "path": "/Users/josephbrendan/Documents/fr-test-apps/metrics-dashboard/.fittingroom/captures/dashboard/analytics/768.png"
+            },
+            {
+              "width": 1440,
+              "path": "/Users/josephbrendan/Documents/fr-test-apps/metrics-dashboard/.fittingroom/captures/dashboard/analytics/1440.png"
+            }
+          ],
+          "accessibilityTreePath": "/Users/josephbrendan/Documents/fr-test-apps/metrics-dashboard/.fittingroom/captures/dashboard/analytics/accessibility-tree.json",
+          "slopEvidencePath": "/Users/josephbrendan/Documents/fr-test-apps/metrics-dashboard/.fittingroom/captures/dashboard/analytics/slop-evidence.json"
+        },
+        {
+          "path": "/dashboard",
+          "url": "http://127.0.0.1:3200/dashboard",
+          "screenshots": [
+            {
+              "width": 375,
+              "path": "/Users/josephbrendan/Documents/fr-test-apps/metrics-dashboard/.fittingroom/captures/dashboard/dashboard/375.png"
+            },
+            {
+              "width": 768,
+              "path": "/Users/josephbrendan/Documents/fr-test-apps/metrics-dashboard/.fittingroom/captures/dashboard/dashboard/768.png"
+            },
+            {
+              "width": 1440,
+              "path": "/Users/josephbrendan/Documents/fr-test-apps/metrics-dashboard/.fittingroom/captures/dashboard/dashboard/1440.png"
+            }
+          ],
+          "accessibilityTreePath": "/Users/josephbrendan/Documents/fr-test-apps/metrics-dashboard/.fittingroom/captures/dashboard/dashboard/accessibility-tree.json",
+          "slopEvidencePath": "/Users/josephbrendan/Documents/fr-test-apps/metrics-dashboard/.fittingroom/captures/dashboard/dashboard/slop-evidence.json"
+        }
+      ],
+      "critiqueBrief": "Scope: Dashboard (dashboard).\nPages captured: /analytics, /dashboard.\nAutomated findings: 4.\nCitations: wcag22-2.5.8.\nAutomated issues:\n- /analytics: Target is smaller than 24 by 24 CSS pixels [wcag22-2.5.8], severity 2.\n- /analytics: Target is smaller than 24 by 24 CSS pixels [wcag22-2.5.8], severity 2.\n- /analytics: Target is smaller than 24 by 24 CSS pixels [wcag22-2.5.8], severity 2.\n- /analytics: Target is smaller than 24 by 24 CSS pixels [wcag22-2.5.8], severity 2.\nPages to review:\n- /analytics: /Users/josephbrendan/Documents/fr-test-apps/metrics-dashboard/.fittingroom/captures/dashboard/analytics/375.png, /Users/josephbrendan/Documents/fr-test-apps/metrics-dashboard/.fittingroom/captures/dashboard/analytics/768.png, /Users/josephbrendan/Documents/fr-test-apps/metrics-dashboard/.fittingroom/captures/dashboard/analytics/1440.png\n- a \"Home\" [no attributes; confirm: none; state: none]\n- a \"Dashboard\" [no attributes; confirm: none; state: none]\n- a \"Analytics\" [no attributes; confirm: none; state: none]\n- a \"Reports\" [no attributes; confirm: none; state: none]\n- text \"Metrics\"\n- text \"Analytics\"\n- text \"Compare acquisition, activation and retention.\"\n- text \"Weekly funnel\"\n- text \"Step\"\n- text \"People\"\n- text \"Change\"\n- text \"Visited\"\n- text \"24,810\"\n- text \"+8.2%\"\n- text \"Signed up\"\n- text \"6,240\"\n- text \"+4.1%\"\n- text \"Activated\"\n- text \"4,182\"\n- text \"+2.6%\"\n- text \"Returned\"\n- text \"2,940\"\n- text \"-0.8%\"\n- text \"Channels\"\n- /dashboard: /Users/josephbrendan/Documents/fr-test-apps/metrics-dashboard/.fittingroom/captures/dashboard/dashboard/375.png, /Users/josephbrendan/Documents/fr-test-apps/metrics-dashboard/.fittingroom/captures/dashboard/dashboard/768.png, /Users/josephbrendan/Documents/fr-test-apps/metrics-dashboard/.fittingroom/captures/dashboard/dashboard/1440.png\n- text \"Dashboard\"\n- text \"The last seven days across every workspace.\"\n- text \"Page views\"\n- text \"128,420\"\n- text \"Sessions\"\n- text \"42,118\"\n- text \"Bounce rate\"\n- text \"31.4%\"\n- text \"Median load\"\n- text \"1.8s\"\n- text \"Traffic by day\"\n- text \"Mon\"\n- text \"Tue\"\n- text \"Wed\"\n- text \"Thu\"\n- text \"Fri\"\n- text \"Sat\"\n- text \"Sun\"\nReview every screenshot against Nielsen's 10 heuristics.\nCite only citation ids from packages/citations/registry.json. Do not invent citation ids or URLs.\nRate severity on the NN/g 0 to 4 scale.\nSet confidence to \"judged\".\nSubmit the findings with fr_submit_findings.\nChecks that hit errors:\n- None.",
+      "errors": [],
+      "findings": [
+        {
+          "id": "analytics-target-size-1",
+          "title": "Target is smaller than 24 by 24 CSS pixels",
+          "citation": "wcag22-2.5.8",
+          "severity": 2,
+          "confidence": "measured",
+          "evidence": {
+            "selector": "a",
+            "screenshotPath": "/Users/josephbrendan/Documents/fr-test-apps/metrics-dashboard/.fittingroom/audits/dashboard/analytics/01-wcag22-2-5-8.png",
+            "measuredValue": "38.25 x 21 CSS pixels (minimum 24 x 24)"
+          },
+          "fix": "Make the control at least 24 by 24 CSS pixels, or add enough spacing around it.",
+          "page": "/analytics"
+        },
+        {
+          "id": "analytics-target-size-2",
+          "title": "Target is smaller than 24 by 24 CSS pixels",
+          "citation": "wcag22-2.5.8",
+          "severity": 2,
+          "confidence": "measured",
+          "evidence": {
+            "selector": "a",
+            "screenshotPath": "/Users/josephbrendan/Documents/fr-test-apps/metrics-dashboard/.fittingroom/audits/dashboard/analytics/02-wcag22-2-5-8.png",
+            "measuredValue": "70.44 x 21 CSS pixels (minimum 24 x 24)"
+          },
+          "fix": "Make the control at least 24 by 24 CSS pixels, or add enough spacing around it.",
+          "page": "/analytics"
+        },
+        {
+          "id": "analytics-target-size-3",
+          "title": "Target is smaller than 24 by 24 CSS pixels",
+          "citation": "wcag22-2.5.8",
+          "severity": 2,
+          "confidence": "measured",
+          "evidence": {
+            "selector": "a",
+            "screenshotPath": "/Users/josephbrendan/Documents/fr-test-apps/metrics-dashboard/.fittingroom/audits/dashboard/analytics/03-wcag22-2-5-8.png",
+            "measuredValue": "58.83 x 21 CSS pixels (minimum 24 x 24)"
+          },
+          "fix": "Make the control at least 24 by 24 CSS pixels, or add enough spacing around it.",
+          "page": "/analytics"
+        },
+        {
+          "id": "analytics-target-size-4",
+          "title": "Target is smaller than 24 by 24 CSS pixels",
+          "citation": "wcag22-2.5.8",
+          "severity": 2,
+          "confidence": "measured",
+          "evidence": {
+            "selector": "a",
+            "screenshotPath": "/Users/josephbrendan/Documents/fr-test-apps/metrics-dashboard/.fittingroom/audits/dashboard/analytics/04-wcag22-2-5-8.png",
+            "measuredValue": "50.45 x 21 CSS pixels (minimum 24 x 24)"
+          },
+          "fix": "Make the control at least 24 by 24 CSS pixels, or add enough spacing around it.",
+          "page": "/analytics"
+        }
+      ]
+    },
+    "judged": {
+      "counts": {
+        "automated": 4,
+        "judged": 1,
+        "total": 5
+      },
+      "findings": [
+        {
+          "id": "analytics-target-size-1",
+          "title": "Target is smaller than 24 by 24 CSS pixels",
+          "citation": "wcag22-2.5.8",
+          "severity": 2,
+          "confidence": "measured",
+          "evidence": {
+            "selector": "a",
+            "screenshotPath": "/Users/josephbrendan/Documents/fr-test-apps/metrics-dashboard/.fittingroom/audits/dashboard/analytics/01-wcag22-2-5-8.png",
+            "measuredValue": "38.25 x 21 CSS pixels (minimum 24 x 24)"
+          },
+          "fix": "Make the control at least 24 by 24 CSS pixels, or add enough spacing around it.",
+          "page": "/analytics"
+        },
+        {
+          "id": "analytics-target-size-2",
+          "title": "Target is smaller than 24 by 24 CSS pixels",
+          "citation": "wcag22-2.5.8",
+          "severity": 2,
+          "confidence": "measured",
+          "evidence": {
+            "selector": "a",
+            "screenshotPath": "/Users/josephbrendan/Documents/fr-test-apps/metrics-dashboard/.fittingroom/audits/dashboard/analytics/02-wcag22-2-5-8.png",
+            "measuredValue": "70.44 x 21 CSS pixels (minimum 24 x 24)"
+          },
+          "fix": "Make the control at least 24 by 24 CSS pixels, or add enough spacing around it.",
+          "page": "/analytics"
+        },
+        {
+          "id": "analytics-target-size-3",
+          "title": "Target is smaller than 24 by 24 CSS pixels",
+          "citation": "wcag22-2.5.8",
+          "severity": 2,
+          "confidence": "measured",
+          "evidence": {
+            "selector": "a",
+            "screenshotPath": "/Users/josephbrendan/Documents/fr-test-apps/metrics-dashboard/.fittingroom/audits/dashboard/analytics/03-wcag22-2-5-8.png",
+            "measuredValue": "58.83 x 21 CSS pixels (minimum 24 x 24)"
+          },
+          "fix": "Make the control at least 24 by 24 CSS pixels, or add enough spacing around it.",
+          "page": "/analytics"
+        },
+        {
+          "id": "analytics-target-size-4",
+          "title": "Target is smaller than 24 by 24 CSS pixels",
+          "citation": "wcag22-2.5.8",
+          "severity": 2,
+          "confidence": "measured",
+          "evidence": {
+            "selector": "a",
+            "screenshotPath": "/Users/josephbrendan/Documents/fr-test-apps/metrics-dashboard/.fittingroom/audits/dashboard/analytics/04-wcag22-2-5-8.png",
+            "measuredValue": "50.45 x 21 CSS pixels (minimum 24 x 24)"
+          },
+          "fix": "Make the control at least 24 by 24 CSS pixels, or add enough spacing around it.",
+          "page": "/analytics"
+        },
+        {
+          "id": "metrics-judged-last-updated",
+          "title": "Dashboard does not show when the data was last updated",
+          "citation": "nielsen-h1",
+          "severity": 2,
+          "confidence": "judged",
+          "evidence": {
+            "measuredValue": "No last updated time is visible on the dashboard.",
+            "screenshotPath": "/Users/josephbrendan/Documents/fr-test-apps/metrics-dashboard/.fittingroom/captures/dashboard/analytics/375.png",
+            "selector": "main"
+          },
+          "fix": "Add a last updated line near the page title."
+        }
+      ]
+    },
+    "directions": {
+      "route": "/dashboard",
+      "surface": "dashboard",
+      "slots": [
+        {
+          "slot": 1,
+          "role": "refined",
+          "direction": {
+            "slug": "refined",
+            "name": "Refined",
+            "surfaces": ["dashboard"],
+            "description": "Keep the current design and fix audit findings, spacing and hierarchy in the existing style.",
+            "modes": ["light", "deep"]
+          },
+          "screenshots": [
+            {
+              "width": 375,
+              "path": "/Users/josephbrendan/Documents/fr-test-apps/metrics-dashboard/.fittingroom/captures/dashboard/dashboard/375.png"
+            },
+            {
+              "width": 768,
+              "path": "/Users/josephbrendan/Documents/fr-test-apps/metrics-dashboard/.fittingroom/captures/dashboard/dashboard/768.png"
+            },
+            {
+              "width": 1440,
+              "path": "/Users/josephbrendan/Documents/fr-test-apps/metrics-dashboard/.fittingroom/captures/dashboard/dashboard/1440.png"
+            }
+          ],
+          "contentInventory": [
+            {
+              "role": "heading",
+              "text": "Dashboard"
+            },
+            {
+              "role": "heading",
+              "text": "Traffic by day"
+            }
+          ],
+          "designSystem": {
+            "status": "none",
+            "sources": [],
+            "tokens": {
+              "color": {},
+              "space": {},
+              "radius": {},
+              "font": {},
+              "fontSize": {},
+              "shadow": {}
+            },
+            "components": [],
+            "missing": ["color", "space", "radius", "font", "fontSize", "shadow"],
+            "summary": "Design system not found. Edits will create a new token set you can adopt later."
+          },
+          "writingRules": [
+            "Write one file per variant.",
+            "Use React and Tailwind.",
+            "Use project components where they exist.",
+            "Keep all real content.",
+            "Do not use placeholder or lorem copy."
+          ]
+        },
+        {
+          "slot": 2,
+          "role": "native",
+          "direction": {
+            "slug": "data-dense-utilitarian",
+            "name": "Data-Dense Utilitarian",
+            "surfaces": ["dashboard"],
+            "description": "Tight grids, monospaced numbers and tables built for scanning.",
+            "bestFor": ["ops", "finance", "admin panels"],
+            "typePair": {
+              "display": "IBM Plex Sans, system-ui, sans-serif",
+              "body": "IBM Plex Mono, monospace"
+            },
+            "typeScale": {
+              "base": 14,
+              "ratio": 1.2,
+              "steps": [11, 12, 14, 17, 20, 24]
+            },
+            "radius": {
+              "control": "2px",
+              "panel": "4px"
+            },
+            "border": "1px solid",
+            "shadow": "none",
+            "colorRecipe": {
+              "background": "#FFFFFF",
+              "surface": "#F8FAFC",
+              "text": "#111827",
+              "mutedText": "#475569",
+              "accent": "#1D4ED8",
+              "accentText": "#FFFFFF",
+              "border": "#CBD5E1",
+              "focus": "#1D4ED8",
+              "contrastPairs": [
+                {
+                  "foreground": "#111827",
+                  "background": "#FFFFFF",
+                  "ratio": 17.74,
+                  "usage": "text on background"
+                },
+                {
+                  "foreground": "#475569",
+                  "background": "#FFFFFF",
+                  "ratio": 7.58,
+                  "usage": "muted text on background"
+                },
+                {
+                  "foreground": "#111827",
+                  "background": "#F8FAFC",
+                  "ratio": 16.96,
+                  "usage": "text on surface"
+                },
+                {
+                  "foreground": "#475569",
+                  "background": "#F8FAFC",
+                  "ratio": 7.24,
+                  "usage": "muted text on surface"
+                },
+                {
+                  "foreground": "#FFFFFF",
+                  "background": "#1D4ED8",
+                  "ratio": 6.7,
+                  "usage": "accent text on accent"
+                },
+                {
+                  "foreground": "#1D4ED8",
+                  "background": "#FFFFFF",
+                  "ratio": 6.7,
+                  "usage": "accent text on background"
+                },
+                {
+                  "foreground": "#1D4ED8",
+                  "background": "#FFFFFF",
+                  "ratio": 6.7,
+                  "usage": "focus ring on background"
+                }
+              ]
+            },
+            "density": 8,
+            "motion": 1,
+            "layoutRules": [
+              "Align numbers to the right and labels to the left.",
+              "Keep table headers sticky and visible.",
+              "Use one compact row height across the table."
+            ],
+            "do": ["Support keyboard row selection.", "Use tabular numerals for metrics."],
+            "dont": ["Shrink row targets below 24px.", "Hide filters in nested menus."],
+            "a11yRisk": "New users can be overwhelmed by density, and compact rows can shrink targets below the AA minimum."
+          },
+          "screenshots": [
+            {
+              "width": 375,
+              "path": "/Users/josephbrendan/Documents/fr-test-apps/metrics-dashboard/.fittingroom/captures/dashboard/dashboard/375.png"
+            },
+            {
+              "width": 768,
+              "path": "/Users/josephbrendan/Documents/fr-test-apps/metrics-dashboard/.fittingroom/captures/dashboard/dashboard/768.png"
+            },
+            {
+              "width": 1440,
+              "path": "/Users/josephbrendan/Documents/fr-test-apps/metrics-dashboard/.fittingroom/captures/dashboard/dashboard/1440.png"
+            }
+          ],
+          "contentInventory": [
+            {
+              "role": "heading",
+              "text": "Dashboard"
+            },
+            {
+              "role": "heading",
+              "text": "Traffic by day"
+            }
+          ],
+          "designSystem": {
+            "status": "none",
+            "sources": [],
+            "tokens": {
+              "color": {},
+              "space": {},
+              "radius": {},
+              "font": {},
+              "fontSize": {},
+              "shadow": {}
+            },
+            "components": [],
+            "missing": ["color", "space", "radius", "font", "fontSize", "shadow"],
+            "summary": "Design system not found. Edits will create a new token set you can adopt later."
+          },
+          "writingRules": [
+            "Write one file per variant.",
+            "Use React and Tailwind.",
+            "Use project components where they exist.",
+            "Keep all real content.",
+            "Do not use placeholder or lorem copy."
+          ]
+        },
+        {
+          "slot": 3,
+          "role": "bold",
+          "direction": {
+            "slug": "command-center",
+            "name": "Command Center",
+            "surfaces": ["dashboard"],
+            "description": "Dark canvas, hairline grids and clear live status lights.",
+            "bestFor": ["logistics", "monitoring", "IoT"],
+            "typePair": {
+              "display": "Inter, system-ui, sans-serif",
+              "body": "JetBrains Mono, monospace"
+            },
+            "typeScale": {
+              "base": 15,
+              "ratio": 1.25,
+              "steps": [12, 13, 15, 19, 23, 29]
+            },
+            "radius": {
+              "control": "4px",
+              "panel": "8px"
+            },
+            "border": "1px solid",
+            "shadow": "0 0 0 1px #2B3A4A, 0 12px 40px rgba(0, 0, 0, 0.5)",
+            "colorRecipe": {
+              "background": "#070B10",
+              "surface": "#0F1620",
+              "text": "#F1F5F9",
+              "mutedText": "#B8C4D4",
+              "accent": "#7DD3FC",
+              "accentText": "#06121A",
+              "border": "#2B3A4A",
+              "focus": "#7DD3FC",
+              "contrastPairs": [
+                {
+                  "foreground": "#F1F5F9",
+                  "background": "#070B10",
+                  "ratio": 18.01,
+                  "usage": "text on background"
+                },
+                {
+                  "foreground": "#B8C4D4",
+                  "background": "#070B10",
+                  "ratio": 11.17,
+                  "usage": "muted text on background"
+                },
+                {
+                  "foreground": "#F1F5F9",
+                  "background": "#0F1620",
+                  "ratio": 16.58,
+                  "usage": "text on surface"
+                },
+                {
+                  "foreground": "#B8C4D4",
+                  "background": "#0F1620",
+                  "ratio": 10.28,
+                  "usage": "muted text on surface"
+                },
+                {
+                  "foreground": "#06121A",
+                  "background": "#7DD3FC",
+                  "ratio": 11.36,
+                  "usage": "accent text on accent"
+                },
+                {
+                  "foreground": "#7DD3FC",
+                  "background": "#070B10",
+                  "ratio": 11.83,
+                  "usage": "accent text on background"
+                },
+                {
+                  "foreground": "#7DD3FC",
+                  "background": "#070B10",
+                  "ratio": 11.83,
+                  "usage": "focus ring on background"
+                }
+              ]
+            },
+            "density": 7,
+            "motion": 5,
+            "layoutRules": [
+              "Use a hairline grid to align every panel.",
+              "Keep status lights large enough to read without color.",
+              "Reserve the brightest accent for live alerts."
+            ],
+            "do": [
+              "Pair status color with a label and icon.",
+              "Keep critical metrics above the fold."
+            ],
+            "dont": ["Use neon value as the only status cue.", "Animate every live number."],
+            "a11yRisk": "Neon status colors and continuous animation can fail contrast and distract from urgent changes."
+          },
+          "screenshots": [
+            {
+              "width": 375,
+              "path": "/Users/josephbrendan/Documents/fr-test-apps/metrics-dashboard/.fittingroom/captures/dashboard/dashboard/375.png"
+            },
+            {
+              "width": 768,
+              "path": "/Users/josephbrendan/Documents/fr-test-apps/metrics-dashboard/.fittingroom/captures/dashboard/dashboard/768.png"
+            },
+            {
+              "width": 1440,
+              "path": "/Users/josephbrendan/Documents/fr-test-apps/metrics-dashboard/.fittingroom/captures/dashboard/dashboard/1440.png"
+            }
+          ],
+          "contentInventory": [
+            {
+              "role": "heading",
+              "text": "Dashboard"
+            },
+            {
+              "role": "heading",
+              "text": "Traffic by day"
+            }
+          ],
+          "designSystem": {
+            "status": "none",
+            "sources": [],
+            "tokens": {
+              "color": {},
+              "space": {},
+              "radius": {},
+              "font": {},
+              "fontSize": {},
+              "shadow": {}
+            },
+            "components": [],
+            "missing": ["color", "space", "radius", "font", "fontSize", "shadow"],
+            "summary": "Design system not found. Edits will create a new token set you can adopt later."
+          },
+          "writingRules": [
+            "Write one file per variant.",
+            "Use React and Tailwind.",
+            "Use project components where they exist.",
+            "Keep all real content.",
+            "Do not use placeholder or lorem copy."
+          ]
+        },
+        {
+          "slot": 4,
+          "role": "wildcard",
+          "direction": {
+            "slug": "widget-bento-dashboard",
+            "name": "Widget / Bento Dashboard",
+            "surfaces": ["dashboard"],
+            "description": "User-arranged tiles with clear boundaries and flexible spans.",
+            "bestFor": ["personal dashboards", "CRMs"],
+            "typePair": {
+              "display": "Plus Jakarta Sans, system-ui, sans-serif",
+              "body": "Inter, system-ui, sans-serif"
+            },
+            "typeScale": {
+              "base": 15,
+              "ratio": 1.25,
+              "steps": [12, 13, 15, 19, 23, 29]
+            },
+            "radius": {
+              "control": "10px",
+              "panel": "18px"
+            },
+            "border": "1px solid",
+            "shadow": "0 6px 18px rgba(20, 32, 26, 0.08)",
+            "colorRecipe": {
+              "background": "#F7F8F4",
+              "surface": "#FFFFFF",
+              "text": "#14201A",
+              "mutedText": "#4D5B52",
+              "accent": "#166534",
+              "accentText": "#FFFFFF",
+              "border": "#C7D2C9",
+              "focus": "#166534",
+              "contrastPairs": [
+                {
+                  "foreground": "#14201A",
+                  "background": "#F7F8F4",
+                  "ratio": 15.73,
+                  "usage": "text on background"
+                },
+                {
+                  "foreground": "#4D5B52",
+                  "background": "#F7F8F4",
+                  "ratio": 6.71,
+                  "usage": "muted text on background"
+                },
+                {
+                  "foreground": "#14201A",
+                  "background": "#FFFFFF",
+                  "ratio": 16.78,
+                  "usage": "text on surface"
+                },
+                {
+                  "foreground": "#4D5B52",
+                  "background": "#FFFFFF",
+                  "ratio": 7.16,
+                  "usage": "muted text on surface"
+                },
+                {
+                  "foreground": "#FFFFFF",
+                  "background": "#166534",
+                  "ratio": 7.13,
+                  "usage": "accent text on accent"
+                },
+                {
+                  "foreground": "#166534",
+                  "background": "#F7F8F4",
+                  "ratio": 6.68,
+                  "usage": "accent text on background"
+                },
+                {
+                  "foreground": "#166534",
+                  "background": "#F7F8F4",
+                  "ratio": 6.68,
+                  "usage": "focus ring on background"
+                }
+              ]
+            },
+            "density": 6,
+            "motion": 3,
+            "layoutRules": [
+              "Snap tiles to a fixed grid with clear minimum spans.",
+              "Keep headers and drag handles at the same position in every tile.",
+              "Use consistent tile heights within each row."
+            ],
+            "do": ["Make drag handles keyboard operable.", "Announce live tile updates politely."],
+            "dont": [
+              "Put scroll areas inside short tiles.",
+              "Let live updates move focused controls."
+            ],
+            "a11yRisk": "Drag-only arrangement and live tiles can break keyboard order and flood screen readers with updates."
+          },
+          "screenshots": [
+            {
+              "width": 375,
+              "path": "/Users/josephbrendan/Documents/fr-test-apps/metrics-dashboard/.fittingroom/captures/dashboard/dashboard/375.png"
+            },
+            {
+              "width": 768,
+              "path": "/Users/josephbrendan/Documents/fr-test-apps/metrics-dashboard/.fittingroom/captures/dashboard/dashboard/768.png"
+            },
+            {
+              "width": 1440,
+              "path": "/Users/josephbrendan/Documents/fr-test-apps/metrics-dashboard/.fittingroom/captures/dashboard/dashboard/1440.png"
+            }
+          ],
+          "contentInventory": [
+            {
+              "role": "heading",
+              "text": "Dashboard"
+            },
+            {
+              "role": "heading",
+              "text": "Traffic by day"
+            }
+          ],
+          "designSystem": {
+            "status": "none",
+            "sources": [],
+            "tokens": {
+              "color": {},
+              "space": {},
+              "radius": {},
+              "font": {},
+              "fontSize": {},
+              "shadow": {}
+            },
+            "components": [],
+            "missing": ["color", "space", "radius", "font", "fontSize", "shadow"],
+            "summary": "Design system not found. Edits will create a new token set you can adopt later."
+          },
+          "writingRules": [
+            "Write one file per variant.",
+            "Use React and Tailwind.",
+            "Use project components where they exist.",
+            "Keep all real content.",
+            "Do not use placeholder or lorem copy."
+          ]
+        }
+      ]
+    },
+    "registered": [
+      {
+        "accepted": true,
+        "errors": [],
+        "newFailures": [],
+        "previewUrl": "http://127.0.0.1:50407/__fittingroom/preview/refined",
+        "renderErrors": [],
+        "screenshotPath": "/Users/josephbrendan/Documents/fr-test-apps/metrics-dashboard/.fittingroom/variants/refined/preview.png",
+        "slug": "refined",
+        "rationale": "refined keeps the dashboard content and improves the page.",
+        "typecheck": {
+          "errors": [],
+          "passed": true
+        }
+      },
+      {
+        "accepted": true,
+        "errors": [],
+        "newFailures": [],
+        "previewUrl": "http://127.0.0.1:50412/__fittingroom/preview/native",
+        "renderErrors": [],
+        "screenshotPath": "/Users/josephbrendan/Documents/fr-test-apps/metrics-dashboard/.fittingroom/variants/native/preview.png",
+        "slug": "native",
+        "rationale": "native keeps the dashboard content and improves the page.",
+        "typecheck": {
+          "errors": [],
+          "passed": true
+        }
+      },
+      {
+        "accepted": true,
+        "errors": [],
+        "newFailures": [],
+        "previewUrl": "http://127.0.0.1:50418/__fittingroom/preview/bold",
+        "renderErrors": [],
+        "screenshotPath": "/Users/josephbrendan/Documents/fr-test-apps/metrics-dashboard/.fittingroom/variants/bold/preview.png",
+        "slug": "bold",
+        "rationale": "bold keeps the dashboard content and improves the page.",
+        "typecheck": {
+          "errors": [],
+          "passed": true
+        }
+      },
+      {
+        "accepted": true,
+        "errors": [],
+        "newFailures": [],
+        "previewUrl": "http://127.0.0.1:50423/__fittingroom/preview/wildcard",
+        "renderErrors": [],
+        "screenshotPath": "/Users/josephbrendan/Documents/fr-test-apps/metrics-dashboard/.fittingroom/variants/wildcard/preview.png",
+        "slug": "wildcard",
+        "rationale": "wildcard keeps the dashboard content and improves the page.",
+        "typecheck": {
+          "errors": [],
+          "passed": true
+        }
+      }
+    ],
+    "approval": {
+      "timedOut": false,
+      "board": {
+        "version": 2,
+        "scope": {
+          "id": "dashboard",
+          "name": "Dashboard"
+        },
+        "page": "/dashboard",
+        "scopes": [
+          {
+            "id": "marketing",
+            "name": "Marketing"
+          },
+          {
+            "id": "dashboard",
+            "name": "Dashboard"
+          },
+          {
+            "id": "app",
+            "name": "App screens"
+          }
+        ],
+        "surface": "dashboard",
+        "round": 1,
+        "status": "approved",
+        "variants": [
+          {
+            "slug": "refined",
+            "name": "Refined",
+            "rationale": "refined keeps the dashboard content and improves the page.",
+            "slot": 1,
+            "pinned": false,
+            "mode": "light",
+            "role": "refined",
+            "filePath": "variants/refined.tsx",
+            "previewPath": ".fittingroom/previews/refined/index.html",
+            "screenshotPath": ".fittingroom/variants/refined/preview.png"
+          },
+          {
+            "slug": "native",
+            "name": "Data-Dense Utilitarian",
+            "rationale": "native keeps the dashboard content and improves the page.",
+            "slot": 2,
+            "pinned": false,
+            "role": "native",
+            "filePath": "variants/native.tsx",
+            "previewPath": ".fittingroom/previews/native/index.html",
+            "screenshotPath": ".fittingroom/variants/native/preview.png"
+          },
+          {
+            "slug": "bold",
+            "name": "Command Center",
+            "rationale": "bold keeps the dashboard content and improves the page.",
+            "slot": 3,
+            "pinned": false,
+            "role": "bold",
+            "filePath": "variants/bold.tsx",
+            "previewPath": ".fittingroom/previews/bold/index.html",
+            "screenshotPath": ".fittingroom/variants/bold/preview.png"
+          },
+          {
+            "slug": "wildcard",
+            "name": "Widget / Bento Dashboard",
+            "rationale": "wildcard keeps the dashboard content and improves the page.",
+            "slot": 4,
+            "pinned": false,
+            "role": "wildcard",
+            "filePath": "variants/wildcard.tsx",
+            "previewPath": ".fittingroom/previews/wildcard/index.html",
+            "screenshotPath": ".fittingroom/variants/wildcard/preview.png"
+          }
+        ],
+        "findings": [
+          {
+            "id": "analytics-target-size-1",
+            "title": "Target is smaller than 24 by 24 CSS pixels",
+            "citation": "wcag22-2.5.8",
+            "citationUrl": "https://www.w3.org/WAI/WCAG22/Understanding/target-size-minimum.html",
+            "severity": 2,
+            "confidence": "measured",
+            "variantSlug": "",
+            "fix": "Make the control at least 24 by 24 CSS pixels, or add enough spacing around it.",
+            "page": "/analytics"
+          },
+          {
+            "id": "analytics-target-size-2",
+            "title": "Target is smaller than 24 by 24 CSS pixels",
+            "citation": "wcag22-2.5.8",
+            "citationUrl": "https://www.w3.org/WAI/WCAG22/Understanding/target-size-minimum.html",
+            "severity": 2,
+            "confidence": "measured",
+            "variantSlug": "",
+            "fix": "Make the control at least 24 by 24 CSS pixels, or add enough spacing around it.",
+            "page": "/analytics"
+          },
+          {
+            "id": "analytics-target-size-3",
+            "title": "Target is smaller than 24 by 24 CSS pixels",
+            "citation": "wcag22-2.5.8",
+            "citationUrl": "https://www.w3.org/WAI/WCAG22/Understanding/target-size-minimum.html",
+            "severity": 2,
+            "confidence": "measured",
+            "variantSlug": "",
+            "fix": "Make the control at least 24 by 24 CSS pixels, or add enough spacing around it.",
+            "page": "/analytics"
+          },
+          {
+            "id": "analytics-target-size-4",
+            "title": "Target is smaller than 24 by 24 CSS pixels",
+            "citation": "wcag22-2.5.8",
+            "citationUrl": "https://www.w3.org/WAI/WCAG22/Understanding/target-size-minimum.html",
+            "severity": 2,
+            "confidence": "measured",
+            "variantSlug": "",
+            "fix": "Make the control at least 24 by 24 CSS pixels, or add enough spacing around it.",
+            "page": "/analytics"
+          }
+        ],
+        "previousRounds": [],
+        "selected": {
+          "slot": 1,
+          "slug": "refined"
+        },
+        "approved": {
+          "slot": 1,
+          "slug": "refined",
+          "round": 1
+        }
+      },
+      "approval": {
+        "slot": 1,
+        "slug": "refined",
+        "round": 1
+      }
+    },
+    "handoff": {
+      "brief": "# Implementation handoff: refined\n\nApply the design to the real /dashboard route.\nReuse existing project components.\nKeep all data wiring and real content.\nUse the handoff tokens and match the reference screenshots.\nThe selected design source is in source/refined.tsx.\n\nCall fr_verify with route /dashboard and handoffId handoff-0a03f9ed.\nThe build passes with under 2% pixel difference per region, zero token mismatches and zero order mismatches.\n\nrefined keeps the dashboard content and improves the page.",
+      "designMemoryFiles": [".fittingroom/DESIGN.md", ".fittingroom/design-memory.json"],
+      "folder": "/Users/josephbrendan/Documents/fr-test-apps/metrics-dashboard/.fittingroom/handoffs/handoff-0a03f9ed",
+      "handoffId": "handoff-0a03f9ed",
+      "route": "/dashboard",
+      "screenshots": [
+        {
+          "path": "reference/375.png",
+          "width": 375
+        },
+        {
+          "path": "reference/768.png",
+          "width": 768
+        },
+        {
+          "path": "reference/1440.png",
+          "width": 1440
+        }
+      ],
+      "tokens": {}
+    },
+    "verify": {
+      "handoffId": "handoff-0a03f9ed",
+      "orderMismatches": [],
+      "passed": true,
+      "regionDiffs": [
+        {
+          "differencePercent": 0,
+          "height": 300,
+          "name": "375 px row 1 column 1",
+          "passed": true,
+          "width": 125,
+          "widthViewport": 375,
+          "x": 0,
+          "y": 0
+        },
+        {
+          "differencePercent": 0,
+          "height": 300,
+          "name": "375 px row 1 column 2",
+          "passed": true,
+          "width": 125,
+          "widthViewport": 375,
+          "x": 125,
+          "y": 0
+        },
+        {
+          "differencePercent": 0,
+          "height": 300,
+          "name": "375 px row 1 column 3",
+          "passed": true,
+          "width": 125,
+          "widthViewport": 375,
+          "x": 250,
+          "y": 0
+        },
+        {
+          "differencePercent": 0,
+          "height": 300,
+          "name": "375 px row 2 column 1",
+          "passed": true,
+          "width": 125,
+          "widthViewport": 375,
+          "x": 0,
+          "y": 300
+        },
+        {
+          "differencePercent": 0,
+          "height": 300,
+          "name": "375 px row 2 column 2",
+          "passed": true,
+          "width": 125,
+          "widthViewport": 375,
+          "x": 125,
+          "y": 300
+        },
+        {
+          "differencePercent": 0,
+          "height": 300,
+          "name": "375 px row 2 column 3",
+          "passed": true,
+          "width": 125,
+          "widthViewport": 375,
+          "x": 250,
+          "y": 300
+        },
+        {
+          "differencePercent": 0,
+          "height": 300,
+          "name": "375 px row 3 column 1",
+          "passed": true,
+          "width": 125,
+          "widthViewport": 375,
+          "x": 0,
+          "y": 600
+        },
+        {
+          "differencePercent": 0,
+          "height": 300,
+          "name": "375 px row 3 column 2",
+          "passed": true,
+          "width": 125,
+          "widthViewport": 375,
+          "x": 125,
+          "y": 600
+        },
+        {
+          "differencePercent": 0,
+          "height": 300,
+          "name": "375 px row 3 column 3",
+          "passed": true,
+          "width": 125,
+          "widthViewport": 375,
+          "x": 250,
+          "y": 600
+        },
+        {
+          "differencePercent": 0,
+          "height": 300,
+          "name": "768 px row 1 column 1",
+          "passed": true,
+          "width": 256,
+          "widthViewport": 768,
+          "x": 0,
+          "y": 0
+        },
+        {
+          "differencePercent": 0,
+          "height": 300,
+          "name": "768 px row 1 column 2",
+          "passed": true,
+          "width": 256,
+          "widthViewport": 768,
+          "x": 256,
+          "y": 0
+        },
+        {
+          "differencePercent": 0,
+          "height": 300,
+          "name": "768 px row 1 column 3",
+          "passed": true,
+          "width": 256,
+          "widthViewport": 768,
+          "x": 512,
+          "y": 0
+        },
+        {
+          "differencePercent": 0,
+          "height": 300,
+          "name": "768 px row 2 column 1",
+          "passed": true,
+          "width": 256,
+          "widthViewport": 768,
+          "x": 0,
+          "y": 300
+        },
+        {
+          "differencePercent": 0,
+          "height": 300,
+          "name": "768 px row 2 column 2",
+          "passed": true,
+          "width": 256,
+          "widthViewport": 768,
+          "x": 256,
+          "y": 300
+        },
+        {
+          "differencePercent": 0,
+          "height": 300,
+          "name": "768 px row 2 column 3",
+          "passed": true,
+          "width": 256,
+          "widthViewport": 768,
+          "x": 512,
+          "y": 300
+        },
+        {
+          "differencePercent": 0,
+          "height": 300,
+          "name": "768 px row 3 column 1",
+          "passed": true,
+          "width": 256,
+          "widthViewport": 768,
+          "x": 0,
+          "y": 600
+        },
+        {
+          "differencePercent": 0,
+          "height": 300,
+          "name": "768 px row 3 column 2",
+          "passed": true,
+          "width": 256,
+          "widthViewport": 768,
+          "x": 256,
+          "y": 600
+        },
+        {
+          "differencePercent": 0,
+          "height": 300,
+          "name": "768 px row 3 column 3",
+          "passed": true,
+          "width": 256,
+          "widthViewport": 768,
+          "x": 512,
+          "y": 600
+        },
+        {
+          "differencePercent": 0,
+          "height": 300,
+          "name": "1440 px row 1 column 1",
+          "passed": true,
+          "width": 480,
+          "widthViewport": 1440,
+          "x": 0,
+          "y": 0
+        },
+        {
+          "differencePercent": 0,
+          "height": 300,
+          "name": "1440 px row 1 column 2",
+          "passed": true,
+          "width": 480,
+          "widthViewport": 1440,
+          "x": 480,
+          "y": 0
+        },
+        {
+          "differencePercent": 0,
+          "height": 300,
+          "name": "1440 px row 1 column 3",
+          "passed": true,
+          "width": 480,
+          "widthViewport": 1440,
+          "x": 960,
+          "y": 0
+        },
+        {
+          "differencePercent": 0,
+          "height": 300,
+          "name": "1440 px row 2 column 1",
+          "passed": true,
+          "width": 480,
+          "widthViewport": 1440,
+          "x": 0,
+          "y": 300
+        },
+        {
+          "differencePercent": 0,
+          "height": 300,
+          "name": "1440 px row 2 column 2",
+          "passed": true,
+          "width": 480,
+          "widthViewport": 1440,
+          "x": 480,
+          "y": 300
+        },
+        {
+          "differencePercent": 0,
+          "height": 300,
+          "name": "1440 px row 2 column 3",
+          "passed": true,
+          "width": 480,
+          "widthViewport": 1440,
+          "x": 960,
+          "y": 300
+        },
+        {
+          "differencePercent": 0,
+          "height": 300,
+          "name": "1440 px row 3 column 1",
+          "passed": true,
+          "width": 480,
+          "widthViewport": 1440,
+          "x": 0,
+          "y": 600
+        },
+        {
+          "differencePercent": 0,
+          "height": 300,
+          "name": "1440 px row 3 column 2",
+          "passed": true,
+          "width": 480,
+          "widthViewport": 1440,
+          "x": 480,
+          "y": 600
+        },
+        {
+          "differencePercent": 0,
+          "height": 300,
+          "name": "1440 px row 3 column 3",
+          "passed": true,
+          "width": 480,
+          "widthViewport": 1440,
+          "x": 960,
+          "y": 600
+        }
+      ],
+      "route": "/dashboard",
+      "screenshots": [
+        {
+          "path": "/Users/josephbrendan/Documents/fr-test-apps/metrics-dashboard/.fittingroom/verifications/handoff-0a03f9ed-1792881334766/actual/375.png",
+          "width": 375
+        },
+        {
+          "path": "/Users/josephbrendan/Documents/fr-test-apps/metrics-dashboard/.fittingroom/verifications/handoff-0a03f9ed-1792881334766/actual/768.png",
+          "width": 768
+        },
+        {
+          "path": "/Users/josephbrendan/Documents/fr-test-apps/metrics-dashboard/.fittingroom/verifications/handoff-0a03f9ed-1792881334766/actual/1440.png",
+          "width": 1440
+        }
+      ],
+      "structureMismatches": [],
+      "styleMismatches": [],
+      "tokenMismatches": [],
+      "thresholds": {
+        "pixelDifferencePercentPerRegion": 2,
+        "tokenMismatches": 0,
+        "orderMismatches": 0
+      }
+    },
+    "verifyWrong": {
+      "handoffId": "handoff-0a03f9ed",
+      "orderMismatches": [],
+      "passed": false,
+      "regionDiffs": [
+        {
+          "differencePercent": 2.4,
+          "height": 300,
+          "name": "375 px row 1 column 1",
+          "passed": false,
+          "width": 125,
+          "widthViewport": 375,
+          "x": 0,
+          "y": 0
+        },
+        {
+          "differencePercent": 7.53,
+          "height": 300,
+          "name": "375 px row 1 column 2",
+          "passed": false,
+          "width": 125,
+          "widthViewport": 375,
+          "x": 125,
+          "y": 0
+        },
+        {
+          "differencePercent": 2.52,
+          "height": 300,
+          "name": "375 px row 1 column 3",
+          "passed": false,
+          "width": 125,
+          "widthViewport": 375,
+          "x": 250,
+          "y": 0
+        },
+        {
+          "differencePercent": 0,
+          "height": 300,
+          "name": "375 px row 2 column 1",
+          "passed": true,
+          "width": 125,
+          "widthViewport": 375,
+          "x": 0,
+          "y": 300
+        },
+        {
+          "differencePercent": 0,
+          "height": 300,
+          "name": "375 px row 2 column 2",
+          "passed": true,
+          "width": 125,
+          "widthViewport": 375,
+          "x": 125,
+          "y": 300
+        },
+        {
+          "differencePercent": 0,
+          "height": 300,
+          "name": "375 px row 2 column 3",
+          "passed": true,
+          "width": 125,
+          "widthViewport": 375,
+          "x": 250,
+          "y": 300
+        },
+        {
+          "differencePercent": 0,
+          "height": 300,
+          "name": "375 px row 3 column 1",
+          "passed": true,
+          "width": 125,
+          "widthViewport": 375,
+          "x": 0,
+          "y": 600
+        },
+        {
+          "differencePercent": 0,
+          "height": 300,
+          "name": "375 px row 3 column 2",
+          "passed": true,
+          "width": 125,
+          "widthViewport": 375,
+          "x": 125,
+          "y": 600
+        },
+        {
+          "differencePercent": 0,
+          "height": 300,
+          "name": "375 px row 3 column 3",
+          "passed": true,
+          "width": 125,
+          "widthViewport": 375,
+          "x": 250,
+          "y": 600
+        },
+        {
+          "differencePercent": 2.3,
+          "height": 300,
+          "name": "768 px row 1 column 1",
+          "passed": false,
+          "width": 256,
+          "widthViewport": 768,
+          "x": 0,
+          "y": 0
+        },
+        {
+          "differencePercent": 3.13,
+          "height": 300,
+          "name": "768 px row 1 column 2",
+          "passed": false,
+          "width": 256,
+          "widthViewport": 768,
+          "x": 256,
+          "y": 0
+        },
+        {
+          "differencePercent": 0,
+          "height": 300,
+          "name": "768 px row 1 column 3",
+          "passed": true,
+          "width": 256,
+          "widthViewport": 768,
+          "x": 512,
+          "y": 0
+        },
+        {
+          "differencePercent": 0,
+          "height": 300,
+          "name": "768 px row 2 column 1",
+          "passed": true,
+          "width": 256,
+          "widthViewport": 768,
+          "x": 0,
+          "y": 300
+        },
+        {
+          "differencePercent": 0,
+          "height": 300,
+          "name": "768 px row 2 column 2",
+          "passed": true,
+          "width": 256,
+          "widthViewport": 768,
+          "x": 256,
+          "y": 300
+        },
+        {
+          "differencePercent": 0,
+          "height": 300,
+          "name": "768 px row 2 column 3",
+          "passed": true,
+          "width": 256,
+          "widthViewport": 768,
+          "x": 512,
+          "y": 300
+        },
+        {
+          "differencePercent": 0,
+          "height": 300,
+          "name": "768 px row 3 column 1",
+          "passed": true,
+          "width": 256,
+          "widthViewport": 768,
+          "x": 0,
+          "y": 600
+        },
+        {
+          "differencePercent": 0,
+          "height": 300,
+          "name": "768 px row 3 column 2",
+          "passed": true,
+          "width": 256,
+          "widthViewport": 768,
+          "x": 256,
+          "y": 600
+        },
+        {
+          "differencePercent": 0,
+          "height": 300,
+          "name": "768 px row 3 column 3",
+          "passed": true,
+          "width": 256,
+          "widthViewport": 768,
+          "x": 512,
+          "y": 600
+        },
+        {
+          "differencePercent": 1.85,
+          "height": 300,
+          "name": "1440 px row 1 column 1",
+          "passed": true,
+          "width": 480,
+          "widthViewport": 1440,
+          "x": 0,
+          "y": 0
+        },
+        {
+          "differencePercent": 1.05,
+          "height": 300,
+          "name": "1440 px row 1 column 2",
+          "passed": true,
+          "width": 480,
+          "widthViewport": 1440,
+          "x": 480,
+          "y": 0
+        },
+        {
+          "differencePercent": 0,
+          "height": 300,
+          "name": "1440 px row 1 column 3",
+          "passed": true,
+          "width": 480,
+          "widthViewport": 1440,
+          "x": 960,
+          "y": 0
+        },
+        {
+          "differencePercent": 0,
+          "height": 300,
+          "name": "1440 px row 2 column 1",
+          "passed": true,
+          "width": 480,
+          "widthViewport": 1440,
+          "x": 0,
+          "y": 300
+        },
+        {
+          "differencePercent": 0,
+          "height": 300,
+          "name": "1440 px row 2 column 2",
+          "passed": true,
+          "width": 480,
+          "widthViewport": 1440,
+          "x": 480,
+          "y": 300
+        },
+        {
+          "differencePercent": 0,
+          "height": 300,
+          "name": "1440 px row 2 column 3",
+          "passed": true,
+          "width": 480,
+          "widthViewport": 1440,
+          "x": 960,
+          "y": 300
+        },
+        {
+          "differencePercent": 0,
+          "height": 300,
+          "name": "1440 px row 3 column 1",
+          "passed": true,
+          "width": 480,
+          "widthViewport": 1440,
+          "x": 0,
+          "y": 600
+        },
+        {
+          "differencePercent": 0,
+          "height": 300,
+          "name": "1440 px row 3 column 2",
+          "passed": true,
+          "width": 480,
+          "widthViewport": 1440,
+          "x": 480,
+          "y": 600
+        },
+        {
+          "differencePercent": 0,
+          "height": 300,
+          "name": "1440 px row 3 column 3",
+          "passed": true,
+          "width": 480,
+          "widthViewport": 1440,
+          "x": 960,
+          "y": 600
+        }
+      ],
+      "route": "/dashboard",
+      "screenshots": [
+        {
+          "path": "/Users/josephbrendan/Documents/fr-test-apps/metrics-dashboard/.fittingroom/verifications/handoff-0a03f9ed-1792881337466/actual/375.png",
+          "width": 375
+        },
+        {
+          "path": "/Users/josephbrendan/Documents/fr-test-apps/metrics-dashboard/.fittingroom/verifications/handoff-0a03f9ed-1792881337466/actual/768.png",
+          "width": 768
+        },
+        {
+          "path": "/Users/josephbrendan/Documents/fr-test-apps/metrics-dashboard/.fittingroom/verifications/handoff-0a03f9ed-1792881337466/actual/1440.png",
+          "width": 1440
+        }
+      ],
+      "structureMismatches": [],
+      "styleMismatches": [],
+      "tokenMismatches": [],
+      "thresholds": {
+        "pixelDifferencePercentPerRegion": 2,
+        "tokenMismatches": 0,
+        "orderMismatches": 0
+      }
+    },
+    "memoryAudit": {
+      "summary": {
+        "id": "dashboard",
+        "name": "Dashboard",
+        "pages": ["/analytics", "/dashboard"],
+        "estimatedSeconds": 12,
+        "message": "Capturing: Dashboard (2 pages): /analytics /dashboard, at 375, 768 and 1440 px."
+      },
+      "screenshots": [
+        "/Users/josephbrendan/Documents/fr-test-apps/metrics-dashboard/.fittingroom/captures/dashboard/analytics/375.png",
+        "/Users/josephbrendan/Documents/fr-test-apps/metrics-dashboard/.fittingroom/captures/dashboard/analytics/768.png",
+        "/Users/josephbrendan/Documents/fr-test-apps/metrics-dashboard/.fittingroom/captures/dashboard/analytics/1440.png",
+        "/Users/josephbrendan/Documents/fr-test-apps/metrics-dashboard/.fittingroom/captures/dashboard/dashboard/375.png",
+        "/Users/josephbrendan/Documents/fr-test-apps/metrics-dashboard/.fittingroom/captures/dashboard/dashboard/768.png",
+        "/Users/josephbrendan/Documents/fr-test-apps/metrics-dashboard/.fittingroom/captures/dashboard/dashboard/1440.png"
+      ],
+      "pages": [
+        {
+          "path": "/analytics",
+          "url": "http://127.0.0.1:3200/analytics",
+          "screenshots": [
+            {
+              "width": 375,
+              "path": "/Users/josephbrendan/Documents/fr-test-apps/metrics-dashboard/.fittingroom/captures/dashboard/analytics/375.png"
+            },
+            {
+              "width": 768,
+              "path": "/Users/josephbrendan/Documents/fr-test-apps/metrics-dashboard/.fittingroom/captures/dashboard/analytics/768.png"
+            },
+            {
+              "width": 1440,
+              "path": "/Users/josephbrendan/Documents/fr-test-apps/metrics-dashboard/.fittingroom/captures/dashboard/analytics/1440.png"
+            }
+          ],
+          "accessibilityTreePath": "/Users/josephbrendan/Documents/fr-test-apps/metrics-dashboard/.fittingroom/captures/dashboard/analytics/accessibility-tree.json",
+          "slopEvidencePath": "/Users/josephbrendan/Documents/fr-test-apps/metrics-dashboard/.fittingroom/captures/dashboard/analytics/slop-evidence.json"
+        },
+        {
+          "path": "/dashboard",
+          "url": "http://127.0.0.1:3200/dashboard",
+          "screenshots": [
+            {
+              "width": 375,
+              "path": "/Users/josephbrendan/Documents/fr-test-apps/metrics-dashboard/.fittingroom/captures/dashboard/dashboard/375.png"
+            },
+            {
+              "width": 768,
+              "path": "/Users/josephbrendan/Documents/fr-test-apps/metrics-dashboard/.fittingroom/captures/dashboard/dashboard/768.png"
+            },
+            {
+              "width": 1440,
+              "path": "/Users/josephbrendan/Documents/fr-test-apps/metrics-dashboard/.fittingroom/captures/dashboard/dashboard/1440.png"
+            }
+          ],
+          "accessibilityTreePath": "/Users/josephbrendan/Documents/fr-test-apps/metrics-dashboard/.fittingroom/captures/dashboard/dashboard/accessibility-tree.json",
+          "slopEvidencePath": "/Users/josephbrendan/Documents/fr-test-apps/metrics-dashboard/.fittingroom/captures/dashboard/dashboard/slop-evidence.json"
+        }
+      ],
+      "critiqueBrief": "Scope: Dashboard (dashboard).\nPages captured: /analytics, /dashboard.\nAutomated findings: 7.\nCitations: project-design-memory, wcag22-2.5.8.\nAutomated issues:\n- /analytics: Target is smaller than 24 by 24 CSS pixels [wcag22-2.5.8], severity 2.\n- /analytics: Target is smaller than 24 by 24 CSS pixels [wcag22-2.5.8], severity 2.\n- /analytics: Target is smaller than 24 by 24 CSS pixels [wcag22-2.5.8], severity 2.\n- /analytics: Target is smaller than 24 by 24 CSS pixels [wcag22-2.5.8], severity 2.\n- /analytics: Spacing is not on the approved spacing scale [project-design-memory], severity 1.\n- /analytics: Spacing is not on the approved spacing scale [project-design-memory], severity 1.\n- /analytics: Font size is off the approved type scale [project-design-memory], severity 2.\nPages to review:\n- /analytics: /Users/josephbrendan/Documents/fr-test-apps/metrics-dashboard/.fittingroom/captures/dashboard/analytics/375.png, /Users/josephbrendan/Documents/fr-test-apps/metrics-dashboard/.fittingroom/captures/dashboard/analytics/768.png, /Users/josephbrendan/Documents/fr-test-apps/metrics-dashboard/.fittingroom/captures/dashboard/analytics/1440.png\n- a \"Home\" [no attributes; confirm: none; state: none]\n- a \"Dashboard\" [no attributes; confirm: none; state: none]\n- a \"Analytics\" [no attributes; confirm: none; state: none]\n- a \"Reports\" [no attributes; confirm: none; state: none]\n- text \"Metrics\"\n- text \"Analytics\"\n- text \"Compare acquisition, activation and retention.\"\n- text \"Weekly funnel\"\n- text \"Step\"\n- text \"People\"\n- text \"Change\"\n- text \"Visited\"\n- text \"24,810\"\n- text \"+8.2%\"\n- text \"Signed up\"\n- text \"6,240\"\n- text \"+4.1%\"\n- text \"Activated\"\n- text \"4,182\"\n- text \"+2.6%\"\n- text \"Returned\"\n- text \"2,940\"\n- text \"-0.8%\"\n- text \"Channels\"\n- /dashboard: /Users/josephbrendan/Documents/fr-test-apps/metrics-dashboard/.fittingroom/captures/dashboard/dashboard/375.png, /Users/josephbrendan/Documents/fr-test-apps/metrics-dashboard/.fittingroom/captures/dashboard/dashboard/768.png, /Users/josephbrendan/Documents/fr-test-apps/metrics-dashboard/.fittingroom/captures/dashboard/dashboard/1440.png\n- text \"Team dashboard\"\n- text \"The last seven days across every workspace.\"\n- text \"Page views\"\n- text \"128,420\"\n- text \"Sessions\"\n- text \"42,118\"\n- text \"Bounce rate\"\n- text \"31.4%\"\n- text \"Median load\"\n- text \"1.8s\"\n- text \"Traffic by day\"\n- text \"Mon\"\n- text \"Tue\"\n- text \"Wed\"\n- text \"Thu\"\n- text \"Fri\"\n- text \"Sat\"\n- text \"Sun\"\nReview every screenshot against Nielsen's 10 heuristics.\nCite only citation ids from packages/citations/registry.json. Do not invent citation ids or URLs.\nRate severity on the NN/g 0 to 4 scale.\nSet confidence to \"judged\".\nSubmit the findings with fr_submit_findings.\nChecks that hit errors:\n- None.",
+      "errors": [],
+      "findings": [
+        {
+          "id": "analytics-target-size-1",
+          "title": "Target is smaller than 24 by 24 CSS pixels",
+          "citation": "wcag22-2.5.8",
+          "severity": 2,
+          "confidence": "measured",
+          "evidence": {
+            "selector": "a",
+            "screenshotPath": "/Users/josephbrendan/Documents/fr-test-apps/metrics-dashboard/.fittingroom/audits/dashboard/analytics/01-wcag22-2-5-8.png",
+            "measuredValue": "38.25 x 21 CSS pixels (minimum 24 x 24)"
+          },
+          "fix": "Make the control at least 24 by 24 CSS pixels, or add enough spacing around it.",
+          "page": "/analytics"
+        },
+        {
+          "id": "analytics-target-size-2",
+          "title": "Target is smaller than 24 by 24 CSS pixels",
+          "citation": "wcag22-2.5.8",
+          "severity": 2,
+          "confidence": "measured",
+          "evidence": {
+            "selector": "a",
+            "screenshotPath": "/Users/josephbrendan/Documents/fr-test-apps/metrics-dashboard/.fittingroom/audits/dashboard/analytics/02-wcag22-2-5-8.png",
+            "measuredValue": "70.44 x 21 CSS pixels (minimum 24 x 24)"
+          },
+          "fix": "Make the control at least 24 by 24 CSS pixels, or add enough spacing around it.",
+          "page": "/analytics"
+        },
+        {
+          "id": "analytics-target-size-3",
+          "title": "Target is smaller than 24 by 24 CSS pixels",
+          "citation": "wcag22-2.5.8",
+          "severity": 2,
+          "confidence": "measured",
+          "evidence": {
+            "selector": "a",
+            "screenshotPath": "/Users/josephbrendan/Documents/fr-test-apps/metrics-dashboard/.fittingroom/audits/dashboard/analytics/03-wcag22-2-5-8.png",
+            "measuredValue": "58.83 x 21 CSS pixels (minimum 24 x 24)"
+          },
+          "fix": "Make the control at least 24 by 24 CSS pixels, or add enough spacing around it.",
+          "page": "/analytics"
+        },
+        {
+          "id": "analytics-target-size-4",
+          "title": "Target is smaller than 24 by 24 CSS pixels",
+          "citation": "wcag22-2.5.8",
+          "severity": 2,
+          "confidence": "measured",
+          "evidence": {
+            "selector": "a",
+            "screenshotPath": "/Users/josephbrendan/Documents/fr-test-apps/metrics-dashboard/.fittingroom/audits/dashboard/analytics/04-wcag22-2-5-8.png",
+            "measuredValue": "50.45 x 21 CSS pixels (minimum 24 x 24)"
+          },
+          "fix": "Make the control at least 24 by 24 CSS pixels, or add enough spacing around it.",
+          "page": "/analytics"
+        },
+        {
+          "id": "analytics-design-memory-1",
+          "title": "Spacing is not on the approved spacing scale",
+          "citation": "project-design-memory",
+          "related": ["nielsen-h4"],
+          "severity": 1,
+          "confidence": "measured",
+          "evidence": {
+            "selector": "header:nth-of-type(1)",
+            "screenshotPath": "/Users/josephbrendan/Documents/fr-test-apps/metrics-dashboard/.fittingroom/audits/dashboard/analytics/design-memory/page.png",
+            "measuredValue": "Spacing values 18px, 28px, 18px, 28px, 16px, 16px are not on the saved spacing scale."
+          },
+          "fix": "Use a spacing value from DESIGN.md.",
+          "page": "/analytics"
+        },
+        {
+          "id": "analytics-design-memory-2",
+          "title": "Spacing is not on the approved spacing scale",
+          "citation": "project-design-memory",
+          "related": ["nielsen-h4"],
+          "severity": 1,
+          "confidence": "measured",
+          "evidence": {
+            "selector": "main:nth-of-type(1)",
+            "screenshotPath": "/Users/josephbrendan/Documents/fr-test-apps/metrics-dashboard/.fittingroom/audits/dashboard/analytics/design-memory/page.png",
+            "measuredValue": "Spacing values 36px, 72px are not on the saved spacing scale."
+          },
+          "fix": "Use a spacing value from DESIGN.md.",
+          "page": "/analytics"
+        },
+        {
+          "id": "analytics-design-memory-3",
+          "title": "Font size is off the approved type scale",
+          "citation": "project-design-memory",
+          "related": ["nielsen-h4"],
+          "severity": 2,
+          "confidence": "measured",
+          "evidence": {
+            "selector": "main:nth-of-type(1) > h1:nth-of-type(1)",
+            "screenshotPath": "/Users/josephbrendan/Documents/fr-test-apps/metrics-dashboard/.fittingroom/audits/dashboard/analytics/design-memory/page.png",
+            "measuredValue": "Font size 40px is not on the saved type scale."
+          },
+          "fix": "Use a size from the saved type scale in DESIGN.md.",
+          "page": "/analytics"
+        }
+      ]
+    },
+    "designMemoryFindings": [
+      {
+        "id": "analytics-design-memory-1",
+        "title": "Spacing is not on the approved spacing scale",
+        "citation": "project-design-memory",
+        "related": ["nielsen-h4"],
+        "severity": 1,
+        "confidence": "measured",
+        "evidence": {
+          "selector": "header:nth-of-type(1)",
+          "screenshotPath": "/Users/josephbrendan/Documents/fr-test-apps/metrics-dashboard/.fittingroom/audits/dashboard/analytics/design-memory/page.png",
+          "measuredValue": "Spacing values 18px, 28px, 18px, 28px, 16px, 16px are not on the saved spacing scale."
+        },
+        "fix": "Use a spacing value from DESIGN.md.",
+        "page": "/analytics"
+      },
+      {
+        "id": "analytics-design-memory-2",
+        "title": "Spacing is not on the approved spacing scale",
+        "citation": "project-design-memory",
+        "related": ["nielsen-h4"],
+        "severity": 1,
+        "confidence": "measured",
+        "evidence": {
+          "selector": "main:nth-of-type(1)",
+          "screenshotPath": "/Users/josephbrendan/Documents/fr-test-apps/metrics-dashboard/.fittingroom/audits/dashboard/analytics/design-memory/page.png",
+          "measuredValue": "Spacing values 36px, 72px are not on the saved spacing scale."
+        },
+        "fix": "Use a spacing value from DESIGN.md.",
+        "page": "/analytics"
+      },
+      {
+        "id": "analytics-design-memory-3",
+        "title": "Font size is off the approved type scale",
+        "citation": "project-design-memory",
+        "related": ["nielsen-h4"],
+        "severity": 2,
+        "confidence": "measured",
+        "evidence": {
+          "selector": "main:nth-of-type(1) > h1:nth-of-type(1)",
+          "screenshotPath": "/Users/josephbrendan/Documents/fr-test-apps/metrics-dashboard/.fittingroom/audits/dashboard/analytics/design-memory/page.png",
+          "measuredValue": "Font size 40px is not on the saved type scale."
+        },
+        "fix": "Use a size from the saved type scale in DESIGN.md.",
+        "page": "/analytics"
+      }
+    ],
+    "states": {
+      "version": 1,
+      "route": "/dashboard",
+      "createdAt": "2026-10-24T22:35:47.176Z",
+      "states": [
+        {
+          "state": "empty",
+          "status": "not_reachable",
+          "reason": "This page makes no same-origin API calls.",
+          "screenshots": [
+            "/Users/josephbrendan/Documents/fr-test-apps/metrics-dashboard/.fittingroom/states/dashboard/empty-1440.png"
+          ]
+        },
+        {
+          "state": "loading",
+          "status": "not_reachable",
+          "reason": "This page makes no same-origin API calls.",
+          "screenshots": [
+            "/Users/josephbrendan/Documents/fr-test-apps/metrics-dashboard/.fittingroom/states/dashboard/loading-1440.png"
+          ]
+        },
+        {
+          "state": "error",
+          "status": "not_reachable",
+          "reason": "This page makes no same-origin API calls.",
+          "screenshots": [
+            "/Users/josephbrendan/Documents/fr-test-apps/metrics-dashboard/.fittingroom/states/dashboard/error-1440.png"
+          ]
+        },
+        {
+          "state": "long",
+          "status": "pass",
+          "reason": "Text wraps without clipping or horizontal scroll.",
+          "screenshots": [
+            "/Users/josephbrendan/Documents/fr-test-apps/metrics-dashboard/.fittingroom/states/dashboard/long-320.png"
+          ]
+        },
+        {
+          "state": "dark",
+          "status": "pass",
+          "reason": "The full contrast audit passes in dark mode.",
+          "screenshots": [
+            "/Users/josephbrendan/Documents/fr-test-apps/metrics-dashboard/.fittingroom/states/dashboard/dark-1440.png"
+          ]
+        }
+      ]
+    }
+  }
+}

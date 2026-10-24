@@ -1,0 +1,25 @@
+
+> fittingroom@0.0.0 test:e2e /Users/josephbrendan/Documents/fittingroom
+> playwright test
+
+
+Running 16 tests using 3 workers
+
+  ✓   2 [chromium] › e2e/board.spec.ts:33:5 › shows four variants in iframes with names, rationales and finding counts (203ms)
+  ✓   1 [chromium] › e2e/board-empty.spec.ts:27:5 › shows the page group picker, banner, empty state and agent sentence (260ms)
+  ✓   4 [chromium] › e2e/board.spec.ts:67:5 › requires the random session token (57ms)
+  ✓   5 [chromium] › e2e/board.spec.ts:77:5 › switches every preview between 375, 768 and 1440 pixels (231ms)
+  ✓   6 [chromium] › e2e/board.spec.ts:96:5 › opens findings grouped by severity with citation links (138ms)
+  ✓   7 [chromium] › e2e/board.spec.ts:115:5 › sends a new direction request over WebSocket (212ms)
+  ✓   8 [chromium] › e2e/board.spec.ts:139:5 › regenerates all, regenerates one card, pins a card, and shows previous rounds (353ms)
+  ✓   9 [chromium] › e2e/board.spec.ts:183:5 › selects an iframe element, shows token options, and warns on custom values (349ms)
+  ✓  10 [chromium] › e2e/board.spec.ts:216:5 › deletes an element and undoes the delete (409ms)
+  ✓  11 [chromium] › e2e/board.spec.ts:236:5 › duplicates an element (444ms)
+  ✓  12 [chromium] › e2e/board.spec.ts:253:5 › inserts a project component before basic components (281ms)
+  ✓  13 [chromium] › e2e/board.spec.ts:274:5 › reorders siblings with dnd-kit (478ms)
+  ✓   3 [chromium] › e2e/board-bridge.spec.ts:166:5 › moves a board request through variants and approval without a reload (6.4s)
+  ✓  14 [chromium] › e2e/board-bridge.spec.ts:236:5 › edits a real variant file, then undo and redo return the exact file (3.5s)
+  ✓  15 [chromium] › e2e/board-bridge.spec.ts:277:5 › supports the editor keyboard shortcuts (3.6s)
+  ✓  16 [chromium] › e2e/board-bridge.spec.ts:339:5 › restores code and edits from an earlier round, then restores the replaced variant (9.4s)
+
+  16 passed (27.7s)

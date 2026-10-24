@@ -1,0 +1,61 @@
+{
+  "brief": "# Implementation handoff: refined\n\nApply the design to the real /login route.\nReuse existing project components.\nKeep all data wiring and real content.\nUse the handoff tokens and match the reference screenshots.\nThe selected design source is in source/refined.tsx.\n\nCall fr_verify with route /login and handoffId handoff-b411d0b7.\nThe build passes with under 2% pixel difference per region, zero token mismatches and zero order mismatches.\n\nrefined keeps the login content and improves the page.",
+  "designMemoryFiles": [".fittingroom/DESIGN.md", ".fittingroom/design-memory.json"],
+  "folder": "/Users/josephbrendan/Documents/fr-test-apps/shop-app/.fittingroom/handoffs/handoff-b411d0b7",
+  "handoffId": "handoff-b411d0b7",
+  "route": "/login",
+  "screenshots": [
+    {
+      "path": "reference/375.png",
+      "width": 375
+    },
+    {
+      "path": "reference/768.png",
+      "width": 768
+    },
+    {
+      "path": "reference/1440.png",
+      "width": 1440
+    }
+  ],
+  "tokens": {
+    "color.brand": "#0f766e",
+    "color.brand-dark": "#115e59",
+    "color.ink": "#0d2b28",
+    "color.paper": "#f4fbf9",
+    "color.card": "#ffffff",
+    "color.line": "#d7e3df",
+    "color.background": "#f4fbf9",
+    "color.foreground": "#0d2b28",
+    "color.card-foreground": "#0d2b28",
+    "color.primary": "#0f766e",
+    "color.primary-foreground": "#ffffff",
+    "color.secondary": "#d9f0eb",
+    "color.secondary-foreground": "#0d2b28",
+    "color.muted": "#eef7f4",
+    "color.muted-foreground": "#4f6b66",
+    "color.accent": "#f59e0b",
+    "color.accent-foreground": "#3a2500",
+    "color.destructive": "#b42318",
+    "color.border": "#d7e3df",
+    "color.input": "#d7e3df",
+    "color.ring": "#0f766e",
+    "space.1": "4px",
+    "space.2": "8px",
+    "space.3": "12px",
+    "space.4": "16px",
+    "space.6": "24px",
+    "space.8": "32px",
+    "space.12": "48px",
+    "space.16": "64px",
+    "radius.control": "10px",
+    "radius.card": "18px",
+    "font.sans": "\"Inter\", system-ui, sans-serif",
+    "fontSize.sm": "0.875rem",
+    "fontSize.base": "1rem",
+    "fontSize.lg": "1.25rem",
+    "fontSize.2xl": "2rem",
+    "fontSize.4xl": "3rem",
+    "shadow.card": "0 18px 40px rgba(15, 118, 110, 0.14)"
+  }
+}

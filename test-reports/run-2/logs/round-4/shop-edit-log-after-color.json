@@ -1,0 +1,18 @@
+{
+  "version": 1,
+  "slug": "refined",
+  "baseline": "export default function RefinedLogin() {\n  return (\n    <>\n      <style data-fr-id=\"fr-style-1\">{\"*, *::before, *::after { box-sizing: border-box; } body { margin: 0; font-family: system-ui, sans-serif; background: #ffffff; }\"}</style>\n      <main style={{ minHeight: \"100vh\", padding: 32, background: \"#ffffff\", color: \"#0d2b28\", fontFamily: \"system-ui, sans-serif\", lineHeight: 1.5 }} data-fr-id=\"fr-main-1\">\n        <section style={{ maxWidth: 480, margin: \"0 auto\", border: \"1px solid #d7e3df\", borderRadius: 18, padding: \"48px\" }} data-fr-id=\"fr-section-1\">\n          <h1 style={{\n            margin: \"0 0 8px\", fontSize: 32, fontWeight: 800, letterSpacing: \"-0.03em\",\n            color: \"#ff00ff\"\n          }} data-fr-id=\"fr-h1-1\">Welcome back to Northwind</h1>\n          <p style={{ margin: \"0 0 24px\", color: \"#4f6b66\" }} data-fr-id=\"fr-p-1\">Use the email you signed up with.</p>\n          <form data-fr-id=\"fr-form-1\">\n            <label htmlFor=\"variant-email\" style={{ display: \"block\", marginBottom: 6, fontWeight: 700 }} data-fr-id=\"fr-label-1\">Email</label>\n            <input id=\"variant-email\" type=\"email\" style={{ width: \"100%\", minHeight: 44, marginBottom: 16, padding: 10, background: \"#ffffff\", color: \"#0d2b28\", lineHeight: 1.5, border: \"1px solid #74777d\", borderRadius: 10, font: \"inherit\" }} data-fr-id=\"fr-input-1\" />\n            <label htmlFor=\"variant-password\" style={{ display: \"block\", marginBottom: 6, fontWeight: 700 }} data-fr-id=\"fr-label-2\">Password</label>\n            <input id=\"variant-password\" type=\"password\" style={{ width: \"100%\", minHeight: 44, marginBottom: 20, padding: 10, background: \"#ffffff\", color: \"#0d2b28\", lineHeight: 1.5, border: \"1px solid #74777d\", borderRadius: 10, font: \"inherit\" }} data-fr-id=\"fr-input-2\" />\n            <button type=\"submit\" style={{ minHeight: 44, padding: \"12px 18px\", border: 0, borderRadius: 10, background: \"#0f766e\", color: \"#ffffff\", font: \"inherit\", fontWeight: 700 }} data-fr-id=\"fr-button-1\">Log in</button>\n          </form>\n        </section>\n      </main>\n    </>\n  );\n}\n",
+  "edits": [
+    {
+      "operation": {
+        "op": "set-token",
+        "id": "fr-h1-1",
+        "property": "color",
+        "token": "#ff00ff"
+      },
+      "timestamp": "2026-10-24T20:41:16.157Z",
+      "offSystem": true
+    }
+  ],
+  "redo": []
+}

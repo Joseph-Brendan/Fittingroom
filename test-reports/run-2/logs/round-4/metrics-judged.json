@@ -1,0 +1,78 @@
+{
+  "counts": {
+    "automated": 4,
+    "judged": 1,
+    "total": 5
+  },
+  "findings": [
+    {
+      "id": "analytics-target-size-1",
+      "title": "Target is smaller than 24 by 24 CSS pixels",
+      "citation": "wcag22-2.5.8",
+      "severity": 2,
+      "confidence": "measured",
+      "evidence": {
+        "selector": "a",
+        "screenshotPath": "/Users/josephbrendan/Documents/fr-test-apps/metrics-dashboard/.fittingroom/audits/dashboard/analytics/01-wcag22-2-5-8.png",
+        "measuredValue": "38.25 x 21 CSS pixels (minimum 24 x 24)"
+      },
+      "fix": "Make the control at least 24 by 24 CSS pixels, or add enough spacing around it.",
+      "page": "/analytics"
+    },
+    {
+      "id": "analytics-target-size-2",
+      "title": "Target is smaller than 24 by 24 CSS pixels",
+      "citation": "wcag22-2.5.8",
+      "severity": 2,
+      "confidence": "measured",
+      "evidence": {
+        "selector": "a",
+        "screenshotPath": "/Users/josephbrendan/Documents/fr-test-apps/metrics-dashboard/.fittingroom/audits/dashboard/analytics/02-wcag22-2-5-8.png",
+        "measuredValue": "70.44 x 21 CSS pixels (minimum 24 x 24)"
+      },
+      "fix": "Make the control at least 24 by 24 CSS pixels, or add enough spacing around it.",
+      "page": "/analytics"
+    },
+    {
+      "id": "analytics-target-size-3",
+      "title": "Target is smaller than 24 by 24 CSS pixels",
+      "citation": "wcag22-2.5.8",
+      "severity": 2,
+      "confidence": "measured",
+      "evidence": {
+        "selector": "a",
+        "screenshotPath": "/Users/josephbrendan/Documents/fr-test-apps/metrics-dashboard/.fittingroom/audits/dashboard/analytics/03-wcag22-2-5-8.png",
+        "measuredValue": "58.83 x 21 CSS pixels (minimum 24 x 24)"
+      },
+      "fix": "Make the control at least 24 by 24 CSS pixels, or add enough spacing around it.",
+      "page": "/analytics"
+    },
+    {
+      "id": "analytics-target-size-4",
+      "title": "Target is smaller than 24 by 24 CSS pixels",
+      "citation": "wcag22-2.5.8",
+      "severity": 2,
+      "confidence": "measured",
+      "evidence": {
+        "selector": "a",
+        "screenshotPath": "/Users/josephbrendan/Documents/fr-test-apps/metrics-dashboard/.fittingroom/audits/dashboard/analytics/04-wcag22-2-5-8.png",
+        "measuredValue": "50.45 x 21 CSS pixels (minimum 24 x 24)"
+      },
+      "fix": "Make the control at least 24 by 24 CSS pixels, or add enough spacing around it.",
+      "page": "/analytics"
+    },
+    {
+      "id": "metrics-judged-last-updated",
+      "title": "Dashboard does not show when the data was last updated",
+      "citation": "nielsen-h1",
+      "severity": 2,
+      "confidence": "judged",
+      "evidence": {
+        "measuredValue": "No last updated time is visible on the dashboard.",
+        "screenshotPath": "/Users/josephbrendan/Documents/fr-test-apps/metrics-dashboard/.fittingroom/captures/dashboard/analytics/375.png",
+        "selector": "main"
+      },
+      "fix": "Add a last updated line near the page title."
+    }
+  ]
+}

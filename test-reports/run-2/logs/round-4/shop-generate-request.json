@@ -1,0 +1,39 @@
+{
+  "timedOut": false,
+  "board": {
+    "version": 2,
+    "scope": {
+      "id": "marketing",
+      "name": "Marketing"
+    },
+    "scopes": [
+      {
+        "id": "marketing",
+        "name": "Marketing"
+      },
+      {
+        "id": "auth",
+        "name": "Authentication"
+      },
+      {
+        "id": "settings",
+        "name": "Settings"
+      }
+    ],
+    "round": 0,
+    "status": "generating",
+    "variants": [],
+    "findings": [],
+    "previousRounds": [],
+    "selected": null,
+    "approved": null
+  },
+  "request": {
+    "id": "req-fae297dd",
+    "type": "generate",
+    "slot": null,
+    "scopeId": "marketing",
+    "round": 0,
+    "createdAt": "2026-10-24T20:41:09.375Z"
+  }
+}

@@ -1,0 +1,164 @@
+{
+  "summary": {
+    "id": "dashboard",
+    "name": "Dashboard",
+    "pages": ["/analytics", "/dashboard"],
+    "estimatedSeconds": 12,
+    "message": "Capturing: Dashboard (2 pages): /analytics /dashboard, at 375, 768 and 1440 px."
+  },
+  "screenshots": [
+    "/Users/josephbrendan/Documents/fr-test-apps/metrics-dashboard/.fittingroom/captures/dashboard/analytics/375.png",
+    "/Users/josephbrendan/Documents/fr-test-apps/metrics-dashboard/.fittingroom/captures/dashboard/analytics/768.png",
+    "/Users/josephbrendan/Documents/fr-test-apps/metrics-dashboard/.fittingroom/captures/dashboard/analytics/1440.png",
+    "/Users/josephbrendan/Documents/fr-test-apps/metrics-dashboard/.fittingroom/captures/dashboard/dashboard/375.png",
+    "/Users/josephbrendan/Documents/fr-test-apps/metrics-dashboard/.fittingroom/captures/dashboard/dashboard/768.png",
+    "/Users/josephbrendan/Documents/fr-test-apps/metrics-dashboard/.fittingroom/captures/dashboard/dashboard/1440.png"
+  ],
+  "pages": [
+    {
+      "path": "/analytics",
+      "url": "http://127.0.0.1:3200/analytics",
+      "screenshots": [
+        {
+          "width": 375,
+          "path": "/Users/josephbrendan/Documents/fr-test-apps/metrics-dashboard/.fittingroom/captures/dashboard/analytics/375.png"
+        },
+        {
+          "width": 768,
+          "path": "/Users/josephbrendan/Documents/fr-test-apps/metrics-dashboard/.fittingroom/captures/dashboard/analytics/768.png"
+        },
+        {
+          "width": 1440,
+          "path": "/Users/josephbrendan/Documents/fr-test-apps/metrics-dashboard/.fittingroom/captures/dashboard/analytics/1440.png"
+        }
+      ],
+      "accessibilityTreePath": "/Users/josephbrendan/Documents/fr-test-apps/metrics-dashboard/.fittingroom/captures/dashboard/analytics/accessibility-tree.json",
+      "slopEvidencePath": "/Users/josephbrendan/Documents/fr-test-apps/metrics-dashboard/.fittingroom/captures/dashboard/analytics/slop-evidence.json"
+    },
+    {
+      "path": "/dashboard",
+      "url": "http://127.0.0.1:3200/dashboard",
+      "screenshots": [
+        {
+          "width": 375,
+          "path": "/Users/josephbrendan/Documents/fr-test-apps/metrics-dashboard/.fittingroom/captures/dashboard/dashboard/375.png"
+        },
+        {
+          "width": 768,
+          "path": "/Users/josephbrendan/Documents/fr-test-apps/metrics-dashboard/.fittingroom/captures/dashboard/dashboard/768.png"
+        },
+        {
+          "width": 1440,
+          "path": "/Users/josephbrendan/Documents/fr-test-apps/metrics-dashboard/.fittingroom/captures/dashboard/dashboard/1440.png"
+        }
+      ],
+      "accessibilityTreePath": "/Users/josephbrendan/Documents/fr-test-apps/metrics-dashboard/.fittingroom/captures/dashboard/dashboard/accessibility-tree.json",
+      "slopEvidencePath": "/Users/josephbrendan/Documents/fr-test-apps/metrics-dashboard/.fittingroom/captures/dashboard/dashboard/slop-evidence.json"
+    }
+  ],
+  "critiqueBrief": "Scope: Dashboard (dashboard).\nPages captured: /analytics, /dashboard.\nAutomated findings: 7.\nCitations: project-design-memory, wcag22-2.5.8.\nAutomated issues:\n- /analytics: Target is smaller than 24 by 24 CSS pixels [wcag22-2.5.8], severity 2.\n- /analytics: Target is smaller than 24 by 24 CSS pixels [wcag22-2.5.8], severity 2.\n- /analytics: Target is smaller than 24 by 24 CSS pixels [wcag22-2.5.8], severity 2.\n- /analytics: Target is smaller than 24 by 24 CSS pixels [wcag22-2.5.8], severity 2.\n- /analytics: Spacing is not on the approved spacing scale [project-design-memory], severity 1.\n- /analytics: Spacing is not on the approved spacing scale [project-design-memory], severity 1.\n- /analytics: Font size is off the approved type scale [project-design-memory], severity 2.\nPages to review:\n- /analytics: /Users/josephbrendan/Documents/fr-test-apps/metrics-dashboard/.fittingroom/captures/dashboard/analytics/375.png, /Users/josephbrendan/Documents/fr-test-apps/metrics-dashboard/.fittingroom/captures/dashboard/analytics/768.png, /Users/josephbrendan/Documents/fr-test-apps/metrics-dashboard/.fittingroom/captures/dashboard/analytics/1440.png\n- a \"Home\" [no attributes; confirm: none; state: none]\n- a \"Dashboard\" [no attributes; confirm: none; state: none]\n- a \"Analytics\" [no attributes; confirm: none; state: none]\n- a \"Reports\" [no attributes; confirm: none; state: none]\n- text \"Metrics\"\n- text \"Analytics\"\n- text \"Compare acquisition, activation and retention.\"\n- text \"Weekly funnel\"\n- text \"Step\"\n- text \"People\"\n- text \"Change\"\n- text \"Visited\"\n- text \"24,810\"\n- text \"+8.2%\"\n- text \"Signed up\"\n- text \"6,240\"\n- text \"+4.1%\"\n- text \"Activated\"\n- text \"4,182\"\n- text \"+2.6%\"\n- text \"Returned\"\n- text \"2,940\"\n- text \"-0.8%\"\n- text \"Channels\"\n- /dashboard: /Users/josephbrendan/Documents/fr-test-apps/metrics-dashboard/.fittingroom/captures/dashboard/dashboard/375.png, /Users/josephbrendan/Documents/fr-test-apps/metrics-dashboard/.fittingroom/captures/dashboard/dashboard/768.png, /Users/josephbrendan/Documents/fr-test-apps/metrics-dashboard/.fittingroom/captures/dashboard/dashboard/1440.png\n- text \"Team dashboard\"\n- text \"The last seven days across every workspace.\"\n- text \"Page views\"\n- text \"128,420\"\n- text \"Sessions\"\n- text \"42,118\"\n- text \"Bounce rate\"\n- text \"31.4%\"\n- text \"Median load\"\n- text \"1.8s\"\n- text \"Traffic by day\"\n- text \"Mon\"\n- text \"Tue\"\n- text \"Wed\"\n- text \"Thu\"\n- text \"Fri\"\n- text \"Sat\"\n- text \"Sun\"\nReview every screenshot against Nielsen's 10 heuristics.\nCite only citation ids from packages/citations/registry.json. Do not invent citation ids or URLs.\nRate severity on the NN/g 0 to 4 scale.\nSet confidence to \"judged\".\nSubmit the findings with fr_submit_findings.\nChecks that hit errors:\n- None.",
+  "errors": [],
+  "findings": [
+    {
+      "id": "analytics-target-size-1",
+      "title": "Target is smaller than 24 by 24 CSS pixels",
+      "citation": "wcag22-2.5.8",
+      "severity": 2,
+      "confidence": "measured",
+      "evidence": {
+        "selector": "a",
+        "screenshotPath": "/Users/josephbrendan/Documents/fr-test-apps/metrics-dashboard/.fittingroom/audits/dashboard/analytics/01-wcag22-2-5-8.png",
+        "measuredValue": "38.25 x 21 CSS pixels (minimum 24 x 24)"
+      },
+      "fix": "Make the control at least 24 by 24 CSS pixels, or add enough spacing around it.",
+      "page": "/analytics"
+    },
+    {
+      "id": "analytics-target-size-2",
+      "title": "Target is smaller than 24 by 24 CSS pixels",
+      "citation": "wcag22-2.5.8",
+      "severity": 2,
+      "confidence": "measured",
+      "evidence": {
+        "selector": "a",
+        "screenshotPath": "/Users/josephbrendan/Documents/fr-test-apps/metrics-dashboard/.fittingroom/audits/dashboard/analytics/02-wcag22-2-5-8.png",
+        "measuredValue": "70.44 x 21 CSS pixels (minimum 24 x 24)"
+      },
+      "fix": "Make the control at least 24 by 24 CSS pixels, or add enough spacing around it.",
+      "page": "/analytics"
+    },
+    {
+      "id": "analytics-target-size-3",
+      "title": "Target is smaller than 24 by 24 CSS pixels",
+      "citation": "wcag22-2.5.8",
+      "severity": 2,
+      "confidence": "measured",
+      "evidence": {
+        "selector": "a",
+        "screenshotPath": "/Users/josephbrendan/Documents/fr-test-apps/metrics-dashboard/.fittingroom/audits/dashboard/analytics/03-wcag22-2-5-8.png",
+        "measuredValue": "58.83 x 21 CSS pixels (minimum 24 x 24)"
+      },
+      "fix": "Make the control at least 24 by 24 CSS pixels, or add enough spacing around it.",
+      "page": "/analytics"
+    },
+    {
+      "id": "analytics-target-size-4",
+      "title": "Target is smaller than 24 by 24 CSS pixels",
+      "citation": "wcag22-2.5.8",
+      "severity": 2,
+      "confidence": "measured",
+      "evidence": {
+        "selector": "a",
+        "screenshotPath": "/Users/josephbrendan/Documents/fr-test-apps/metrics-dashboard/.fittingroom/audits/dashboard/analytics/04-wcag22-2-5-8.png",
+        "measuredValue": "50.45 x 21 CSS pixels (minimum 24 x 24)"
+      },
+      "fix": "Make the control at least 24 by 24 CSS pixels, or add enough spacing around it.",
+      "page": "/analytics"
+    },
+    {
+      "id": "analytics-design-memory-1",
+      "title": "Spacing is not on the approved spacing scale",
+      "citation": "project-design-memory",
+      "related": ["nielsen-h4"],
+      "severity": 1,
+      "confidence": "measured",
+      "evidence": {
+        "selector": "header:nth-of-type(1)",
+        "screenshotPath": "/Users/josephbrendan/Documents/fr-test-apps/metrics-dashboard/.fittingroom/audits/dashboard/analytics/design-memory/page.png",
+        "measuredValue": "Spacing values 18px, 28px, 18px, 28px, 16px, 16px are not on the saved spacing scale."
+      },
+      "fix": "Use a spacing value from DESIGN.md.",
+      "page": "/analytics"
+    },
+    {
+      "id": "analytics-design-memory-2",
+      "title": "Spacing is not on the approved spacing scale",
+      "citation": "project-design-memory",
+      "related": ["nielsen-h4"],
+      "severity": 1,
+      "confidence": "measured",
+      "evidence": {
+        "selector": "main:nth-of-type(1)",
+        "screenshotPath": "/Users/josephbrendan/Documents/fr-test-apps/metrics-dashboard/.fittingroom/audits/dashboard/analytics/design-memory/page.png",
+        "measuredValue": "Spacing values 36px, 72px are not on the saved spacing scale."
+      },
+      "fix": "Use a spacing value from DESIGN.md.",
+      "page": "/analytics"
+    },
+    {
+      "id": "analytics-design-memory-3",
+      "title": "Font size is off the approved type scale",
+      "citation": "project-design-memory",
+      "related": ["nielsen-h4"],
+      "severity": 2,
+      "confidence": "measured",
+      "evidence": {
+        "selector": "main:nth-of-type(1) > h1:nth-of-type(1)",
+        "screenshotPath": "/Users/josephbrendan/Documents/fr-test-apps/metrics-dashboard/.fittingroom/audits/dashboard/analytics/design-memory/page.png",
+        "measuredValue": "Font size 40px is not on the saved type scale."
+      },
+      "fix": "Use a size from the saved type scale in DESIGN.md.",
+      "page": "/analytics"
+    }
+  ]
+}

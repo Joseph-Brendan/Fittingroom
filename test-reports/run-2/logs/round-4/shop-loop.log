@@ -1,0 +1,1952 @@
+{
+  "app": "shop-app",
+  "steps": {
+    "scopes": {
+      "currentPage": "/login",
+      "currentGroup": "auth",
+      "defaultScope": {
+        "id": "auth",
+        "name": "Authentication",
+        "routes": [
+          "/login",
+          "/signup"
+        ]
+      },
+      "defaultSource": "dev-server",
+      "needsChoice": false,
+      "scopes": [
+        {
+          "id": "marketing",
+          "name": "Marketing",
+          "routes": [
+            "/"
+          ],
+          "selected": false
+        },
+        {
+          "id": "auth",
+          "name": "Authentication",
+          "routes": [
+            "/login",
+            "/signup"
+          ],
+          "selected": true
+        },
+        {
+          "id": "settings",
+          "name": "Settings",
+          "routes": [
+            "/settings"
+          ],
+          "selected": false
+        }
+      ]
+    },
+    "board": {
+      "version": 1,
+      "pid": 53533,
+      "port": 4173,
+      "token": "zWYkZpQCJOATrv4Wf-b7FpI6iVzTq4RH",
+      "url": "http://127.0.0.1:4173/?token=zWYkZpQCJOATrv4Wf-b7FpI6iVzTq4RH",
+      "scopeId": "marketing",
+      "createdAt": "2026-10-24T20:41:08.827Z",
+      "started": true
+    },
+    "generateRequest": {
+      "timedOut": false,
+      "board": {
+        "version": 2,
+        "scope": {
+          "id": "marketing",
+          "name": "Marketing"
+        },
+        "scopes": [
+          {
+            "id": "marketing",
+            "name": "Marketing"
+          },
+          {
+            "id": "auth",
+            "name": "Authentication"
+          },
+          {
+            "id": "settings",
+            "name": "Settings"
+          }
+        ],
+        "round": 0,
+        "status": "generating",
+        "variants": [],
+        "findings": [],
+        "previousRounds": [],
+        "selected": null,
+        "approved": null
+      },
+      "request": {
+        "id": "req-fae297dd",
+        "type": "generate",
+        "slot": null,
+        "scopeId": "marketing",
+        "round": 0,
+        "createdAt": "2026-10-24T20:41:09.375Z"
+      }
+    },
+    "audit": {
+      "summary": {
+        "id": "auth",
+        "name": "Authentication",
+        "pages": [
+          "/login",
+          "/signup"
+        ],
+        "estimatedSeconds": 12,
+        "message": "Capturing: Authentication (2 pages): /login /signup, at 375, 768 and 1440 px."
+      },
+      "screenshots": [
+        "/Users/josephbrendan/Documents/fr-test-apps/shop-app/.fittingroom/captures/auth/login/375.png",
+        "/Users/josephbrendan/Documents/fr-test-apps/shop-app/.fittingroom/captures/auth/login/768.png",
+        "/Users/josephbrendan/Documents/fr-test-apps/shop-app/.fittingroom/captures/auth/login/1440.png",
+        "/Users/josephbrendan/Documents/fr-test-apps/shop-app/.fittingroom/captures/auth/signup/375.png",
+        "/Users/josephbrendan/Documents/fr-test-apps/shop-app/.fittingroom/captures/auth/signup/768.png",
+        "/Users/josephbrendan/Documents/fr-test-apps/shop-app/.fittingroom/captures/auth/signup/1440.png"
+      ],
+      "pages": [
+        {
+          "path": "/login",
+          "url": "http://127.0.0.1:3100/login",
+          "screenshots": [
+            {
+              "width": 375,
+              "path": "/Users/josephbrendan/Documents/fr-test-apps/shop-app/.fittingroom/captures/auth/login/375.png"
+            },
+            {
+              "width": 768,
+              "path": "/Users/josephbrendan/Documents/fr-test-apps/shop-app/.fittingroom/captures/auth/login/768.png"
+            },
+            {
+              "width": 1440,
+              "path": "/Users/josephbrendan/Documents/fr-test-apps/shop-app/.fittingroom/captures/auth/login/1440.png"
+            }
+          ],
+          "accessibilityTreePath": "/Users/josephbrendan/Documents/fr-test-apps/shop-app/.fittingroom/captures/auth/login/accessibility-tree.json",
+          "slopEvidencePath": "/Users/josephbrendan/Documents/fr-test-apps/shop-app/.fittingroom/captures/auth/login/slop-evidence.json"
+        },
+        {
+          "path": "/signup",
+          "url": "http://127.0.0.1:3100/signup",
+          "screenshots": [
+            {
+              "width": 375,
+              "path": "/Users/josephbrendan/Documents/fr-test-apps/shop-app/.fittingroom/captures/auth/signup/375.png"
+            },
+            {
+              "width": 768,
+              "path": "/Users/josephbrendan/Documents/fr-test-apps/shop-app/.fittingroom/captures/auth/signup/768.png"
+            },
+            {
+              "width": 1440,
+              "path": "/Users/josephbrendan/Documents/fr-test-apps/shop-app/.fittingroom/captures/auth/signup/1440.png"
+            }
+          ],
+          "accessibilityTreePath": "/Users/josephbrendan/Documents/fr-test-apps/shop-app/.fittingroom/captures/auth/signup/accessibility-tree.json",
+          "slopEvidencePath": "/Users/josephbrendan/Documents/fr-test-apps/shop-app/.fittingroom/captures/auth/signup/slop-evidence.json"
+        }
+      ],
+      "critiqueBrief": "Scope: Authentication (auth).\nPages captured: /login, /signup.\nAutomated findings: 4.\nCitations: wcag22-2.5.8.\nAutomated issues:\n- /signup: Target is smaller than 24 by 24 CSS pixels [wcag22-2.5.8], severity 2.\n- /signup: Target is smaller than 24 by 24 CSS pixels [wcag22-2.5.8], severity 2.\n- /signup: Target is smaller than 24 by 24 CSS pixels [wcag22-2.5.8], severity 2.\n- /signup: Target is smaller than 24 by 24 CSS pixels [wcag22-2.5.8], severity 2.\nPages to review:\n- /login: /Users/josephbrendan/Documents/fr-test-apps/shop-app/.fittingroom/captures/auth/login/375.png, /Users/josephbrendan/Documents/fr-test-apps/shop-app/.fittingroom/captures/auth/login/768.png, /Users/josephbrendan/Documents/fr-test-apps/shop-app/.fittingroom/captures/auth/login/1440.png\n- button \"Log in\" [type=\"submit\"; confirm: none; state: none]\n- text \"Welcome back to Northwind\"\n- text \"Use the email you signed up with.\"\n- text \"Email\"\n- text \"Password\"\n- /signup: /Users/josephbrendan/Documents/fr-test-apps/shop-app/.fittingroom/captures/auth/signup/375.png, /Users/josephbrendan/Documents/fr-test-apps/shop-app/.fittingroom/captures/auth/signup/768.png, /Users/josephbrendan/Documents/fr-test-apps/shop-app/.fittingroom/captures/auth/signup/1440.png\n- a \"Northwind Supply\" [no attributes; confirm: none; state: none]\n- a \"Home\" [no attributes; confirm: none; state: none]\n- a \"Log in\" [no attributes; confirm: none; state: none]\n- a \"Sign up\" [no attributes; confirm: none; state: none]\n- a \"Settings\" [no attributes; confirm: none; state: none]\n- button \"Create account\" [type=\"submit\"; confirm: none; state: none]\n- a \"I already have an account\" [no attributes; confirm: none; state: none]\n- text \"Create an account\"\n- text \"Set up a studio account in under a minute.\"\n- text \"Studio name\"\n- text \"Work email\"\n- text \"Password\"\nReview every screenshot against Nielsen's 10 heuristics.\nCite only citation ids from packages/citations/registry.json. Do not invent citation ids or URLs.\nRate severity on the NN/g 0 to 4 scale.\nSet confidence to \"judged\".\nSubmit the findings with fr_submit_findings.\nChecks that hit errors:\n- None.",
+      "errors": [],
+      "findings": [
+        {
+          "id": "signup-target-size-1",
+          "title": "Target is smaller than 24 by 24 CSS pixels",
+          "citation": "wcag22-2.5.8",
+          "severity": 2,
+          "confidence": "measured",
+          "evidence": {
+            "selector": "a",
+            "screenshotPath": "/Users/josephbrendan/Documents/fr-test-apps/shop-app/.fittingroom/audits/auth/signup/01-wcag22-2-5-8.png",
+            "measuredValue": "38.25 x 21 CSS pixels (minimum 24 x 24)"
+          },
+          "fix": "Make the control at least 24 by 24 CSS pixels, or add enough spacing around it.",
+          "page": "/signup"
+        },
+        {
+          "id": "signup-target-size-2",
+          "title": "Target is smaller than 24 by 24 CSS pixels",
+          "citation": "wcag22-2.5.8",
+          "severity": 2,
+          "confidence": "measured",
+          "evidence": {
+            "selector": "a",
+            "screenshotPath": "/Users/josephbrendan/Documents/fr-test-apps/shop-app/.fittingroom/audits/auth/signup/02-wcag22-2-5-8.png",
+            "measuredValue": "39.08 x 21 CSS pixels (minimum 24 x 24)"
+          },
+          "fix": "Make the control at least 24 by 24 CSS pixels, or add enough spacing around it.",
+          "page": "/signup"
+        },
+        {
+          "id": "signup-target-size-3",
+          "title": "Target is smaller than 24 by 24 CSS pixels",
+          "citation": "wcag22-2.5.8",
+          "severity": 2,
+          "confidence": "measured",
+          "evidence": {
+            "selector": "a",
+            "screenshotPath": "/Users/josephbrendan/Documents/fr-test-apps/shop-app/.fittingroom/audits/auth/signup/03-wcag22-2-5-8.png",
+            "measuredValue": "48.69 x 21 CSS pixels (minimum 24 x 24)"
+          },
+          "fix": "Make the control at least 24 by 24 CSS pixels, or add enough spacing around it.",
+          "page": "/signup"
+        },
+        {
+          "id": "signup-target-size-4",
+          "title": "Target is smaller than 24 by 24 CSS pixels",
+          "citation": "wcag22-2.5.8",
+          "severity": 2,
+          "confidence": "measured",
+          "evidence": {
+            "selector": "a",
+            "screenshotPath": "/Users/josephbrendan/Documents/fr-test-apps/shop-app/.fittingroom/audits/auth/signup/04-wcag22-2-5-8.png",
+            "measuredValue": "53.38 x 21 CSS pixels (minimum 24 x 24)"
+          },
+          "fix": "Make the control at least 24 by 24 CSS pixels, or add enough spacing around it.",
+          "page": "/signup"
+        }
+      ]
+    },
+    "judged": {
+      "counts": {
+        "automated": 4,
+        "judged": 1,
+        "total": 5
+      },
+      "findings": [
+        {
+          "id": "signup-target-size-1",
+          "title": "Target is smaller than 24 by 24 CSS pixels",
+          "citation": "wcag22-2.5.8",
+          "severity": 2,
+          "confidence": "measured",
+          "evidence": {
+            "selector": "a",
+            "screenshotPath": "/Users/josephbrendan/Documents/fr-test-apps/shop-app/.fittingroom/audits/auth/signup/01-wcag22-2-5-8.png",
+            "measuredValue": "38.25 x 21 CSS pixels (minimum 24 x 24)"
+          },
+          "fix": "Make the control at least 24 by 24 CSS pixels, or add enough spacing around it.",
+          "page": "/signup"
+        },
+        {
+          "id": "signup-target-size-2",
+          "title": "Target is smaller than 24 by 24 CSS pixels",
+          "citation": "wcag22-2.5.8",
+          "severity": 2,
+          "confidence": "measured",
+          "evidence": {
+            "selector": "a",
+            "screenshotPath": "/Users/josephbrendan/Documents/fr-test-apps/shop-app/.fittingroom/audits/auth/signup/02-wcag22-2-5-8.png",
+            "measuredValue": "39.08 x 21 CSS pixels (minimum 24 x 24)"
+          },
+          "fix": "Make the control at least 24 by 24 CSS pixels, or add enough spacing around it.",
+          "page": "/signup"
+        },
+        {
+          "id": "signup-target-size-3",
+          "title": "Target is smaller than 24 by 24 CSS pixels",
+          "citation": "wcag22-2.5.8",
+          "severity": 2,
+          "confidence": "measured",
+          "evidence": {
+            "selector": "a",
+            "screenshotPath": "/Users/josephbrendan/Documents/fr-test-apps/shop-app/.fittingroom/audits/auth/signup/03-wcag22-2-5-8.png",
+            "measuredValue": "48.69 x 21 CSS pixels (minimum 24 x 24)"
+          },
+          "fix": "Make the control at least 24 by 24 CSS pixels, or add enough spacing around it.",
+          "page": "/signup"
+        },
+        {
+          "id": "signup-target-size-4",
+          "title": "Target is smaller than 24 by 24 CSS pixels",
+          "citation": "wcag22-2.5.8",
+          "severity": 2,
+          "confidence": "measured",
+          "evidence": {
+            "selector": "a",
+            "screenshotPath": "/Users/josephbrendan/Documents/fr-test-apps/shop-app/.fittingroom/audits/auth/signup/04-wcag22-2-5-8.png",
+            "measuredValue": "53.38 x 21 CSS pixels (minimum 24 x 24)"
+          },
+          "fix": "Make the control at least 24 by 24 CSS pixels, or add enough spacing around it.",
+          "page": "/signup"
+        },
+        {
+          "id": "shop-judged-password-recovery",
+          "title": "Login has no recovery path",
+          "citation": "nielsen-h9",
+          "severity": 2,
+          "confidence": "judged",
+          "evidence": {
+            "measuredValue": "The login form has no visible recovery path for a forgotten password.",
+            "screenshotPath": "/Users/josephbrendan/Documents/fr-test-apps/shop-app/.fittingroom/captures/auth/login/375.png",
+            "selector": "main section form"
+          },
+          "fix": "Add a Forgot password link below the password field."
+        }
+      ]
+    },
+    "directions": {
+      "route": "/login",
+      "surface": "app",
+      "slots": [
+        {
+          "slot": 1,
+          "role": "refined",
+          "direction": {
+            "slug": "refined",
+            "name": "Refined",
+            "surfaces": [
+              "app"
+            ],
+            "description": "Keep the current design and fix audit findings, spacing and hierarchy in the existing style.",
+            "modes": [
+              "light",
+              "deep"
+            ]
+          },
+          "screenshots": [
+            {
+              "width": 375,
+              "path": "/Users/josephbrendan/Documents/fr-test-apps/shop-app/.fittingroom/captures/auth/login/375.png"
+            },
+            {
+              "width": 768,
+              "path": "/Users/josephbrendan/Documents/fr-test-apps/shop-app/.fittingroom/captures/auth/login/768.png"
+            },
+            {
+              "width": 1440,
+              "path": "/Users/josephbrendan/Documents/fr-test-apps/shop-app/.fittingroom/captures/auth/login/1440.png"
+            }
+          ],
+          "contentInventory": [
+            {
+              "role": "heading",
+              "text": "Welcome back to Northwind"
+            },
+            {
+              "role": "textbox",
+              "text": "Email"
+            },
+            {
+              "role": "textbox",
+              "text": "Password"
+            },
+            {
+              "role": "button",
+              "text": "Log in"
+            }
+          ],
+          "designSystem": {
+            "status": "connected",
+            "sources": [
+              "tailwind-v4",
+              "shadcn"
+            ],
+            "tokens": {
+              "color": {
+                "brand": "#0f766e",
+                "brand-dark": "#115e59",
+                "ink": "#0d2b28",
+                "paper": "#f4fbf9",
+                "card": "#ffffff",
+                "line": "#d7e3df",
+                "background": "#f4fbf9",
+                "foreground": "#0d2b28",
+                "card-foreground": "#0d2b28",
+                "primary": "#0f766e",
+                "primary-foreground": "#ffffff",
+                "secondary": "#d9f0eb",
+                "secondary-foreground": "#0d2b28",
+                "muted": "#eef7f4",
+                "muted-foreground": "#4f6b66",
+                "accent": "#f59e0b",
+                "accent-foreground": "#3a2500",
+                "destructive": "#b42318",
+                "border": "#d7e3df",
+                "input": "#d7e3df",
+                "ring": "#0f766e"
+              },
+              "space": {
+                "1": "4px",
+                "2": "8px",
+                "3": "12px",
+                "4": "16px",
+                "6": "24px",
+                "8": "32px",
+                "12": "48px",
+                "16": "64px"
+              },
+              "radius": {
+                "control": "10px",
+                "card": "18px"
+              },
+              "font": {
+                "sans": "\"Inter\", system-ui, sans-serif"
+              },
+              "fontSize": {
+                "sm": "0.875rem",
+                "base": "1rem",
+                "lg": "1.25rem",
+                "2xl": "2rem",
+                "4xl": "3rem"
+              },
+              "shadow": {
+                "card": "0 18px 40px rgba(15, 118, 110, 0.14)"
+              }
+            },
+            "components": [
+              "button"
+            ],
+            "missing": [],
+            "summary": "Design system connected: Tailwind v4 @theme, shadcn/ui."
+          },
+          "writingRules": [
+            "Write one file per variant.",
+            "Use React and Tailwind.",
+            "Use project components where they exist.",
+            "Keep all real content.",
+            "Do not use placeholder or lorem copy."
+          ]
+        },
+        {
+          "slot": 2,
+          "role": "native",
+          "direction": {
+            "slug": "clean-ui",
+            "name": "Clean UI",
+            "surfaces": [
+              "app"
+            ],
+            "description": "Calm neutrals, precise spacing and clear interaction states.",
+            "bestFor": [
+              "SaaS",
+              "productivity"
+            ],
+            "typePair": {
+              "display": "Inter, system-ui, sans-serif",
+              "body": "Inter, system-ui, sans-serif"
+            },
+            "typeScale": {
+              "base": 16,
+              "ratio": 1.2,
+              "steps": [
+                12,
+                14,
+                16,
+                19,
+                23,
+                28
+              ]
+            },
+            "radius": {
+              "control": "6px",
+              "panel": "12px"
+            },
+            "border": "1px solid",
+            "shadow": "0 1px 2px rgba(17, 24, 39, 0.08)",
+            "colorRecipe": {
+              "background": "#FFFFFF",
+              "surface": "#F8FAFC",
+              "text": "#111827",
+              "mutedText": "#475569",
+              "accent": "#1D4ED8",
+              "accentText": "#FFFFFF",
+              "border": "#CBD5E1",
+              "focus": "#1D4ED8",
+              "contrastPairs": [
+                {
+                  "foreground": "#111827",
+                  "background": "#FFFFFF",
+                  "ratio": 17.74,
+                  "usage": "text on background"
+                },
+                {
+                  "foreground": "#475569",
+                  "background": "#FFFFFF",
+                  "ratio": 7.58,
+                  "usage": "muted text on background"
+                },
+                {
+                  "foreground": "#111827",
+                  "background": "#F8FAFC",
+                  "ratio": 16.96,
+                  "usage": "text on surface"
+                },
+                {
+                  "foreground": "#475569",
+                  "background": "#F8FAFC",
+                  "ratio": 7.24,
+                  "usage": "muted text on surface"
+                },
+                {
+                  "foreground": "#FFFFFF",
+                  "background": "#1D4ED8",
+                  "ratio": 6.7,
+                  "usage": "accent text on accent"
+                },
+                {
+                  "foreground": "#1D4ED8",
+                  "background": "#FFFFFF",
+                  "ratio": 6.7,
+                  "usage": "accent text on background"
+                },
+                {
+                  "foreground": "#1D4ED8",
+                  "background": "#FFFFFF",
+                  "ratio": 6.7,
+                  "usage": "focus ring on background"
+                }
+              ]
+            },
+            "density": 5,
+            "motion": 2,
+            "layoutRules": [
+              "Use an eight-point spacing scale.",
+              "Keep one primary action per screen.",
+              "Separate panels with borders before shadows."
+            ],
+            "do": [
+              "Make every state visibly different.",
+              "Keep controls at least 44px tall."
+            ],
+            "dont": [
+              "Flatten primary and secondary actions.",
+              "Hide focus behind subtle styling."
+            ],
+            "a11yRisk": "Low-contrast neutrals and understated focus states can make a calm interface hard to navigate."
+          },
+          "screenshots": [
+            {
+              "width": 375,
+              "path": "/Users/josephbrendan/Documents/fr-test-apps/shop-app/.fittingroom/captures/auth/login/375.png"
+            },
+            {
+              "width": 768,
+              "path": "/Users/josephbrendan/Documents/fr-test-apps/shop-app/.fittingroom/captures/auth/login/768.png"
+            },
+            {
+              "width": 1440,
+              "path": "/Users/josephbrendan/Documents/fr-test-apps/shop-app/.fittingroom/captures/auth/login/1440.png"
+            }
+          ],
+          "contentInventory": [
+            {
+              "role": "heading",
+              "text": "Welcome back to Northwind"
+            },
+            {
+              "role": "textbox",
+              "text": "Email"
+            },
+            {
+              "role": "textbox",
+              "text": "Password"
+            },
+            {
+              "role": "button",
+              "text": "Log in"
+            }
+          ],
+          "designSystem": {
+            "status": "connected",
+            "sources": [
+              "tailwind-v4",
+              "shadcn"
+            ],
+            "tokens": {
+              "color": {
+                "brand": "#0f766e",
+                "brand-dark": "#115e59",
+                "ink": "#0d2b28",
+                "paper": "#f4fbf9",
+                "card": "#ffffff",
+                "line": "#d7e3df",
+                "background": "#f4fbf9",
+                "foreground": "#0d2b28",
+                "card-foreground": "#0d2b28",
+                "primary": "#0f766e",
+                "primary-foreground": "#ffffff",
+                "secondary": "#d9f0eb",
+                "secondary-foreground": "#0d2b28",
+                "muted": "#eef7f4",
+                "muted-foreground": "#4f6b66",
+                "accent": "#f59e0b",
+                "accent-foreground": "#3a2500",
+                "destructive": "#b42318",
+                "border": "#d7e3df",
+                "input": "#d7e3df",
+                "ring": "#0f766e"
+              },
+              "space": {
+                "1": "4px",
+                "2": "8px",
+                "3": "12px",
+                "4": "16px",
+                "6": "24px",
+                "8": "32px",
+                "12": "48px",
+                "16": "64px"
+              },
+              "radius": {
+                "control": "10px",
+                "card": "18px"
+              },
+              "font": {
+                "sans": "\"Inter\", system-ui, sans-serif"
+              },
+              "fontSize": {
+                "sm": "0.875rem",
+                "base": "1rem",
+                "lg": "1.25rem",
+                "2xl": "2rem",
+                "4xl": "3rem"
+              },
+              "shadow": {
+                "card": "0 18px 40px rgba(15, 118, 110, 0.14)"
+              }
+            },
+            "components": [
+              "button"
+            ],
+            "missing": [],
+            "summary": "Design system connected: Tailwind v4 @theme, shadcn/ui."
+          },
+          "writingRules": [
+            "Write one file per variant.",
+            "Use React and Tailwind.",
+            "Use project components where they exist.",
+            "Keep all real content.",
+            "Do not use placeholder or lorem copy."
+          ]
+        },
+        {
+          "slot": 3,
+          "role": "bold",
+          "direction": {
+            "slug": "dark-first",
+            "name": "Dark-First",
+            "surfaces": [
+              "app"
+            ],
+            "description": "Dark surfaces with light used only for hierarchy and focus.",
+            "bestFor": [
+              "media",
+              "dev tools",
+              "creative apps"
+            ],
+            "typePair": {
+              "display": "Inter, system-ui, sans-serif",
+              "body": "Inter, system-ui, sans-serif"
+            },
+            "typeScale": {
+              "base": 16,
+              "ratio": 1.25,
+              "steps": [
+                12,
+                14,
+                16,
+                20,
+                25,
+                31
+              ]
+            },
+            "radius": {
+              "control": "6px",
+              "panel": "12px"
+            },
+            "border": "1px solid",
+            "shadow": "0 18px 50px rgba(0, 0, 0, 0.45)",
+            "colorRecipe": {
+              "background": "#0B1220",
+              "surface": "#111827",
+              "text": "#F8FAFC",
+              "mutedText": "#CBD5E1",
+              "accent": "#93C5FD",
+              "accentText": "#0B1220",
+              "border": "#334155",
+              "focus": "#93C5FD",
+              "contrastPairs": [
+                {
+                  "foreground": "#F8FAFC",
+                  "background": "#0B1220",
+                  "ratio": 17.89,
+                  "usage": "text on background"
+                },
+                {
+                  "foreground": "#CBD5E1",
+                  "background": "#0B1220",
+                  "ratio": 12.61,
+                  "usage": "muted text on background"
+                },
+                {
+                  "foreground": "#F8FAFC",
+                  "background": "#111827",
+                  "ratio": 16.96,
+                  "usage": "text on surface"
+                },
+                {
+                  "foreground": "#CBD5E1",
+                  "background": "#111827",
+                  "ratio": 11.95,
+                  "usage": "muted text on surface"
+                },
+                {
+                  "foreground": "#0B1220",
+                  "background": "#93C5FD",
+                  "ratio": 10.38,
+                  "usage": "accent text on accent"
+                },
+                {
+                  "foreground": "#93C5FD",
+                  "background": "#0B1220",
+                  "ratio": 10.38,
+                  "usage": "accent text on background"
+                },
+                {
+                  "foreground": "#93C5FD",
+                  "background": "#0B1220",
+                  "ratio": 10.38,
+                  "usage": "focus ring on background"
+                }
+              ]
+            },
+            "density": 5,
+            "motion": 2,
+            "layoutRules": [
+              "Use two dark surface levels, not five.",
+              "Reserve the lightest text for headings and active labels.",
+              "Keep one accent for selection and focus."
+            ],
+            "do": [
+              "Use near-black surfaces instead of pure black.",
+              "Keep borders visible on every panel."
+            ],
+            "dont": [
+              "Use pure white text at full weight everywhere.",
+              "Rely on color alone for errors."
+            ],
+            "a11yRisk": "Dark themes hide weak contrast in muted text, borders and disabled controls."
+          },
+          "screenshots": [
+            {
+              "width": 375,
+              "path": "/Users/josephbrendan/Documents/fr-test-apps/shop-app/.fittingroom/captures/auth/login/375.png"
+            },
+            {
+              "width": 768,
+              "path": "/Users/josephbrendan/Documents/fr-test-apps/shop-app/.fittingroom/captures/auth/login/768.png"
+            },
+            {
+              "width": 1440,
+              "path": "/Users/josephbrendan/Documents/fr-test-apps/shop-app/.fittingroom/captures/auth/login/1440.png"
+            }
+          ],
+          "contentInventory": [
+            {
+              "role": "heading",
+              "text": "Welcome back to Northwind"
+            },
+            {
+              "role": "textbox",
+              "text": "Email"
+            },
+            {
+              "role": "textbox",
+              "text": "Password"
+            },
+            {
+              "role": "button",
+              "text": "Log in"
+            }
+          ],
+          "designSystem": {
+            "status": "connected",
+            "sources": [
+              "tailwind-v4",
+              "shadcn"
+            ],
+            "tokens": {
+              "color": {
+                "brand": "#0f766e",
+                "brand-dark": "#115e59",
+                "ink": "#0d2b28",
+                "paper": "#f4fbf9",
+                "card": "#ffffff",
+                "line": "#d7e3df",
+                "background": "#f4fbf9",
+                "foreground": "#0d2b28",
+                "card-foreground": "#0d2b28",
+                "primary": "#0f766e",
+                "primary-foreground": "#ffffff",
+                "secondary": "#d9f0eb",
+                "secondary-foreground": "#0d2b28",
+                "muted": "#eef7f4",
+                "muted-foreground": "#4f6b66",
+                "accent": "#f59e0b",
+                "accent-foreground": "#3a2500",
+                "destructive": "#b42318",
+                "border": "#d7e3df",
+                "input": "#d7e3df",
+                "ring": "#0f766e"
+              },
+              "space": {
+                "1": "4px",
+                "2": "8px",
+                "3": "12px",
+                "4": "16px",
+                "6": "24px",
+                "8": "32px",
+                "12": "48px",
+                "16": "64px"
+              },
+              "radius": {
+                "control": "10px",
+                "card": "18px"
+              },
+              "font": {
+                "sans": "\"Inter\", system-ui, sans-serif"
+              },
+              "fontSize": {
+                "sm": "0.875rem",
+                "base": "1rem",
+                "lg": "1.25rem",
+                "2xl": "2rem",
+                "4xl": "3rem"
+              },
+              "shadow": {
+                "card": "0 18px 40px rgba(15, 118, 110, 0.14)"
+              }
+            },
+            "components": [
+              "button"
+            ],
+            "missing": [],
+            "summary": "Design system connected: Tailwind v4 @theme, shadcn/ui."
+          },
+          "writingRules": [
+            "Write one file per variant.",
+            "Use React and Tailwind.",
+            "Use project components where they exist.",
+            "Keep all real content.",
+            "Do not use placeholder or lorem copy."
+          ]
+        },
+        {
+          "slot": 4,
+          "role": "wildcard",
+          "direction": {
+            "slug": "spatial",
+            "name": "Spatial",
+            "surfaces": [
+              "app"
+            ],
+            "description": "Layered panels with depth, light and optional spatial motion.",
+            "bestFor": [
+              "visionOS style",
+              "immersive apps"
+            ],
+            "typePair": {
+              "display": "Manrope, system-ui, sans-serif",
+              "body": "Nunito Sans, system-ui, sans-serif"
+            },
+            "typeScale": {
+              "base": 16,
+              "ratio": 1.25,
+              "steps": [
+                12,
+                14,
+                16,
+                20,
+                25,
+                31
+              ]
+            },
+            "radius": {
+              "control": "16px",
+              "panel": "28px"
+            },
+            "border": "1px solid",
+            "shadow": "0 22px 70px rgba(16, 32, 61, 0.18)",
+            "colorRecipe": {
+              "background": "#EEF4FF",
+              "surface": "#DCE8FF",
+              "text": "#10203D",
+              "mutedText": "#40516E",
+              "accent": "#0B5CAD",
+              "accentText": "#FFFFFF",
+              "border": "#A9BFE0",
+              "focus": "#0B5CAD",
+              "contrastPairs": [
+                {
+                  "foreground": "#10203D",
+                  "background": "#EEF4FF",
+                  "ratio": 14.68,
+                  "usage": "text on background"
+                },
+                {
+                  "foreground": "#40516E",
+                  "background": "#EEF4FF",
+                  "ratio": 7.26,
+                  "usage": "muted text on background"
+                },
+                {
+                  "foreground": "#10203D",
+                  "background": "#DCE8FF",
+                  "ratio": 13.14,
+                  "usage": "text on surface"
+                },
+                {
+                  "foreground": "#40516E",
+                  "background": "#DCE8FF",
+                  "ratio": 6.5,
+                  "usage": "muted text on surface"
+                },
+                {
+                  "foreground": "#FFFFFF",
+                  "background": "#0B5CAD",
+                  "ratio": 6.67,
+                  "usage": "accent text on accent"
+                },
+                {
+                  "foreground": "#0B5CAD",
+                  "background": "#EEF4FF",
+                  "ratio": 6.04,
+                  "usage": "accent text on background"
+                },
+                {
+                  "foreground": "#0B5CAD",
+                  "background": "#EEF4FF",
+                  "ratio": 6.04,
+                  "usage": "focus ring on background"
+                }
+              ]
+            },
+            "density": 4,
+            "motion": 5,
+            "layoutRules": [
+              "Limit the scene to three depth planes.",
+              "Keep every action reachable in a flat 2D fallback.",
+              "Give text panels a solid, opaque surface."
+            ],
+            "do": [
+              "Make depth optional and readable.",
+              "Respect reduced-motion settings."
+            ],
+            "dont": [
+              "Put body text in a moving 3D layer.",
+              "Use motion as the only cue for hierarchy."
+            ],
+            "a11yRisk": "Depth and camera motion can cause discomfort and make focus and z-order unpredictable."
+          },
+          "screenshots": [
+            {
+              "width": 375,
+              "path": "/Users/josephbrendan/Documents/fr-test-apps/shop-app/.fittingroom/captures/auth/login/375.png"
+            },
+            {
+              "width": 768,
+              "path": "/Users/josephbrendan/Documents/fr-test-apps/shop-app/.fittingroom/captures/auth/login/768.png"
+            },
+            {
+              "width": 1440,
+              "path": "/Users/josephbrendan/Documents/fr-test-apps/shop-app/.fittingroom/captures/auth/login/1440.png"
+            }
+          ],
+          "contentInventory": [
+            {
+              "role": "heading",
+              "text": "Welcome back to Northwind"
+            },
+            {
+              "role": "textbox",
+              "text": "Email"
+            },
+            {
+              "role": "textbox",
+              "text": "Password"
+            },
+            {
+              "role": "button",
+              "text": "Log in"
+            }
+          ],
+          "designSystem": {
+            "status": "connected",
+            "sources": [
+              "tailwind-v4",
+              "shadcn"
+            ],
+            "tokens": {
+              "color": {
+                "brand": "#0f766e",
+                "brand-dark": "#115e59",
+                "ink": "#0d2b28",
+                "paper": "#f4fbf9",
+                "card": "#ffffff",
+                "line": "#d7e3df",
+                "background": "#f4fbf9",
+                "foreground": "#0d2b28",
+                "card-foreground": "#0d2b28",
+                "primary": "#0f766e",
+                "primary-foreground": "#ffffff",
+                "secondary": "#d9f0eb",
+                "secondary-foreground": "#0d2b28",
+                "muted": "#eef7f4",
+                "muted-foreground": "#4f6b66",
+                "accent": "#f59e0b",
+                "accent-foreground": "#3a2500",
+                "destructive": "#b42318",
+                "border": "#d7e3df",
+                "input": "#d7e3df",
+                "ring": "#0f766e"
+              },
+              "space": {
+                "1": "4px",
+                "2": "8px",
+                "3": "12px",
+                "4": "16px",
+                "6": "24px",
+                "8": "32px",
+                "12": "48px",
+                "16": "64px"
+              },
+              "radius": {
+                "control": "10px",
+                "card": "18px"
+              },
+              "font": {
+                "sans": "\"Inter\", system-ui, sans-serif"
+              },
+              "fontSize": {
+                "sm": "0.875rem",
+                "base": "1rem",
+                "lg": "1.25rem",
+                "2xl": "2rem",
+                "4xl": "3rem"
+              },
+              "shadow": {
+                "card": "0 18px 40px rgba(15, 118, 110, 0.14)"
+              }
+            },
+            "components": [
+              "button"
+            ],
+            "missing": [],
+            "summary": "Design system connected: Tailwind v4 @theme, shadcn/ui."
+          },
+          "writingRules": [
+            "Write one file per variant.",
+            "Use React and Tailwind.",
+            "Use project components where they exist.",
+            "Keep all real content.",
+            "Do not use placeholder or lorem copy."
+          ]
+        }
+      ]
+    },
+    "registered": [
+      {
+        "accepted": true,
+        "errors": [],
+        "newFailures": [],
+        "previewUrl": "http://127.0.0.1:52094/__fittingroom/preview/refined",
+        "renderErrors": [],
+        "screenshotPath": "/Users/josephbrendan/Documents/fr-test-apps/shop-app/.fittingroom/variants/refined/preview.png",
+        "slug": "refined",
+        "rationale": "refined keeps the login content and improves the page.",
+        "typecheck": {
+          "errors": [],
+          "passed": true
+        }
+      },
+      {
+        "accepted": true,
+        "errors": [],
+        "newFailures": [],
+        "previewUrl": "http://127.0.0.1:52099/__fittingroom/preview/native",
+        "renderErrors": [],
+        "screenshotPath": "/Users/josephbrendan/Documents/fr-test-apps/shop-app/.fittingroom/variants/native/preview.png",
+        "slug": "native",
+        "rationale": "native keeps the login content and improves the page.",
+        "typecheck": {
+          "errors": [],
+          "passed": true
+        }
+      },
+      {
+        "accepted": true,
+        "errors": [],
+        "newFailures": [],
+        "previewUrl": "http://127.0.0.1:52104/__fittingroom/preview/bold",
+        "renderErrors": [],
+        "screenshotPath": "/Users/josephbrendan/Documents/fr-test-apps/shop-app/.fittingroom/variants/bold/preview.png",
+        "slug": "bold",
+        "rationale": "bold keeps the login content and improves the page.",
+        "typecheck": {
+          "errors": [],
+          "passed": true
+        }
+      },
+      {
+        "accepted": true,
+        "errors": [],
+        "newFailures": [],
+        "previewUrl": "http://127.0.0.1:52109/__fittingroom/preview/wildcard",
+        "renderErrors": [],
+        "screenshotPath": "/Users/josephbrendan/Documents/fr-test-apps/shop-app/.fittingroom/variants/wildcard/preview.png",
+        "slug": "wildcard",
+        "rationale": "wildcard keeps the login content and improves the page.",
+        "typecheck": {
+          "errors": [],
+          "passed": true
+        }
+      }
+    ],
+    "tokenOptions": [
+      "Choose a token",
+      "brand (#0f766e)",
+      "brand-dark (#115e59)",
+      "ink (#0d2b28)",
+      "paper (#f4fbf9)",
+      "card (#ffffff)",
+      "line (#d7e3df)",
+      "background (#f4fbf9)",
+      "foreground (#0d2b28)",
+      "card-foreground (#0d2b28)",
+      "primary (#0f766e)",
+      "primary-foreground (#ffffff)",
+      "secondary (#d9f0eb)",
+      "secondary-foreground (#0d2b28)",
+      "muted (#eef7f4)",
+      "muted-foreground (#4f6b66)",
+      "accent (#f59e0b)",
+      "accent-foreground (#3a2500)",
+      "destructive (#b42318)",
+      "border (#d7e3df)",
+      "input (#d7e3df)",
+      "ring (#0f766e)",
+      "Custom value"
+    ],
+    "offSystem": true,
+    "approval": {
+      "timedOut": false,
+      "board": {
+        "version": 2,
+        "scope": {
+          "id": "auth",
+          "name": "Authentication"
+        },
+        "page": "/login",
+        "scopes": [
+          {
+            "id": "marketing",
+            "name": "Marketing"
+          },
+          {
+            "id": "auth",
+            "name": "Authentication"
+          },
+          {
+            "id": "settings",
+            "name": "Settings"
+          }
+        ],
+        "surface": "app",
+        "round": 1,
+        "status": "approved",
+        "variants": [
+          {
+            "slug": "refined",
+            "name": "Refined",
+            "rationale": "refined keeps the login content and improves the page.",
+            "slot": 1,
+            "pinned": false,
+            "mode": "light",
+            "role": "refined",
+            "filePath": "variants/refined.tsx",
+            "previewPath": ".fittingroom/previews/refined/index.html",
+            "screenshotPath": ".fittingroom/variants/refined/preview.png"
+          },
+          {
+            "slug": "native",
+            "name": "Clean UI",
+            "rationale": "native keeps the login content and improves the page.",
+            "slot": 2,
+            "pinned": false,
+            "role": "native",
+            "filePath": "variants/native.tsx",
+            "previewPath": ".fittingroom/previews/native/index.html",
+            "screenshotPath": ".fittingroom/variants/native/preview.png"
+          },
+          {
+            "slug": "bold",
+            "name": "Dark-First",
+            "rationale": "bold keeps the login content and improves the page.",
+            "slot": 3,
+            "pinned": false,
+            "role": "bold",
+            "filePath": "variants/bold.tsx",
+            "previewPath": ".fittingroom/previews/bold/index.html",
+            "screenshotPath": ".fittingroom/variants/bold/preview.png"
+          },
+          {
+            "slug": "wildcard",
+            "name": "Spatial",
+            "rationale": "wildcard keeps the login content and improves the page.",
+            "slot": 4,
+            "pinned": false,
+            "role": "wildcard",
+            "filePath": "variants/wildcard.tsx",
+            "previewPath": ".fittingroom/previews/wildcard/index.html",
+            "screenshotPath": ".fittingroom/variants/wildcard/preview.png"
+          }
+        ],
+        "findings": [
+          {
+            "id": "signup-target-size-1",
+            "title": "Target is smaller than 24 by 24 CSS pixels",
+            "citation": "wcag22-2.5.8",
+            "citationUrl": "https://www.w3.org/WAI/WCAG22/Understanding/target-size-minimum.html",
+            "severity": 2,
+            "confidence": "measured",
+            "variantSlug": "",
+            "fix": "Make the control at least 24 by 24 CSS pixels, or add enough spacing around it.",
+            "page": "/signup"
+          },
+          {
+            "id": "signup-target-size-2",
+            "title": "Target is smaller than 24 by 24 CSS pixels",
+            "citation": "wcag22-2.5.8",
+            "citationUrl": "https://www.w3.org/WAI/WCAG22/Understanding/target-size-minimum.html",
+            "severity": 2,
+            "confidence": "measured",
+            "variantSlug": "",
+            "fix": "Make the control at least 24 by 24 CSS pixels, or add enough spacing around it.",
+            "page": "/signup"
+          },
+          {
+            "id": "signup-target-size-3",
+            "title": "Target is smaller than 24 by 24 CSS pixels",
+            "citation": "wcag22-2.5.8",
+            "citationUrl": "https://www.w3.org/WAI/WCAG22/Understanding/target-size-minimum.html",
+            "severity": 2,
+            "confidence": "measured",
+            "variantSlug": "",
+            "fix": "Make the control at least 24 by 24 CSS pixels, or add enough spacing around it.",
+            "page": "/signup"
+          },
+          {
+            "id": "signup-target-size-4",
+            "title": "Target is smaller than 24 by 24 CSS pixels",
+            "citation": "wcag22-2.5.8",
+            "citationUrl": "https://www.w3.org/WAI/WCAG22/Understanding/target-size-minimum.html",
+            "severity": 2,
+            "confidence": "measured",
+            "variantSlug": "",
+            "fix": "Make the control at least 24 by 24 CSS pixels, or add enough spacing around it.",
+            "page": "/signup"
+          }
+        ],
+        "previousRounds": [],
+        "selected": {
+          "slot": 1,
+          "slug": "refined"
+        },
+        "approved": {
+          "slot": 1,
+          "slug": "refined",
+          "round": 1
+        }
+      },
+      "approval": {
+        "slot": 1,
+        "slug": "refined",
+        "round": 1
+      }
+    },
+    "handoff": {
+      "brief": "# Implementation handoff: refined\n\nApply the design to the real /login route.\nReuse existing project components.\nKeep all data wiring and real content.\nUse the handoff tokens and match the reference screenshots.\nThe selected design source is in source/refined.tsx.\n\nCall fr_verify with route /login and handoffId handoff-b411d0b7.\nThe build passes with under 2% pixel difference per region, zero token mismatches and zero order mismatches.\n\nrefined keeps the login content and improves the page.",
+      "designMemoryFiles": [
+        ".fittingroom/DESIGN.md",
+        ".fittingroom/design-memory.json"
+      ],
+      "folder": "/Users/josephbrendan/Documents/fr-test-apps/shop-app/.fittingroom/handoffs/handoff-b411d0b7",
+      "handoffId": "handoff-b411d0b7",
+      "route": "/login",
+      "screenshots": [
+        {
+          "path": "reference/375.png",
+          "width": 375
+        },
+        {
+          "path": "reference/768.png",
+          "width": 768
+        },
+        {
+          "path": "reference/1440.png",
+          "width": 1440
+        }
+      ],
+      "tokens": {
+        "color.brand": "#0f766e",
+        "color.brand-dark": "#115e59",
+        "color.ink": "#0d2b28",
+        "color.paper": "#f4fbf9",
+        "color.card": "#ffffff",
+        "color.line": "#d7e3df",
+        "color.background": "#f4fbf9",
+        "color.foreground": "#0d2b28",
+        "color.card-foreground": "#0d2b28",
+        "color.primary": "#0f766e",
+        "color.primary-foreground": "#ffffff",
+        "color.secondary": "#d9f0eb",
+        "color.secondary-foreground": "#0d2b28",
+        "color.muted": "#eef7f4",
+        "color.muted-foreground": "#4f6b66",
+        "color.accent": "#f59e0b",
+        "color.accent-foreground": "#3a2500",
+        "color.destructive": "#b42318",
+        "color.border": "#d7e3df",
+        "color.input": "#d7e3df",
+        "color.ring": "#0f766e",
+        "space.1": "4px",
+        "space.2": "8px",
+        "space.3": "12px",
+        "space.4": "16px",
+        "space.6": "24px",
+        "space.8": "32px",
+        "space.12": "48px",
+        "space.16": "64px",
+        "radius.control": "10px",
+        "radius.card": "18px",
+        "font.sans": "\"Inter\", system-ui, sans-serif",
+        "fontSize.sm": "0.875rem",
+        "fontSize.base": "1rem",
+        "fontSize.lg": "1.25rem",
+        "fontSize.2xl": "2rem",
+        "fontSize.4xl": "3rem",
+        "shadow.card": "0 18px 40px rgba(15, 118, 110, 0.14)"
+      }
+    },
+    "verify": {
+      "handoffId": "handoff-b411d0b7",
+      "orderMismatches": [],
+      "passed": true,
+      "regionDiffs": [
+        {
+          "differencePercent": 0,
+          "height": 300,
+          "name": "375 px row 1 column 1",
+          "passed": true,
+          "width": 125,
+          "widthViewport": 375,
+          "x": 0,
+          "y": 0
+        },
+        {
+          "differencePercent": 0,
+          "height": 300,
+          "name": "375 px row 1 column 2",
+          "passed": true,
+          "width": 125,
+          "widthViewport": 375,
+          "x": 125,
+          "y": 0
+        },
+        {
+          "differencePercent": 0,
+          "height": 300,
+          "name": "375 px row 1 column 3",
+          "passed": true,
+          "width": 125,
+          "widthViewport": 375,
+          "x": 250,
+          "y": 0
+        },
+        {
+          "differencePercent": 0,
+          "height": 300,
+          "name": "375 px row 2 column 1",
+          "passed": true,
+          "width": 125,
+          "widthViewport": 375,
+          "x": 0,
+          "y": 300
+        },
+        {
+          "differencePercent": 0,
+          "height": 300,
+          "name": "375 px row 2 column 2",
+          "passed": true,
+          "width": 125,
+          "widthViewport": 375,
+          "x": 125,
+          "y": 300
+        },
+        {
+          "differencePercent": 0,
+          "height": 300,
+          "name": "375 px row 2 column 3",
+          "passed": true,
+          "width": 125,
+          "widthViewport": 375,
+          "x": 250,
+          "y": 300
+        },
+        {
+          "differencePercent": 0,
+          "height": 300,
+          "name": "375 px row 3 column 1",
+          "passed": true,
+          "width": 125,
+          "widthViewport": 375,
+          "x": 0,
+          "y": 600
+        },
+        {
+          "differencePercent": 0,
+          "height": 300,
+          "name": "375 px row 3 column 2",
+          "passed": true,
+          "width": 125,
+          "widthViewport": 375,
+          "x": 125,
+          "y": 600
+        },
+        {
+          "differencePercent": 0,
+          "height": 300,
+          "name": "375 px row 3 column 3",
+          "passed": true,
+          "width": 125,
+          "widthViewport": 375,
+          "x": 250,
+          "y": 600
+        },
+        {
+          "differencePercent": 0,
+          "height": 300,
+          "name": "768 px row 1 column 1",
+          "passed": true,
+          "width": 256,
+          "widthViewport": 768,
+          "x": 0,
+          "y": 0
+        },
+        {
+          "differencePercent": 0,
+          "height": 300,
+          "name": "768 px row 1 column 2",
+          "passed": true,
+          "width": 256,
+          "widthViewport": 768,
+          "x": 256,
+          "y": 0
+        },
+        {
+          "differencePercent": 0,
+          "height": 300,
+          "name": "768 px row 1 column 3",
+          "passed": true,
+          "width": 256,
+          "widthViewport": 768,
+          "x": 512,
+          "y": 0
+        },
+        {
+          "differencePercent": 0,
+          "height": 300,
+          "name": "768 px row 2 column 1",
+          "passed": true,
+          "width": 256,
+          "widthViewport": 768,
+          "x": 0,
+          "y": 300
+        },
+        {
+          "differencePercent": 0,
+          "height": 300,
+          "name": "768 px row 2 column 2",
+          "passed": true,
+          "width": 256,
+          "widthViewport": 768,
+          "x": 256,
+          "y": 300
+        },
+        {
+          "differencePercent": 0,
+          "height": 300,
+          "name": "768 px row 2 column 3",
+          "passed": true,
+          "width": 256,
+          "widthViewport": 768,
+          "x": 512,
+          "y": 300
+        },
+        {
+          "differencePercent": 0,
+          "height": 300,
+          "name": "768 px row 3 column 1",
+          "passed": true,
+          "width": 256,
+          "widthViewport": 768,
+          "x": 0,
+          "y": 600
+        },
+        {
+          "differencePercent": 0,
+          "height": 300,
+          "name": "768 px row 3 column 2",
+          "passed": true,
+          "width": 256,
+          "widthViewport": 768,
+          "x": 256,
+          "y": 600
+        },
+        {
+          "differencePercent": 0,
+          "height": 300,
+          "name": "768 px row 3 column 3",
+          "passed": true,
+          "width": 256,
+          "widthViewport": 768,
+          "x": 512,
+          "y": 600
+        },
+        {
+          "differencePercent": 0,
+          "height": 300,
+          "name": "1440 px row 1 column 1",
+          "passed": true,
+          "width": 480,
+          "widthViewport": 1440,
+          "x": 0,
+          "y": 0
+        },
+        {
+          "differencePercent": 0,
+          "height": 300,
+          "name": "1440 px row 1 column 2",
+          "passed": true,
+          "width": 480,
+          "widthViewport": 1440,
+          "x": 480,
+          "y": 0
+        },
+        {
+          "differencePercent": 0,
+          "height": 300,
+          "name": "1440 px row 1 column 3",
+          "passed": true,
+          "width": 480,
+          "widthViewport": 1440,
+          "x": 960,
+          "y": 0
+        },
+        {
+          "differencePercent": 0,
+          "height": 300,
+          "name": "1440 px row 2 column 1",
+          "passed": true,
+          "width": 480,
+          "widthViewport": 1440,
+          "x": 0,
+          "y": 300
+        },
+        {
+          "differencePercent": 0,
+          "height": 300,
+          "name": "1440 px row 2 column 2",
+          "passed": true,
+          "width": 480,
+          "widthViewport": 1440,
+          "x": 480,
+          "y": 300
+        },
+        {
+          "differencePercent": 0,
+          "height": 300,
+          "name": "1440 px row 2 column 3",
+          "passed": true,
+          "width": 480,
+          "widthViewport": 1440,
+          "x": 960,
+          "y": 300
+        },
+        {
+          "differencePercent": 0,
+          "height": 300,
+          "name": "1440 px row 3 column 1",
+          "passed": true,
+          "width": 480,
+          "widthViewport": 1440,
+          "x": 0,
+          "y": 600
+        },
+        {
+          "differencePercent": 0,
+          "height": 300,
+          "name": "1440 px row 3 column 2",
+          "passed": true,
+          "width": 480,
+          "widthViewport": 1440,
+          "x": 480,
+          "y": 600
+        },
+        {
+          "differencePercent": 0,
+          "height": 300,
+          "name": "1440 px row 3 column 3",
+          "passed": true,
+          "width": 480,
+          "widthViewport": 1440,
+          "x": 960,
+          "y": 600
+        }
+      ],
+      "route": "/login",
+      "screenshots": [
+        {
+          "path": "/Users/josephbrendan/Documents/fr-test-apps/shop-app/.fittingroom/verifications/handoff-b411d0b7-1792874478782/actual/375.png",
+          "width": 375
+        },
+        {
+          "path": "/Users/josephbrendan/Documents/fr-test-apps/shop-app/.fittingroom/verifications/handoff-b411d0b7-1792874478782/actual/768.png",
+          "width": 768
+        },
+        {
+          "path": "/Users/josephbrendan/Documents/fr-test-apps/shop-app/.fittingroom/verifications/handoff-b411d0b7-1792874478782/actual/1440.png",
+          "width": 1440
+        }
+      ],
+      "structureMismatches": [],
+      "styleMismatches": [],
+      "tokenMismatches": [],
+      "thresholds": {
+        "pixelDifferencePercentPerRegion": 2,
+        "tokenMismatches": 0,
+        "orderMismatches": 0
+      }
+    },
+    "verifyWrong": {
+      "handoffId": "handoff-b411d0b7",
+      "orderMismatches": [],
+      "passed": false,
+      "regionDiffs": [
+        {
+          "differencePercent": 2.51,
+          "height": 300,
+          "name": "375 px row 1 column 1",
+          "passed": false,
+          "width": 125,
+          "widthViewport": 375,
+          "x": 0,
+          "y": 0
+        },
+        {
+          "differencePercent": 7.54,
+          "height": 300,
+          "name": "375 px row 1 column 2",
+          "passed": false,
+          "width": 125,
+          "widthViewport": 375,
+          "x": 125,
+          "y": 0
+        },
+        {
+          "differencePercent": 1.77,
+          "height": 300,
+          "name": "375 px row 1 column 3",
+          "passed": true,
+          "width": 125,
+          "widthViewport": 375,
+          "x": 250,
+          "y": 0
+        },
+        {
+          "differencePercent": 0,
+          "height": 300,
+          "name": "375 px row 2 column 1",
+          "passed": true,
+          "width": 125,
+          "widthViewport": 375,
+          "x": 0,
+          "y": 300
+        },
+        {
+          "differencePercent": 0,
+          "height": 300,
+          "name": "375 px row 2 column 2",
+          "passed": true,
+          "width": 125,
+          "widthViewport": 375,
+          "x": 125,
+          "y": 300
+        },
+        {
+          "differencePercent": 0,
+          "height": 300,
+          "name": "375 px row 2 column 3",
+          "passed": true,
+          "width": 125,
+          "widthViewport": 375,
+          "x": 250,
+          "y": 300
+        },
+        {
+          "differencePercent": 0,
+          "height": 300,
+          "name": "375 px row 3 column 1",
+          "passed": true,
+          "width": 125,
+          "widthViewport": 375,
+          "x": 0,
+          "y": 600
+        },
+        {
+          "differencePercent": 0,
+          "height": 300,
+          "name": "375 px row 3 column 2",
+          "passed": true,
+          "width": 125,
+          "widthViewport": 375,
+          "x": 125,
+          "y": 600
+        },
+        {
+          "differencePercent": 0,
+          "height": 300,
+          "name": "375 px row 3 column 3",
+          "passed": true,
+          "width": 125,
+          "widthViewport": 375,
+          "x": 250,
+          "y": 600
+        },
+        {
+          "differencePercent": 2.99,
+          "height": 300,
+          "name": "768 px row 1 column 1",
+          "passed": false,
+          "width": 256,
+          "widthViewport": 768,
+          "x": 0,
+          "y": 0
+        },
+        {
+          "differencePercent": 6.63,
+          "height": 300,
+          "name": "768 px row 1 column 2",
+          "passed": false,
+          "width": 256,
+          "widthViewport": 768,
+          "x": 256,
+          "y": 0
+        },
+        {
+          "differencePercent": 0.28,
+          "height": 300,
+          "name": "768 px row 1 column 3",
+          "passed": true,
+          "width": 256,
+          "widthViewport": 768,
+          "x": 512,
+          "y": 0
+        },
+        {
+          "differencePercent": 7.83,
+          "height": 300,
+          "name": "768 px row 2 column 1",
+          "passed": false,
+          "width": 256,
+          "widthViewport": 768,
+          "x": 0,
+          "y": 300
+        },
+        {
+          "differencePercent": 4.55,
+          "height": 300,
+          "name": "768 px row 2 column 2",
+          "passed": false,
+          "width": 256,
+          "widthViewport": 768,
+          "x": 256,
+          "y": 300
+        },
+        {
+          "differencePercent": 0.73,
+          "height": 300,
+          "name": "768 px row 2 column 3",
+          "passed": true,
+          "width": 256,
+          "widthViewport": 768,
+          "x": 512,
+          "y": 300
+        },
+        {
+          "differencePercent": 0,
+          "height": 300,
+          "name": "768 px row 3 column 1",
+          "passed": true,
+          "width": 256,
+          "widthViewport": 768,
+          "x": 0,
+          "y": 600
+        },
+        {
+          "differencePercent": 0,
+          "height": 300,
+          "name": "768 px row 3 column 2",
+          "passed": true,
+          "width": 256,
+          "widthViewport": 768,
+          "x": 256,
+          "y": 600
+        },
+        {
+          "differencePercent": 0,
+          "height": 300,
+          "name": "768 px row 3 column 3",
+          "passed": true,
+          "width": 256,
+          "widthViewport": 768,
+          "x": 512,
+          "y": 600
+        },
+        {
+          "differencePercent": 0,
+          "height": 300,
+          "name": "1440 px row 1 column 1",
+          "passed": true,
+          "width": 480,
+          "widthViewport": 1440,
+          "x": 0,
+          "y": 0
+        },
+        {
+          "differencePercent": 5.28,
+          "height": 300,
+          "name": "1440 px row 1 column 2",
+          "passed": false,
+          "width": 480,
+          "widthViewport": 1440,
+          "x": 480,
+          "y": 0
+        },
+        {
+          "differencePercent": 0,
+          "height": 300,
+          "name": "1440 px row 1 column 3",
+          "passed": true,
+          "width": 480,
+          "widthViewport": 1440,
+          "x": 960,
+          "y": 0
+        },
+        {
+          "differencePercent": 0,
+          "height": 300,
+          "name": "1440 px row 2 column 1",
+          "passed": true,
+          "width": 480,
+          "widthViewport": 1440,
+          "x": 0,
+          "y": 300
+        },
+        {
+          "differencePercent": 6.99,
+          "height": 300,
+          "name": "1440 px row 2 column 2",
+          "passed": false,
+          "width": 480,
+          "widthViewport": 1440,
+          "x": 480,
+          "y": 300
+        },
+        {
+          "differencePercent": 0,
+          "height": 300,
+          "name": "1440 px row 2 column 3",
+          "passed": true,
+          "width": 480,
+          "widthViewport": 1440,
+          "x": 960,
+          "y": 300
+        },
+        {
+          "differencePercent": 0,
+          "height": 300,
+          "name": "1440 px row 3 column 1",
+          "passed": true,
+          "width": 480,
+          "widthViewport": 1440,
+          "x": 0,
+          "y": 600
+        },
+        {
+          "differencePercent": 0,
+          "height": 300,
+          "name": "1440 px row 3 column 2",
+          "passed": true,
+          "width": 480,
+          "widthViewport": 1440,
+          "x": 480,
+          "y": 600
+        },
+        {
+          "differencePercent": 0,
+          "height": 300,
+          "name": "1440 px row 3 column 3",
+          "passed": true,
+          "width": 480,
+          "widthViewport": 1440,
+          "x": 960,
+          "y": 600
+        }
+      ],
+      "route": "/login",
+      "screenshots": [
+        {
+          "path": "/Users/josephbrendan/Documents/fr-test-apps/shop-app/.fittingroom/verifications/handoff-b411d0b7-1792874481404/actual/375.png",
+          "width": 375
+        },
+        {
+          "path": "/Users/josephbrendan/Documents/fr-test-apps/shop-app/.fittingroom/verifications/handoff-b411d0b7-1792874481404/actual/768.png",
+          "width": 768
+        },
+        {
+          "path": "/Users/josephbrendan/Documents/fr-test-apps/shop-app/.fittingroom/verifications/handoff-b411d0b7-1792874481404/actual/1440.png",
+          "width": 1440
+        }
+      ],
+      "structureMismatches": [],
+      "styleMismatches": [
+        {
+          "actual": "rgb(0, 255, 0)",
+          "expected": "rgb(255, 0, 255)",
+          "id": "fr-h1-1",
+          "property": "color"
+        }
+      ],
+      "tokenMismatches": [
+        {
+          "actual": "rgb(0, 255, 0)",
+          "expected": "rgb(255, 0, 255)",
+          "id": "fr-h1-1",
+          "property": "color"
+        }
+      ],
+      "thresholds": {
+        "pixelDifferencePercentPerRegion": 2,
+        "tokenMismatches": 0,
+        "orderMismatches": 0
+      }
+    }
+  }
+}

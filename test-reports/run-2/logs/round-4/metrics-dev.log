@@ -1,0 +1,81 @@
+
+> metrics-dashboard@0.0.0 dev
+> next dev -p 3200
+
+▲ Next.js 16.4.3 (Turbopack)
+- Local:         http://localhost:3200
+- Network:       http://192.168.0.220:3200
+✓ Ready in 210ms
+✓ Running next.config.ts took 615ms
+
+ GET /dashboard 200 in 125ms (next.js: 52ms, application-code: 73ms)
+ GET / 200 in 27ms (next.js: 3ms, application-code: 24ms)
+ GET /analytics 200 in 34ms (next.js: 5ms, application-code: 29ms)
+⚠ Blocked cross-origin request to Next.js dev resource /_next/hmr from "127.0.0.1".
+Cross-origin access to Next.js dev resources is blocked by default for safety.
+
+To allow this host in development, add it to "allowedDevOrigins" in next.config.js and restart the dev server:
+
+// next.config.js
+module.exports = {
+  allowedDevOrigins: ['127.0.0.1'],
+}
+
+Read more: https://nextjs.org/docs/app/api-reference/config/next-config-js/allowedDevOrigins
+ GET /analytics 200 in 24ms (next.js: 0.8ms, application-code: 23ms)
+ GET /analytics 200 in 17ms (next.js: 0.7ms, application-code: 16ms)
+⚠ Blocked cross-origin request to Next.js dev resource /__nextjs_font/geist-latin.woff2 from "127.0.0.1".
+Cross-origin access to Next.js dev resources is blocked by default for safety.
+
+To allow this host in development, add it to "allowedDevOrigins" in next.config.js and restart the dev server:
+
+// next.config.js
+module.exports = {
+  allowedDevOrigins: ['127.0.0.1'],
+}
+
+Read more: https://nextjs.org/docs/app/api-reference/config/next-config-js/allowedDevOrigins
+ GET /dashboard 200 in 20ms (next.js: 0.8ms, application-code: 20ms)
+ GET /dashboard 200 in 21ms (next.js: 0.4ms, application-code: 21ms)
+ GET /dashboard 200 in 18ms (next.js: 0.5ms, application-code: 18ms)
+ GET /analytics 200 in 33ms (next.js: 0.5ms, application-code: 33ms)
+ GET /analytics 200 in 18ms (next.js: 0.6ms, application-code: 17ms)
+ GET /dashboard 200 in 21ms (next.js: 0.5ms, application-code: 20ms)
+ GET /dashboard 200 in 29ms (next.js: 0.9ms, application-code: 28ms)
+✓ Compiled in 5ms
+✓ Compiled in 45ms
+✓ Compiled in 2ms
+✓ Compiled in 2ms
+ GET /dashboard 200 in 27ms (next.js: 1.7ms, application-code: 26ms)
+ GET / 200 in 30ms (next.js: 1.4ms, application-code: 29ms)
+ GET /dashboard 200 in 15ms (next.js: 0.6ms, application-code: 15ms)
+ GET /dashboard 200 in 15ms (next.js: 0.5ms, application-code: 15ms)
+ GET /dashboard 200 in 17ms (next.js: 0.6ms, application-code: 17ms)
+ GET /dashboard 200 in 15ms (next.js: 0.9ms, application-code: 14ms)
+✓ Compiled in 3ms
+ GET / 200 in 26ms (next.js: 0.9ms, application-code: 25ms)
+ GET /dashboard 200 in 20ms (next.js: 0.7ms, application-code: 19ms)
+ GET /dashboard 200 in 15ms (next.js: 0.7ms, application-code: 14ms)
+ GET /dashboard 200 in 17ms (next.js: 0.4ms, application-code: 16ms)
+ GET /dashboard 200 in 15ms (next.js: 0.6ms, application-code: 15ms)
+✓ Compiled in 3ms
+ GET / 200 in 11ms (next.js: 0.4ms, application-code: 11ms)
+ GET /analytics 200 in 14ms (next.js: 0.4ms, application-code: 14ms)
+ GET /analytics 200 in 13ms (next.js: 0.4ms, application-code: 13ms)
+ GET /analytics 200 in 15ms (next.js: 0.3ms, application-code: 15ms)
+ GET /dashboard 200 in 60ms (next.js: 1.9ms, application-code: 58ms)
+ GET /dashboard 200 in 30ms (next.js: 2.0ms, application-code: 28ms)
+ GET /dashboard 200 in 28ms (next.js: 1.3ms, application-code: 27ms)
+ GET /analytics 200 in 17ms (next.js: 0.5ms, application-code: 16ms)
+ GET /analytics 200 in 18ms (next.js: 0.4ms, application-code: 17ms)
+ GET /analytics 200 in 14ms (next.js: 0.8ms, application-code: 14ms)
+ GET /dashboard 200 in 12ms (next.js: 0.6ms, application-code: 11ms)
+ GET /dashboard 200 in 11ms (next.js: 0.4ms, application-code: 11ms)
+ GET /dashboard 200 in 13ms (next.js: 0.6ms, application-code: 12ms)
+ GET / 200 in 11ms (next.js: 0.3ms, application-code: 10ms)
+ GET /dashboard 200 in 19ms (next.js: 0.5ms, application-code: 18ms)
+ GET /dashboard 200 in 18ms (next.js: 0.4ms, application-code: 17ms)
+ GET /dashboard 200 in 15ms (next.js: 0.6ms, application-code: 14ms)
+ GET /dashboard 200 in 13ms (next.js: 0.4ms, application-code: 13ms)
+ GET /dashboard 200 in 12ms (next.js: 0.7ms, application-code: 11ms)
+[?25h

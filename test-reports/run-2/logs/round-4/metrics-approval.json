@@ -1,0 +1,136 @@
+{
+  "timedOut": false,
+  "board": {
+    "version": 2,
+    "scope": {
+      "id": "dashboard",
+      "name": "Dashboard"
+    },
+    "page": "/dashboard",
+    "scopes": [
+      {
+        "id": "marketing",
+        "name": "Marketing"
+      },
+      {
+        "id": "dashboard",
+        "name": "Dashboard"
+      },
+      {
+        "id": "app",
+        "name": "App screens"
+      }
+    ],
+    "surface": "dashboard",
+    "round": 1,
+    "status": "approved",
+    "variants": [
+      {
+        "slug": "refined",
+        "name": "Refined",
+        "rationale": "refined keeps the dashboard content and improves the page.",
+        "slot": 1,
+        "pinned": false,
+        "mode": "light",
+        "role": "refined",
+        "filePath": "variants/refined.tsx",
+        "previewPath": ".fittingroom/previews/refined/index.html",
+        "screenshotPath": ".fittingroom/variants/refined/preview.png"
+      },
+      {
+        "slug": "native",
+        "name": "Data-Dense Utilitarian",
+        "rationale": "native keeps the dashboard content and improves the page.",
+        "slot": 2,
+        "pinned": false,
+        "role": "native",
+        "filePath": "variants/native.tsx",
+        "previewPath": ".fittingroom/previews/native/index.html",
+        "screenshotPath": ".fittingroom/variants/native/preview.png"
+      },
+      {
+        "slug": "bold",
+        "name": "Command Center",
+        "rationale": "bold keeps the dashboard content and improves the page.",
+        "slot": 3,
+        "pinned": false,
+        "role": "bold",
+        "filePath": "variants/bold.tsx",
+        "previewPath": ".fittingroom/previews/bold/index.html",
+        "screenshotPath": ".fittingroom/variants/bold/preview.png"
+      },
+      {
+        "slug": "wildcard",
+        "name": "Widget / Bento Dashboard",
+        "rationale": "wildcard keeps the dashboard content and improves the page.",
+        "slot": 4,
+        "pinned": false,
+        "role": "wildcard",
+        "filePath": "variants/wildcard.tsx",
+        "previewPath": ".fittingroom/previews/wildcard/index.html",
+        "screenshotPath": ".fittingroom/variants/wildcard/preview.png"
+      }
+    ],
+    "findings": [
+      {
+        "id": "analytics-target-size-1",
+        "title": "Target is smaller than 24 by 24 CSS pixels",
+        "citation": "wcag22-2.5.8",
+        "citationUrl": "https://www.w3.org/WAI/WCAG22/Understanding/target-size-minimum.html",
+        "severity": 2,
+        "confidence": "measured",
+        "variantSlug": "",
+        "fix": "Make the control at least 24 by 24 CSS pixels, or add enough spacing around it.",
+        "page": "/analytics"
+      },
+      {
+        "id": "analytics-target-size-2",
+        "title": "Target is smaller than 24 by 24 CSS pixels",
+        "citation": "wcag22-2.5.8",
+        "citationUrl": "https://www.w3.org/WAI/WCAG22/Understanding/target-size-minimum.html",
+        "severity": 2,
+        "confidence": "measured",
+        "variantSlug": "",
+        "fix": "Make the control at least 24 by 24 CSS pixels, or add enough spacing around it.",
+        "page": "/analytics"
+      },
+      {
+        "id": "analytics-target-size-3",
+        "title": "Target is smaller than 24 by 24 CSS pixels",
+        "citation": "wcag22-2.5.8",
+        "citationUrl": "https://www.w3.org/WAI/WCAG22/Understanding/target-size-minimum.html",
+        "severity": 2,
+        "confidence": "measured",
+        "variantSlug": "",
+        "fix": "Make the control at least 24 by 24 CSS pixels, or add enough spacing around it.",
+        "page": "/analytics"
+      },
+      {
+        "id": "analytics-target-size-4",
+        "title": "Target is smaller than 24 by 24 CSS pixels",
+        "citation": "wcag22-2.5.8",
+        "citationUrl": "https://www.w3.org/WAI/WCAG22/Understanding/target-size-minimum.html",
+        "severity": 2,
+        "confidence": "measured",
+        "variantSlug": "",
+        "fix": "Make the control at least 24 by 24 CSS pixels, or add enough spacing around it.",
+        "page": "/analytics"
+      }
+    ],
+    "previousRounds": [],
+    "selected": {
+      "slot": 1,
+      "slug": "refined"
+    },
+    "approved": {
+      "slot": 1,
+      "slug": "refined",
+      "round": 1
+    }
+  },
+  "approval": {
+    "slot": 1,
+    "slug": "refined",
+    "round": 1
+  }
+}

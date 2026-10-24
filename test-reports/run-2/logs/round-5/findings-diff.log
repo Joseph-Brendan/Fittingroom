@@ -1,0 +1,11 @@
+--- /Users/josephbrendan/Documents/fittingroom/test-reports/run-2/logs/round-5/stranger-findings.json	2026-10-24 23:37:52
++++ /Users/josephbrendan/Documents/fittingroom/test-reports/run-2/logs/round-5/linked-findings.json	2026-10-24 23:37:59
+@@ -7,7 +7,7 @@
+       "/pricing"
+     ]
+   },
+-  "generatedAt": "2026-10-24T22:37:52.441Z",
++  "generatedAt": "2026-10-24T22:37:59.409Z",
+   "findings": [
+     {
+       "id": "root-axe-color-contrast-1",

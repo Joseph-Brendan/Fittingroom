@@ -1,0 +1,17 @@
+{
+  "scope": "auth",
+  "page": "/login",
+  "density": "sparse",
+  "blocks": [
+    {
+      "id": "fr-section-1",
+      "label": "Welcome back to Northwind",
+      "kind": "hero",
+      "order": 1,
+      "visible": true,
+      "priority": "hero",
+      "group": null,
+      "collapse": "none"
+    }
+  ]
+}

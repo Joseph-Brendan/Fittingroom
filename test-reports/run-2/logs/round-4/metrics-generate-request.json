@@ -1,0 +1,39 @@
+{
+  "timedOut": false,
+  "board": {
+    "version": 2,
+    "scope": {
+      "id": "marketing",
+      "name": "Marketing"
+    },
+    "scopes": [
+      {
+        "id": "marketing",
+        "name": "Marketing"
+      },
+      {
+        "id": "dashboard",
+        "name": "Dashboard"
+      },
+      {
+        "id": "app",
+        "name": "App screens"
+      }
+    ],
+    "round": 0,
+    "status": "generating",
+    "variants": [],
+    "findings": [],
+    "previousRounds": [],
+    "selected": null,
+    "approved": null
+  },
+  "request": {
+    "id": "req-712b9a09",
+    "type": "generate",
+    "slot": null,
+    "scopeId": "marketing",
+    "round": 0,
+    "createdAt": "2026-10-24T22:35:21.576Z"
+  }
+}

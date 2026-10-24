@@ -1,0 +1,47 @@
+{
+  "version": 1,
+  "route": "/dashboard",
+  "createdAt": "2026-10-24T22:35:47.176Z",
+  "states": [
+    {
+      "state": "empty",
+      "status": "not_reachable",
+      "reason": "This page makes no same-origin API calls.",
+      "screenshots": [
+        "/Users/josephbrendan/Documents/fr-test-apps/metrics-dashboard/.fittingroom/states/dashboard/empty-1440.png"
+      ]
+    },
+    {
+      "state": "loading",
+      "status": "not_reachable",
+      "reason": "This page makes no same-origin API calls.",
+      "screenshots": [
+        "/Users/josephbrendan/Documents/fr-test-apps/metrics-dashboard/.fittingroom/states/dashboard/loading-1440.png"
+      ]
+    },
+    {
+      "state": "error",
+      "status": "not_reachable",
+      "reason": "This page makes no same-origin API calls.",
+      "screenshots": [
+        "/Users/josephbrendan/Documents/fr-test-apps/metrics-dashboard/.fittingroom/states/dashboard/error-1440.png"
+      ]
+    },
+    {
+      "state": "long",
+      "status": "pass",
+      "reason": "Text wraps without clipping or horizontal scroll.",
+      "screenshots": [
+        "/Users/josephbrendan/Documents/fr-test-apps/metrics-dashboard/.fittingroom/states/dashboard/long-320.png"
+      ]
+    },
+    {
+      "state": "dark",
+      "status": "pass",
+      "reason": "The full contrast audit passes in dark mode.",
+      "screenshots": [
+        "/Users/josephbrendan/Documents/fr-test-apps/metrics-dashboard/.fittingroom/states/dashboard/dark-1440.png"
+      ]
+    }
+  ]
+}

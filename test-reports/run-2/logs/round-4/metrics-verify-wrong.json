@@ -1,0 +1,300 @@
+{
+  "handoffId": "handoff-0a03f9ed",
+  "orderMismatches": [],
+  "passed": false,
+  "regionDiffs": [
+    {
+      "differencePercent": 2.4,
+      "height": 300,
+      "name": "375 px row 1 column 1",
+      "passed": false,
+      "width": 125,
+      "widthViewport": 375,
+      "x": 0,
+      "y": 0
+    },
+    {
+      "differencePercent": 7.53,
+      "height": 300,
+      "name": "375 px row 1 column 2",
+      "passed": false,
+      "width": 125,
+      "widthViewport": 375,
+      "x": 125,
+      "y": 0
+    },
+    {
+      "differencePercent": 2.52,
+      "height": 300,
+      "name": "375 px row 1 column 3",
+      "passed": false,
+      "width": 125,
+      "widthViewport": 375,
+      "x": 250,
+      "y": 0
+    },
+    {
+      "differencePercent": 0,
+      "height": 300,
+      "name": "375 px row 2 column 1",
+      "passed": true,
+      "width": 125,
+      "widthViewport": 375,
+      "x": 0,
+      "y": 300
+    },
+    {
+      "differencePercent": 0,
+      "height": 300,
+      "name": "375 px row 2 column 2",
+      "passed": true,
+      "width": 125,
+      "widthViewport": 375,
+      "x": 125,
+      "y": 300
+    },
+    {
+      "differencePercent": 0,
+      "height": 300,
+      "name": "375 px row 2 column 3",
+      "passed": true,
+      "width": 125,
+      "widthViewport": 375,
+      "x": 250,
+      "y": 300
+    },
+    {
+      "differencePercent": 0,
+      "height": 300,
+      "name": "375 px row 3 column 1",
+      "passed": true,
+      "width": 125,
+      "widthViewport": 375,
+      "x": 0,
+      "y": 600
+    },
+    {
+      "differencePercent": 0,
+      "height": 300,
+      "name": "375 px row 3 column 2",
+      "passed": true,
+      "width": 125,
+      "widthViewport": 375,
+      "x": 125,
+      "y": 600
+    },
+    {
+      "differencePercent": 0,
+      "height": 300,
+      "name": "375 px row 3 column 3",
+      "passed": true,
+      "width": 125,
+      "widthViewport": 375,
+      "x": 250,
+      "y": 600
+    },
+    {
+      "differencePercent": 2.3,
+      "height": 300,
+      "name": "768 px row 1 column 1",
+      "passed": false,
+      "width": 256,
+      "widthViewport": 768,
+      "x": 0,
+      "y": 0
+    },
+    {
+      "differencePercent": 3.13,
+      "height": 300,
+      "name": "768 px row 1 column 2",
+      "passed": false,
+      "width": 256,
+      "widthViewport": 768,
+      "x": 256,
+      "y": 0
+    },
+    {
+      "differencePercent": 0,
+      "height": 300,
+      "name": "768 px row 1 column 3",
+      "passed": true,
+      "width": 256,
+      "widthViewport": 768,
+      "x": 512,
+      "y": 0
+    },
+    {
+      "differencePercent": 0,
+      "height": 300,
+      "name": "768 px row 2 column 1",
+      "passed": true,
+      "width": 256,
+      "widthViewport": 768,
+      "x": 0,
+      "y": 300
+    },
+    {
+      "differencePercent": 0,
+      "height": 300,
+      "name": "768 px row 2 column 2",
+      "passed": true,
+      "width": 256,
+      "widthViewport": 768,
+      "x": 256,
+      "y": 300
+    },
+    {
+      "differencePercent": 0,
+      "height": 300,
+      "name": "768 px row 2 column 3",
+      "passed": true,
+      "width": 256,
+      "widthViewport": 768,
+      "x": 512,
+      "y": 300
+    },
+    {
+      "differencePercent": 0,
+      "height": 300,
+      "name": "768 px row 3 column 1",
+      "passed": true,
+      "width": 256,
+      "widthViewport": 768,
+      "x": 0,
+      "y": 600
+    },
+    {
+      "differencePercent": 0,
+      "height": 300,
+      "name": "768 px row 3 column 2",
+      "passed": true,
+      "width": 256,
+      "widthViewport": 768,
+      "x": 256,
+      "y": 600
+    },
+    {
+      "differencePercent": 0,
+      "height": 300,
+      "name": "768 px row 3 column 3",
+      "passed": true,
+      "width": 256,
+      "widthViewport": 768,
+      "x": 512,
+      "y": 600
+    },
+    {
+      "differencePercent": 1.85,
+      "height": 300,
+      "name": "1440 px row 1 column 1",
+      "passed": true,
+      "width": 480,
+      "widthViewport": 1440,
+      "x": 0,
+      "y": 0
+    },
+    {
+      "differencePercent": 1.05,
+      "height": 300,
+      "name": "1440 px row 1 column 2",
+      "passed": true,
+      "width": 480,
+      "widthViewport": 1440,
+      "x": 480,
+      "y": 0
+    },
+    {
+      "differencePercent": 0,
+      "height": 300,
+      "name": "1440 px row 1 column 3",
+      "passed": true,
+      "width": 480,
+      "widthViewport": 1440,
+      "x": 960,
+      "y": 0
+    },
+    {
+      "differencePercent": 0,
+      "height": 300,
+      "name": "1440 px row 2 column 1",
+      "passed": true,
+      "width": 480,
+      "widthViewport": 1440,
+      "x": 0,
+      "y": 300
+    },
+    {
+      "differencePercent": 0,
+      "height": 300,
+      "name": "1440 px row 2 column 2",
+      "passed": true,
+      "width": 480,
+      "widthViewport": 1440,
+      "x": 480,
+      "y": 300
+    },
+    {
+      "differencePercent": 0,
+      "height": 300,
+      "name": "1440 px row 2 column 3",
+      "passed": true,
+      "width": 480,
+      "widthViewport": 1440,
+      "x": 960,
+      "y": 300
+    },
+    {
+      "differencePercent": 0,
+      "height": 300,
+      "name": "1440 px row 3 column 1",
+      "passed": true,
+      "width": 480,
+      "widthViewport": 1440,
+      "x": 0,
+      "y": 600
+    },
+    {
+      "differencePercent": 0,
+      "height": 300,
+      "name": "1440 px row 3 column 2",
+      "passed": true,
+      "width": 480,
+      "widthViewport": 1440,
+      "x": 480,
+      "y": 600
+    },
+    {
+      "differencePercent": 0,
+      "height": 300,
+      "name": "1440 px row 3 column 3",
+      "passed": true,
+      "width": 480,
+      "widthViewport": 1440,
+      "x": 960,
+      "y": 600
+    }
+  ],
+  "route": "/dashboard",
+  "screenshots": [
+    {
+      "path": "/Users/josephbrendan/Documents/fr-test-apps/metrics-dashboard/.fittingroom/verifications/handoff-0a03f9ed-1792881337466/actual/375.png",
+      "width": 375
+    },
+    {
+      "path": "/Users/josephbrendan/Documents/fr-test-apps/metrics-dashboard/.fittingroom/verifications/handoff-0a03f9ed-1792881337466/actual/768.png",
+      "width": 768
+    },
+    {
+      "path": "/Users/josephbrendan/Documents/fr-test-apps/metrics-dashboard/.fittingroom/verifications/handoff-0a03f9ed-1792881337466/actual/1440.png",
+      "width": 1440
+    }
+  ],
+  "structureMismatches": [],
+  "styleMismatches": [],
+  "tokenMismatches": [],
+  "thresholds": {
+    "pixelDifferencePercentPerRegion": 2,
+    "tokenMismatches": 0,
+    "orderMismatches": 0
+  }
+}

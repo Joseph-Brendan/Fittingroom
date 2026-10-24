@@ -1,0 +1,53 @@
+{
+  "scope": {
+    "id": "marketing",
+    "name": "Marketing",
+    "pages": ["/", "/pricing"]
+  },
+  "generatedAt": "2026-10-24T22:37:52.441Z",
+  "findings": [
+    {
+      "id": "root-axe-color-contrast-1",
+      "title": "Elements must meet minimum color contrast ratio thresholds",
+      "citation": "wcag22-1.4.3",
+      "severity": 3,
+      "confidence": "measured",
+      "evidence": {
+        "selector": "#helper",
+        "screenshotPath": "/Users/josephbrendan/Documents/fittingroom/fixtures/bad-ui/.fittingroom/audits/marketing/root/01-wcag22-1-4-3.png",
+        "measuredValue": "contrast ratio 2.35:1, required 4.5:1"
+      },
+      "fix": "Use a text color and background pair that meet the 4.5:1 contrast minimum.",
+      "page": "/"
+    },
+    {
+      "id": "root-focus-obscured-2",
+      "title": "Focused control is hidden by page content",
+      "citation": "wcag22-2.4.11",
+      "severity": 3,
+      "confidence": "measured",
+      "evidence": {
+        "selector": "#focus-target",
+        "screenshotPath": "/Users/josephbrendan/Documents/fittingroom/fixtures/bad-ui/.fittingroom/audits/marketing/root/02-wcag22-2-4-11.png",
+        "measuredValue": "0 of 5 sample points visible, covered by aside.sticky-banner"
+      },
+      "fix": "Move or resize the covering content so the focused control stays visible.",
+      "page": "/"
+    },
+    {
+      "id": "pricing-axe-image-alt-1",
+      "title": "Images must have alternative text",
+      "citation": "wcag22-1.1.1",
+      "severity": 4,
+      "confidence": "measured",
+      "evidence": {
+        "selector": "img",
+        "screenshotPath": "/Users/josephbrendan/Documents/fittingroom/fixtures/bad-ui/.fittingroom/audits/marketing/pricing/01-wcag22-1-1-1.png",
+        "measuredValue": "Fix any of the following: Element does not have an alt attribute aria-label attribute does not exist or is empty aria-labelledby attribute does not exist, references elements that do not exist or references elements that are empty Element has no title attribute Element's default semantics were not overridden with role=\"none\" or role=\"presentation\""
+      },
+      "fix": "Update the flagged element so it meets the cited requirement.",
+      "page": "/pricing"
+    }
+  ],
+  "errors": []
+}

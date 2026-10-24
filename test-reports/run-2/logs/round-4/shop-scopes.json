@@ -1,0 +1,31 @@
+{
+  "currentPage": "/login",
+  "currentGroup": "auth",
+  "defaultScope": {
+    "id": "auth",
+    "name": "Authentication",
+    "routes": ["/login", "/signup"]
+  },
+  "defaultSource": "dev-server",
+  "needsChoice": false,
+  "scopes": [
+    {
+      "id": "marketing",
+      "name": "Marketing",
+      "routes": ["/"],
+      "selected": false
+    },
+    {
+      "id": "auth",
+      "name": "Authentication",
+      "routes": ["/login", "/signup"],
+      "selected": true
+    },
+    {
+      "id": "settings",
+      "name": "Settings",
+      "routes": ["/settings"],
+      "selected": false
+    }
+  ]
+}

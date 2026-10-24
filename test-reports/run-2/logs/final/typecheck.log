@@ -1,0 +1,17 @@
+
+> fittingroom@0.0.0 typecheck /Users/josephbrendan/Documents/fittingroom
+> pnpm -r typecheck && tsc --noEmit
+
+Scope: 8 of 9 workspace projects
+packages/board typecheck$ tsc --noEmit
+packages/directions typecheck$ tsc --noEmit
+packages/citations typecheck$ tsc --noEmit
+packages/citations typecheck: Done
+packages/directions typecheck: Done
+packages/board typecheck: Done
+packages/core typecheck$ tsc --noEmit
+packages/core typecheck: Done
+packages/mcp typecheck$ tsc --noEmit
+packages/mcp typecheck: Done
+packages/cli typecheck$ tsc --noEmit
+packages/cli typecheck: Done

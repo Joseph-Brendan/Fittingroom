@@ -1,0 +1,78 @@
+{
+  "counts": {
+    "automated": 4,
+    "judged": 1,
+    "total": 5
+  },
+  "findings": [
+    {
+      "id": "signup-target-size-1",
+      "title": "Target is smaller than 24 by 24 CSS pixels",
+      "citation": "wcag22-2.5.8",
+      "severity": 2,
+      "confidence": "measured",
+      "evidence": {
+        "selector": "a",
+        "screenshotPath": "/Users/josephbrendan/Documents/fr-test-apps/shop-app/.fittingroom/audits/auth/signup/01-wcag22-2-5-8.png",
+        "measuredValue": "38.25 x 21 CSS pixels (minimum 24 x 24)"
+      },
+      "fix": "Make the control at least 24 by 24 CSS pixels, or add enough spacing around it.",
+      "page": "/signup"
+    },
+    {
+      "id": "signup-target-size-2",
+      "title": "Target is smaller than 24 by 24 CSS pixels",
+      "citation": "wcag22-2.5.8",
+      "severity": 2,
+      "confidence": "measured",
+      "evidence": {
+        "selector": "a",
+        "screenshotPath": "/Users/josephbrendan/Documents/fr-test-apps/shop-app/.fittingroom/audits/auth/signup/02-wcag22-2-5-8.png",
+        "measuredValue": "39.08 x 21 CSS pixels (minimum 24 x 24)"
+      },
+      "fix": "Make the control at least 24 by 24 CSS pixels, or add enough spacing around it.",
+      "page": "/signup"
+    },
+    {
+      "id": "signup-target-size-3",
+      "title": "Target is smaller than 24 by 24 CSS pixels",
+      "citation": "wcag22-2.5.8",
+      "severity": 2,
+      "confidence": "measured",
+      "evidence": {
+        "selector": "a",
+        "screenshotPath": "/Users/josephbrendan/Documents/fr-test-apps/shop-app/.fittingroom/audits/auth/signup/03-wcag22-2-5-8.png",
+        "measuredValue": "48.69 x 21 CSS pixels (minimum 24 x 24)"
+      },
+      "fix": "Make the control at least 24 by 24 CSS pixels, or add enough spacing around it.",
+      "page": "/signup"
+    },
+    {
+      "id": "signup-target-size-4",
+      "title": "Target is smaller than 24 by 24 CSS pixels",
+      "citation": "wcag22-2.5.8",
+      "severity": 2,
+      "confidence": "measured",
+      "evidence": {
+        "selector": "a",
+        "screenshotPath": "/Users/josephbrendan/Documents/fr-test-apps/shop-app/.fittingroom/audits/auth/signup/04-wcag22-2-5-8.png",
+        "measuredValue": "53.38 x 21 CSS pixels (minimum 24 x 24)"
+      },
+      "fix": "Make the control at least 24 by 24 CSS pixels, or add enough spacing around it.",
+      "page": "/signup"
+    },
+    {
+      "id": "shop-judged-password-recovery",
+      "title": "Login has no recovery path",
+      "citation": "nielsen-h9",
+      "severity": 2,
+      "confidence": "judged",
+      "evidence": {
+        "measuredValue": "The login form has no visible recovery path for a forgotten password.",
+        "screenshotPath": "/Users/josephbrendan/Documents/fr-test-apps/shop-app/.fittingroom/captures/auth/login/375.png",
+        "selector": "main section form"
+      },
+      "fix": "Add a Forgot password link below the password field."
+    }
+  ]
+}

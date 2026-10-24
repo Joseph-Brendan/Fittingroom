@@ -1,0 +1,83 @@
+{
+  "exists": true,
+  "files": [".fittingroom/DESIGN.md", ".fittingroom/design-memory.json"],
+  "memory": {
+    "version": 1,
+    "direction": {
+      "slug": "refined",
+      "name": "Refined",
+      "description": "Keeps the approved design in its current style."
+    },
+    "type": {
+      "pair": ["\"Inter\", system-ui, sans-serif", "system-ui, sans-serif"],
+      "scale": [16, 32]
+    },
+    "colors": {
+      "color.brand": "#0f766e",
+      "color.brand-dark": "#115e59",
+      "color.ink": "#0d2b28",
+      "color.paper": "#f4fbf9",
+      "color.card": "#ffffff",
+      "color.line": "#d7e3df",
+      "color.background": "#f4fbf9",
+      "color.foreground": "#0d2b28",
+      "color.card-foreground": "#0d2b28",
+      "color.primary": "#0f766e",
+      "color.primary-foreground": "#ffffff",
+      "color.secondary": "#d9f0eb",
+      "color.secondary-foreground": "#0d2b28",
+      "color.muted": "#eef7f4",
+      "color.muted-foreground": "#4f6b66",
+      "color.accent": "#f59e0b",
+      "color.accent-foreground": "#3a2500",
+      "color.destructive": "#b42318",
+      "color.border": "#d7e3df",
+      "color.input": "#d7e3df",
+      "color.ring": "#0f766e",
+      "observed-color-1": "rgb(13, 43, 40)",
+      "observed-color-2": "rgb(255, 255, 255)",
+      "observed-color-3": "rgb(215, 227, 223)",
+      "observed-color-4": "rgb(255, 0, 255)",
+      "observed-color-5": "rgb(79, 107, 102)",
+      "observed-color-6": "rgb(116, 119, 125)",
+      "observed-color-7": "rgb(15, 118, 110)"
+    },
+    "spacing": {
+      "space.1": "4px",
+      "space.2": "8px",
+      "space.3": "12px",
+      "space.4": "16px",
+      "space.6": "24px",
+      "space.8": "32px",
+      "space.12": "48px",
+      "space.16": "64px",
+      "observed-space-1": "10px",
+      "observed-space-2": "18px"
+    },
+    "radii": {
+      "radius.control": "10px",
+      "radius.card": "18px"
+    },
+    "density": "sparse",
+    "button": {
+      "backgroundColor": "rgb(15, 118, 110)",
+      "borderRadius": "10px",
+      "color": "rgb(255, 255, 255)",
+      "fontFamily": "system-ui, sans-serif",
+      "fontSize": "16px",
+      "fontWeight": "700",
+      "padding": "12px 18px 12px 18px"
+    },
+    "input": {
+      "backgroundColor": "rgb(255, 255, 255)",
+      "borderColor": "rgb(116, 119, 125)",
+      "borderRadius": "10px",
+      "color": "rgb(13, 43, 40)",
+      "fontFamily": "system-ui, sans-serif",
+      "fontSize": "16px",
+      "padding": "10px 10px 10px 10px"
+    },
+    "do": ["Use the saved design tokens.", "Keep one primary action per screen."],
+    "dont": ["Do not introduce values outside the saved tokens."]
+  }
+}

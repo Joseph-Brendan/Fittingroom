@@ -1,0 +1,130 @@
+
+> shop-app@0.0.0 dev
+> next dev -p 3100
+
+▲ Next.js 16.4.3 (Turbopack)
+- Local:         http://localhost:3100
+- Network:       http://192.168.0.220:3100
+✓ Ready in 203ms
+✓ Running next.config.ts took 616ms
+
+ GET /login 200 in 109ms (next.js: 47ms, application-code: 62ms)
+ GET / 200 in 30ms (next.js: 8ms, application-code: 22ms)
+ GET /login 200 in 16ms (next.js: 0.6ms, application-code: 15ms)
+⚠ Blocked cross-origin request to Next.js dev resource /_next/hmr from "127.0.0.1".
+Cross-origin access to Next.js dev resources is blocked by default for safety.
+
+To allow this host in development, add it to "allowedDevOrigins" in next.config.js and restart the dev server:
+
+// next.config.js
+module.exports = {
+  allowedDevOrigins: ['127.0.0.1'],
+}
+
+Read more: https://nextjs.org/docs/app/api-reference/config/next-config-js/allowedDevOrigins
+ GET /login 200 in 13ms (next.js: 0.5ms, application-code: 12ms)
+ GET /login 200 in 12ms (next.js: 0.5ms, application-code: 11ms)
+⚠ Blocked cross-origin request to Next.js dev resource /__nextjs_font/geist-latin.woff2 from "127.0.0.1".
+Cross-origin access to Next.js dev resources is blocked by default for safety.
+
+To allow this host in development, add it to "allowedDevOrigins" in next.config.js and restart the dev server:
+
+// next.config.js
+module.exports = {
+  allowedDevOrigins: ['127.0.0.1'],
+}
+
+Read more: https://nextjs.org/docs/app/api-reference/config/next-config-js/allowedDevOrigins
+ GET /signup 200 in 15ms (next.js: 2ms, application-code: 12ms)
+ GET /signup 200 in 12ms (next.js: 0.5ms, application-code: 12ms)
+ GET /signup 200 in 18ms (next.js: 0.6ms, application-code: 17ms)
+ GET /login 200 in 12ms (next.js: 0.5ms, application-code: 11ms)
+ GET /login 200 in 12ms (next.js: 1.2ms, application-code: 11ms)
+ GET /signup 200 in 11ms (next.js: 0.4ms, application-code: 11ms)
+ GET /signup 200 in 14ms (next.js: 0.4ms, application-code: 14ms)
+✓ Compiled in 51ms
+ GET / 200 in 24ms (next.js: 1.6ms, application-code: 23ms)
+ GET /login 200 in 14ms (next.js: 0.9ms, application-code: 13ms)
+ GET /login 200 in 12ms (next.js: 0.3ms, application-code: 11ms)
+ GET /login 200 in 11ms (next.js: 0.3ms, application-code: 10ms)
+ GET /signup 200 in 13ms (next.js: 0.4ms, application-code: 13ms)
+ GET /signup 200 in 11ms (next.js: 0.3ms, application-code: 10ms)
+ GET /signup 200 in 11ms (next.js: 0.3ms, application-code: 10ms)
+ GET /login 200 in 12ms (next.js: 0.3ms, application-code: 12ms)
+ GET /login 200 in 17ms (next.js: 0.8ms, application-code: 16ms)
+ GET /signup 200 in 12ms (next.js: 0.4ms, application-code: 12ms)
+ GET /signup 200 in 15ms (next.js: 0.4ms, application-code: 14ms)
+ GET / 200 in 18ms (next.js: 1.1ms, application-code: 17ms)
+ GET /login 200 in 11ms (next.js: 0.4ms, application-code: 11ms)
+ GET /login 200 in 12ms (next.js: 0.4ms, application-code: 12ms)
+ GET /login 200 in 12ms (next.js: 0.3ms, application-code: 12ms)
+ GET /signup 200 in 13ms (next.js: 0.3ms, application-code: 13ms)
+ GET /signup 200 in 15ms (next.js: 0.3ms, application-code: 15ms)
+ GET /signup 200 in 12ms (next.js: 0.3ms, application-code: 12ms)
+ GET /login 200 in 11ms (next.js: 0.3ms, application-code: 10ms)
+ GET /login 200 in 11ms (next.js: 0.3ms, application-code: 11ms)
+ GET /signup 200 in 13ms (next.js: 0.3ms, application-code: 13ms)
+ GET /signup 200 in 15ms (next.js: 0.3ms, application-code: 14ms)
+✓ Compiled in 56ms
+✓ Compiled in 14ms
+ GET / 200 in 21ms (next.js: 1.2ms, application-code: 19ms)
+ GET /login 200 in 14ms (next.js: 0.7ms, application-code: 13ms)
+ GET /login 200 in 11ms (next.js: 0.4ms, application-code: 11ms)
+ GET /login 200 in 25ms (next.js: 0.3ms, application-code: 25ms)
+ GET /signup 200 in 12ms (next.js: 0.3ms, application-code: 11ms)
+ GET /signup 200 in 13ms (next.js: 0.3ms, application-code: 12ms)
+ GET /signup 200 in 12ms (next.js: 0.3ms, application-code: 12ms)
+ GET /login 200 in 12ms (next.js: 0.3ms, application-code: 11ms)
+ GET /login 200 in 38ms (next.js: 0.9ms, application-code: 37ms)
+ GET /signup 200 in 12ms (next.js: 0.4ms, application-code: 12ms)
+ GET /signup 200 in 13ms (next.js: 0.6ms, application-code: 13ms)
+✓ Compiled in 55ms
+✓ Compiled in 29ms
+ GET /login 200 in 16ms (next.js: 1.3ms, application-code: 15ms)
+ GET / 200 in 15ms (next.js: 0.5ms, application-code: 15ms)
+ GET /login 200 in 11ms (next.js: 0.6ms, application-code: 10ms)
+ GET /login 200 in 13ms (next.js: 0.3ms, application-code: 13ms)
+ GET /login 200 in 12ms (next.js: 0.3ms, application-code: 11ms)
+ GET / 200 in 24ms (next.js: 1.2ms, application-code: 23ms)
+ GET /login 200 in 13ms (next.js: 0.3ms, application-code: 12ms)
+ GET /login 200 in 12ms (next.js: 0.5ms, application-code: 12ms)
+ GET /login 200 in 11ms (next.js: 0.4ms, application-code: 11ms)
+ GET /signup 200 in 13ms (next.js: 0.4ms, application-code: 12ms)
+ GET /signup 200 in 11ms (next.js: 0.3ms, application-code: 11ms)
+ GET /signup 200 in 12ms (next.js: 0.3ms, application-code: 12ms)
+ GET /login 200 in 15ms (next.js: 0.3ms, application-code: 14ms)
+ GET /login 200 in 10ms (next.js: 0.4ms, application-code: 10ms)
+ GET /signup 200 in 14ms (next.js: 0.3ms, application-code: 14ms)
+ GET /signup 200 in 15ms (next.js: 0.3ms, application-code: 15ms)
+ GET /login 200 in 19ms (next.js: 0.9ms, application-code: 18ms)
+ GET / 200 in 12ms (next.js: 0.4ms, application-code: 12ms)
+ GET /login 200 in 11ms (next.js: 0.4ms, application-code: 11ms)
+ GET /login 200 in 10ms (next.js: 0.3ms, application-code: 10ms)
+ GET /login 200 in 13ms (next.js: 0.3ms, application-code: 12ms)
+✓ Compiled in 11ms
+ GET / 200 in 21ms (next.js: 1.4ms, application-code: 19ms)
+ GET /login 200 in 16ms (next.js: 2ms, application-code: 14ms)
+ GET /login 200 in 13ms (next.js: 0.4ms, application-code: 12ms)
+ GET /login 200 in 13ms (next.js: 0.3ms, application-code: 13ms)
+ GET /signup 200 in 13ms (next.js: 0.4ms, application-code: 12ms)
+ GET /signup 200 in 11ms (next.js: 0.3ms, application-code: 10ms)
+ GET /signup 200 in 15ms (next.js: 0.4ms, application-code: 15ms)
+ GET /login 200 in 11ms (next.js: 0.7ms, application-code: 11ms)
+ GET /login 200 in 16ms (next.js: 0.7ms, application-code: 16ms)
+ GET /signup 200 in 12ms (next.js: 0.7ms, application-code: 12ms)
+ GET /signup 200 in 12ms (next.js: 0.3ms, application-code: 12ms)
+✓ Compiled in 48ms
+ GET /login 200 in 12ms (next.js: 0.5ms, application-code: 11ms)
+ GET / 200 in 11ms (next.js: 0.3ms, application-code: 10ms)
+ GET /login 200 in 15ms (next.js: 0.4ms, application-code: 15ms)
+ GET /login 200 in 10ms (next.js: 0.3ms, application-code: 10ms)
+ GET /login 200 in 11ms (next.js: 0.3ms, application-code: 10ms)
+ GET /login 200 in 13ms (next.js: 0.7ms, application-code: 12ms)
+✓ Compiled in 14ms
+ GET / 200 in 12ms (next.js: 0.4ms, application-code: 12ms)
+ GET /login 200 in 12ms (next.js: 0.8ms, application-code: 11ms)
+ GET /login 200 in 11ms (next.js: 0.3ms, application-code: 11ms)
+ GET /login 200 in 11ms (next.js: 0.3ms, application-code: 11ms)
+ GET /login 200 in 10ms (next.js: 0.3ms, application-code: 10ms)
+✓ Compiled in 9ms
+[?25h

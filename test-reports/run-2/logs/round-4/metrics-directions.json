@@ -1,0 +1,471 @@
+{
+  "route": "/dashboard",
+  "surface": "dashboard",
+  "slots": [
+    {
+      "slot": 1,
+      "role": "refined",
+      "direction": {
+        "slug": "refined",
+        "name": "Refined",
+        "surfaces": ["dashboard"],
+        "description": "Keep the current design and fix audit findings, spacing and hierarchy in the existing style.",
+        "modes": ["light", "deep"]
+      },
+      "screenshots": [
+        {
+          "width": 375,
+          "path": "/Users/josephbrendan/Documents/fr-test-apps/metrics-dashboard/.fittingroom/captures/dashboard/dashboard/375.png"
+        },
+        {
+          "width": 768,
+          "path": "/Users/josephbrendan/Documents/fr-test-apps/metrics-dashboard/.fittingroom/captures/dashboard/dashboard/768.png"
+        },
+        {
+          "width": 1440,
+          "path": "/Users/josephbrendan/Documents/fr-test-apps/metrics-dashboard/.fittingroom/captures/dashboard/dashboard/1440.png"
+        }
+      ],
+      "contentInventory": [
+        {
+          "role": "heading",
+          "text": "Dashboard"
+        },
+        {
+          "role": "heading",
+          "text": "Traffic by day"
+        }
+      ],
+      "designSystem": {
+        "status": "none",
+        "sources": [],
+        "tokens": {
+          "color": {},
+          "space": {},
+          "radius": {},
+          "font": {},
+          "fontSize": {},
+          "shadow": {}
+        },
+        "components": [],
+        "missing": ["color", "space", "radius", "font", "fontSize", "shadow"],
+        "summary": "Design system not found. Edits will create a new token set you can adopt later."
+      },
+      "writingRules": [
+        "Write one file per variant.",
+        "Use React and Tailwind.",
+        "Use project components where they exist.",
+        "Keep all real content.",
+        "Do not use placeholder or lorem copy."
+      ]
+    },
+    {
+      "slot": 2,
+      "role": "native",
+      "direction": {
+        "slug": "data-dense-utilitarian",
+        "name": "Data-Dense Utilitarian",
+        "surfaces": ["dashboard"],
+        "description": "Tight grids, monospaced numbers and tables built for scanning.",
+        "bestFor": ["ops", "finance", "admin panels"],
+        "typePair": {
+          "display": "IBM Plex Sans, system-ui, sans-serif",
+          "body": "IBM Plex Mono, monospace"
+        },
+        "typeScale": {
+          "base": 14,
+          "ratio": 1.2,
+          "steps": [11, 12, 14, 17, 20, 24]
+        },
+        "radius": {
+          "control": "2px",
+          "panel": "4px"
+        },
+        "border": "1px solid",
+        "shadow": "none",
+        "colorRecipe": {
+          "background": "#FFFFFF",
+          "surface": "#F8FAFC",
+          "text": "#111827",
+          "mutedText": "#475569",
+          "accent": "#1D4ED8",
+          "accentText": "#FFFFFF",
+          "border": "#CBD5E1",
+          "focus": "#1D4ED8",
+          "contrastPairs": [
+            {
+              "foreground": "#111827",
+              "background": "#FFFFFF",
+              "ratio": 17.74,
+              "usage": "text on background"
+            },
+            {
+              "foreground": "#475569",
+              "background": "#FFFFFF",
+              "ratio": 7.58,
+              "usage": "muted text on background"
+            },
+            {
+              "foreground": "#111827",
+              "background": "#F8FAFC",
+              "ratio": 16.96,
+              "usage": "text on surface"
+            },
+            {
+              "foreground": "#475569",
+              "background": "#F8FAFC",
+              "ratio": 7.24,
+              "usage": "muted text on surface"
+            },
+            {
+              "foreground": "#FFFFFF",
+              "background": "#1D4ED8",
+              "ratio": 6.7,
+              "usage": "accent text on accent"
+            },
+            {
+              "foreground": "#1D4ED8",
+              "background": "#FFFFFF",
+              "ratio": 6.7,
+              "usage": "accent text on background"
+            },
+            {
+              "foreground": "#1D4ED8",
+              "background": "#FFFFFF",
+              "ratio": 6.7,
+              "usage": "focus ring on background"
+            }
+          ]
+        },
+        "density": 8,
+        "motion": 1,
+        "layoutRules": [
+          "Align numbers to the right and labels to the left.",
+          "Keep table headers sticky and visible.",
+          "Use one compact row height across the table."
+        ],
+        "do": ["Support keyboard row selection.", "Use tabular numerals for metrics."],
+        "dont": ["Shrink row targets below 24px.", "Hide filters in nested menus."],
+        "a11yRisk": "New users can be overwhelmed by density, and compact rows can shrink targets below the AA minimum."
+      },
+      "screenshots": [
+        {
+          "width": 375,
+          "path": "/Users/josephbrendan/Documents/fr-test-apps/metrics-dashboard/.fittingroom/captures/dashboard/dashboard/375.png"
+        },
+        {
+          "width": 768,
+          "path": "/Users/josephbrendan/Documents/fr-test-apps/metrics-dashboard/.fittingroom/captures/dashboard/dashboard/768.png"
+        },
+        {
+          "width": 1440,
+          "path": "/Users/josephbrendan/Documents/fr-test-apps/metrics-dashboard/.fittingroom/captures/dashboard/dashboard/1440.png"
+        }
+      ],
+      "contentInventory": [
+        {
+          "role": "heading",
+          "text": "Dashboard"
+        },
+        {
+          "role": "heading",
+          "text": "Traffic by day"
+        }
+      ],
+      "designSystem": {
+        "status": "none",
+        "sources": [],
+        "tokens": {
+          "color": {},
+          "space": {},
+          "radius": {},
+          "font": {},
+          "fontSize": {},
+          "shadow": {}
+        },
+        "components": [],
+        "missing": ["color", "space", "radius", "font", "fontSize", "shadow"],
+        "summary": "Design system not found. Edits will create a new token set you can adopt later."
+      },
+      "writingRules": [
+        "Write one file per variant.",
+        "Use React and Tailwind.",
+        "Use project components where they exist.",
+        "Keep all real content.",
+        "Do not use placeholder or lorem copy."
+      ]
+    },
+    {
+      "slot": 3,
+      "role": "bold",
+      "direction": {
+        "slug": "command-center",
+        "name": "Command Center",
+        "surfaces": ["dashboard"],
+        "description": "Dark canvas, hairline grids and clear live status lights.",
+        "bestFor": ["logistics", "monitoring", "IoT"],
+        "typePair": {
+          "display": "Inter, system-ui, sans-serif",
+          "body": "JetBrains Mono, monospace"
+        },
+        "typeScale": {
+          "base": 15,
+          "ratio": 1.25,
+          "steps": [12, 13, 15, 19, 23, 29]
+        },
+        "radius": {
+          "control": "4px",
+          "panel": "8px"
+        },
+        "border": "1px solid",
+        "shadow": "0 0 0 1px #2B3A4A, 0 12px 40px rgba(0, 0, 0, 0.5)",
+        "colorRecipe": {
+          "background": "#070B10",
+          "surface": "#0F1620",
+          "text": "#F1F5F9",
+          "mutedText": "#B8C4D4",
+          "accent": "#7DD3FC",
+          "accentText": "#06121A",
+          "border": "#2B3A4A",
+          "focus": "#7DD3FC",
+          "contrastPairs": [
+            {
+              "foreground": "#F1F5F9",
+              "background": "#070B10",
+              "ratio": 18.01,
+              "usage": "text on background"
+            },
+            {
+              "foreground": "#B8C4D4",
+              "background": "#070B10",
+              "ratio": 11.17,
+              "usage": "muted text on background"
+            },
+            {
+              "foreground": "#F1F5F9",
+              "background": "#0F1620",
+              "ratio": 16.58,
+              "usage": "text on surface"
+            },
+            {
+              "foreground": "#B8C4D4",
+              "background": "#0F1620",
+              "ratio": 10.28,
+              "usage": "muted text on surface"
+            },
+            {
+              "foreground": "#06121A",
+              "background": "#7DD3FC",
+              "ratio": 11.36,
+              "usage": "accent text on accent"
+            },
+            {
+              "foreground": "#7DD3FC",
+              "background": "#070B10",
+              "ratio": 11.83,
+              "usage": "accent text on background"
+            },
+            {
+              "foreground": "#7DD3FC",
+              "background": "#070B10",
+              "ratio": 11.83,
+              "usage": "focus ring on background"
+            }
+          ]
+        },
+        "density": 7,
+        "motion": 5,
+        "layoutRules": [
+          "Use a hairline grid to align every panel.",
+          "Keep status lights large enough to read without color.",
+          "Reserve the brightest accent for live alerts."
+        ],
+        "do": ["Pair status color with a label and icon.", "Keep critical metrics above the fold."],
+        "dont": ["Use neon value as the only status cue.", "Animate every live number."],
+        "a11yRisk": "Neon status colors and continuous animation can fail contrast and distract from urgent changes."
+      },
+      "screenshots": [
+        {
+          "width": 375,
+          "path": "/Users/josephbrendan/Documents/fr-test-apps/metrics-dashboard/.fittingroom/captures/dashboard/dashboard/375.png"
+        },
+        {
+          "width": 768,
+          "path": "/Users/josephbrendan/Documents/fr-test-apps/metrics-dashboard/.fittingroom/captures/dashboard/dashboard/768.png"
+        },
+        {
+          "width": 1440,
+          "path": "/Users/josephbrendan/Documents/fr-test-apps/metrics-dashboard/.fittingroom/captures/dashboard/dashboard/1440.png"
+        }
+      ],
+      "contentInventory": [
+        {
+          "role": "heading",
+          "text": "Dashboard"
+        },
+        {
+          "role": "heading",
+          "text": "Traffic by day"
+        }
+      ],
+      "designSystem": {
+        "status": "none",
+        "sources": [],
+        "tokens": {
+          "color": {},
+          "space": {},
+          "radius": {},
+          "font": {},
+          "fontSize": {},
+          "shadow": {}
+        },
+        "components": [],
+        "missing": ["color", "space", "radius", "font", "fontSize", "shadow"],
+        "summary": "Design system not found. Edits will create a new token set you can adopt later."
+      },
+      "writingRules": [
+        "Write one file per variant.",
+        "Use React and Tailwind.",
+        "Use project components where they exist.",
+        "Keep all real content.",
+        "Do not use placeholder or lorem copy."
+      ]
+    },
+    {
+      "slot": 4,
+      "role": "wildcard",
+      "direction": {
+        "slug": "widget-bento-dashboard",
+        "name": "Widget / Bento Dashboard",
+        "surfaces": ["dashboard"],
+        "description": "User-arranged tiles with clear boundaries and flexible spans.",
+        "bestFor": ["personal dashboards", "CRMs"],
+        "typePair": {
+          "display": "Plus Jakarta Sans, system-ui, sans-serif",
+          "body": "Inter, system-ui, sans-serif"
+        },
+        "typeScale": {
+          "base": 15,
+          "ratio": 1.25,
+          "steps": [12, 13, 15, 19, 23, 29]
+        },
+        "radius": {
+          "control": "10px",
+          "panel": "18px"
+        },
+        "border": "1px solid",
+        "shadow": "0 6px 18px rgba(20, 32, 26, 0.08)",
+        "colorRecipe": {
+          "background": "#F7F8F4",
+          "surface": "#FFFFFF",
+          "text": "#14201A",
+          "mutedText": "#4D5B52",
+          "accent": "#166534",
+          "accentText": "#FFFFFF",
+          "border": "#C7D2C9",
+          "focus": "#166534",
+          "contrastPairs": [
+            {
+              "foreground": "#14201A",
+              "background": "#F7F8F4",
+              "ratio": 15.73,
+              "usage": "text on background"
+            },
+            {
+              "foreground": "#4D5B52",
+              "background": "#F7F8F4",
+              "ratio": 6.71,
+              "usage": "muted text on background"
+            },
+            {
+              "foreground": "#14201A",
+              "background": "#FFFFFF",
+              "ratio": 16.78,
+              "usage": "text on surface"
+            },
+            {
+              "foreground": "#4D5B52",
+              "background": "#FFFFFF",
+              "ratio": 7.16,
+              "usage": "muted text on surface"
+            },
+            {
+              "foreground": "#FFFFFF",
+              "background": "#166534",
+              "ratio": 7.13,
+              "usage": "accent text on accent"
+            },
+            {
+              "foreground": "#166534",
+              "background": "#F7F8F4",
+              "ratio": 6.68,
+              "usage": "accent text on background"
+            },
+            {
+              "foreground": "#166534",
+              "background": "#F7F8F4",
+              "ratio": 6.68,
+              "usage": "focus ring on background"
+            }
+          ]
+        },
+        "density": 6,
+        "motion": 3,
+        "layoutRules": [
+          "Snap tiles to a fixed grid with clear minimum spans.",
+          "Keep headers and drag handles at the same position in every tile.",
+          "Use consistent tile heights within each row."
+        ],
+        "do": ["Make drag handles keyboard operable.", "Announce live tile updates politely."],
+        "dont": ["Put scroll areas inside short tiles.", "Let live updates move focused controls."],
+        "a11yRisk": "Drag-only arrangement and live tiles can break keyboard order and flood screen readers with updates."
+      },
+      "screenshots": [
+        {
+          "width": 375,
+          "path": "/Users/josephbrendan/Documents/fr-test-apps/metrics-dashboard/.fittingroom/captures/dashboard/dashboard/375.png"
+        },
+        {
+          "width": 768,
+          "path": "/Users/josephbrendan/Documents/fr-test-apps/metrics-dashboard/.fittingroom/captures/dashboard/dashboard/768.png"
+        },
+        {
+          "width": 1440,
+          "path": "/Users/josephbrendan/Documents/fr-test-apps/metrics-dashboard/.fittingroom/captures/dashboard/dashboard/1440.png"
+        }
+      ],
+      "contentInventory": [
+        {
+          "role": "heading",
+          "text": "Dashboard"
+        },
+        {
+          "role": "heading",
+          "text": "Traffic by day"
+        }
+      ],
+      "designSystem": {
+        "status": "none",
+        "sources": [],
+        "tokens": {
+          "color": {},
+          "space": {},
+          "radius": {},
+          "font": {},
+          "fontSize": {},
+          "shadow": {}
+        },
+        "components": [],
+        "missing": ["color", "space", "radius", "font", "fontSize", "shadow"],
+        "summary": "Design system not found. Edits will create a new token set you can adopt later."
+      },
+      "writingRules": [
+        "Write one file per variant.",
+        "Use React and Tailwind.",
+        "Use project components where they exist.",
+        "Keep all real content.",
+        "Do not use placeholder or lorem copy."
+      ]
+    }
+  ]
+}

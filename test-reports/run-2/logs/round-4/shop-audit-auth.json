@@ -1,0 +1,119 @@
+{
+  "summary": {
+    "id": "auth",
+    "name": "Authentication",
+    "pages": ["/login", "/signup"],
+    "estimatedSeconds": 12,
+    "message": "Capturing: Authentication (2 pages): /login /signup, at 375, 768 and 1440 px."
+  },
+  "screenshots": [
+    "/Users/josephbrendan/Documents/fr-test-apps/shop-app/.fittingroom/captures/auth/login/375.png",
+    "/Users/josephbrendan/Documents/fr-test-apps/shop-app/.fittingroom/captures/auth/login/768.png",
+    "/Users/josephbrendan/Documents/fr-test-apps/shop-app/.fittingroom/captures/auth/login/1440.png",
+    "/Users/josephbrendan/Documents/fr-test-apps/shop-app/.fittingroom/captures/auth/signup/375.png",
+    "/Users/josephbrendan/Documents/fr-test-apps/shop-app/.fittingroom/captures/auth/signup/768.png",
+    "/Users/josephbrendan/Documents/fr-test-apps/shop-app/.fittingroom/captures/auth/signup/1440.png"
+  ],
+  "pages": [
+    {
+      "path": "/login",
+      "url": "http://127.0.0.1:3100/login",
+      "screenshots": [
+        {
+          "width": 375,
+          "path": "/Users/josephbrendan/Documents/fr-test-apps/shop-app/.fittingroom/captures/auth/login/375.png"
+        },
+        {
+          "width": 768,
+          "path": "/Users/josephbrendan/Documents/fr-test-apps/shop-app/.fittingroom/captures/auth/login/768.png"
+        },
+        {
+          "width": 1440,
+          "path": "/Users/josephbrendan/Documents/fr-test-apps/shop-app/.fittingroom/captures/auth/login/1440.png"
+        }
+      ],
+      "accessibilityTreePath": "/Users/josephbrendan/Documents/fr-test-apps/shop-app/.fittingroom/captures/auth/login/accessibility-tree.json",
+      "slopEvidencePath": "/Users/josephbrendan/Documents/fr-test-apps/shop-app/.fittingroom/captures/auth/login/slop-evidence.json"
+    },
+    {
+      "path": "/signup",
+      "url": "http://127.0.0.1:3100/signup",
+      "screenshots": [
+        {
+          "width": 375,
+          "path": "/Users/josephbrendan/Documents/fr-test-apps/shop-app/.fittingroom/captures/auth/signup/375.png"
+        },
+        {
+          "width": 768,
+          "path": "/Users/josephbrendan/Documents/fr-test-apps/shop-app/.fittingroom/captures/auth/signup/768.png"
+        },
+        {
+          "width": 1440,
+          "path": "/Users/josephbrendan/Documents/fr-test-apps/shop-app/.fittingroom/captures/auth/signup/1440.png"
+        }
+      ],
+      "accessibilityTreePath": "/Users/josephbrendan/Documents/fr-test-apps/shop-app/.fittingroom/captures/auth/signup/accessibility-tree.json",
+      "slopEvidencePath": "/Users/josephbrendan/Documents/fr-test-apps/shop-app/.fittingroom/captures/auth/signup/slop-evidence.json"
+    }
+  ],
+  "critiqueBrief": "Scope: Authentication (auth).\nPages captured: /login, /signup.\nAutomated findings: 4.\nCitations: wcag22-2.5.8.\nAutomated issues:\n- /signup: Target is smaller than 24 by 24 CSS pixels [wcag22-2.5.8], severity 2.\n- /signup: Target is smaller than 24 by 24 CSS pixels [wcag22-2.5.8], severity 2.\n- /signup: Target is smaller than 24 by 24 CSS pixels [wcag22-2.5.8], severity 2.\n- /signup: Target is smaller than 24 by 24 CSS pixels [wcag22-2.5.8], severity 2.\nPages to review:\n- /login: /Users/josephbrendan/Documents/fr-test-apps/shop-app/.fittingroom/captures/auth/login/375.png, /Users/josephbrendan/Documents/fr-test-apps/shop-app/.fittingroom/captures/auth/login/768.png, /Users/josephbrendan/Documents/fr-test-apps/shop-app/.fittingroom/captures/auth/login/1440.png\n- button \"Log in\" [type=\"submit\"; confirm: none; state: none]\n- text \"Welcome back to Northwind\"\n- text \"Use the email you signed up with.\"\n- text \"Email\"\n- text \"Password\"\n- /signup: /Users/josephbrendan/Documents/fr-test-apps/shop-app/.fittingroom/captures/auth/signup/375.png, /Users/josephbrendan/Documents/fr-test-apps/shop-app/.fittingroom/captures/auth/signup/768.png, /Users/josephbrendan/Documents/fr-test-apps/shop-app/.fittingroom/captures/auth/signup/1440.png\n- a \"Northwind Supply\" [no attributes; confirm: none; state: none]\n- a \"Home\" [no attributes; confirm: none; state: none]\n- a \"Log in\" [no attributes; confirm: none; state: none]\n- a \"Sign up\" [no attributes; confirm: none; state: none]\n- a \"Settings\" [no attributes; confirm: none; state: none]\n- button \"Create account\" [type=\"submit\"; confirm: none; state: none]\n- a \"I already have an account\" [no attributes; confirm: none; state: none]\n- text \"Create an account\"\n- text \"Set up a studio account in under a minute.\"\n- text \"Studio name\"\n- text \"Work email\"\n- text \"Password\"\nReview every screenshot against Nielsen's 10 heuristics.\nCite only citation ids from packages/citations/registry.json. Do not invent citation ids or URLs.\nRate severity on the NN/g 0 to 4 scale.\nSet confidence to \"judged\".\nSubmit the findings with fr_submit_findings.\nChecks that hit errors:\n- None.",
+  "errors": [],
+  "findings": [
+    {
+      "id": "signup-target-size-1",
+      "title": "Target is smaller than 24 by 24 CSS pixels",
+      "citation": "wcag22-2.5.8",
+      "severity": 2,
+      "confidence": "measured",
+      "evidence": {
+        "selector": "a",
+        "screenshotPath": "/Users/josephbrendan/Documents/fr-test-apps/shop-app/.fittingroom/audits/auth/signup/01-wcag22-2-5-8.png",
+        "measuredValue": "38.25 x 21 CSS pixels (minimum 24 x 24)"
+      },
+      "fix": "Make the control at least 24 by 24 CSS pixels, or add enough spacing around it.",
+      "page": "/signup"
+    },
+    {
+      "id": "signup-target-size-2",
+      "title": "Target is smaller than 24 by 24 CSS pixels",
+      "citation": "wcag22-2.5.8",
+      "severity": 2,
+      "confidence": "measured",
+      "evidence": {
+        "selector": "a",
+        "screenshotPath": "/Users/josephbrendan/Documents/fr-test-apps/shop-app/.fittingroom/audits/auth/signup/02-wcag22-2-5-8.png",
+        "measuredValue": "39.08 x 21 CSS pixels (minimum 24 x 24)"
+      },
+      "fix": "Make the control at least 24 by 24 CSS pixels, or add enough spacing around it.",
+      "page": "/signup"
+    },
+    {
+      "id": "signup-target-size-3",
+      "title": "Target is smaller than 24 by 24 CSS pixels",
+      "citation": "wcag22-2.5.8",
+      "severity": 2,
+      "confidence": "measured",
+      "evidence": {
+        "selector": "a",
+        "screenshotPath": "/Users/josephbrendan/Documents/fr-test-apps/shop-app/.fittingroom/audits/auth/signup/03-wcag22-2-5-8.png",
+        "measuredValue": "48.69 x 21 CSS pixels (minimum 24 x 24)"
+      },
+      "fix": "Make the control at least 24 by 24 CSS pixels, or add enough spacing around it.",
+      "page": "/signup"
+    },
+    {
+      "id": "signup-target-size-4",
+      "title": "Target is smaller than 24 by 24 CSS pixels",
+      "citation": "wcag22-2.5.8",
+      "severity": 2,
+      "confidence": "measured",
+      "evidence": {
+        "selector": "a",
+        "screenshotPath": "/Users/josephbrendan/Documents/fr-test-apps/shop-app/.fittingroom/audits/auth/signup/04-wcag22-2-5-8.png",
+        "measuredValue": "53.38 x 21 CSS pixels (minimum 24 x 24)"
+      },
+      "fix": "Make the control at least 24 by 24 CSS pixels, or add enough spacing around it.",
+      "page": "/signup"
+    }
+  ]
+}

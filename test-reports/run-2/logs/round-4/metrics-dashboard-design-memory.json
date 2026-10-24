@@ -1,0 +1,57 @@
+{
+  "exists": true,
+  "files": [".fittingroom/DESIGN.md", ".fittingroom/design-memory.json"],
+  "memory": {
+    "version": 1,
+    "direction": {
+      "slug": "refined",
+      "name": "Refined",
+      "description": "Keeps the approved design in its current style."
+    },
+    "type": {
+      "pair": ["ui-sans-serif, system-ui, sans-serif"],
+      "scale": [16, 44, 14, 30, 18, 12]
+    },
+    "colors": {
+      "observed-color-1": "rgb(23, 32, 42)",
+      "observed-color-2": "rgb(245, 247, 250)",
+      "observed-color-3": "rgb(91, 103, 117)",
+      "observed-color-4": "rgb(255, 255, 255)",
+      "observed-color-5": "rgb(216, 222, 230)",
+      "observed-color-6": "rgb(29, 78, 216)"
+    },
+    "spacing": {
+      "observed-space-1": "36px",
+      "observed-space-2": "12px",
+      "observed-space-3": "16px",
+      "observed-space-4": "20px",
+      "observed-space-5": "10px",
+      "observed-space-6": "8px"
+    },
+    "radii": {
+      "observed-radius-1": "12px",
+      "observed-radius-2": "6px"
+    },
+    "density": "dense",
+    "button": {
+      "backgroundColor": "#1d4ed8",
+      "borderRadius": "12px",
+      "color": "#ffffff",
+      "fontFamily": "ui-sans-serif, system-ui, sans-serif",
+      "fontSize": "16px",
+      "fontWeight": "600",
+      "padding": "12px 18px"
+    },
+    "input": {
+      "backgroundColor": "#ffffff",
+      "borderColor": "#111827",
+      "borderRadius": "12px",
+      "color": "#111827",
+      "fontFamily": "ui-sans-serif, system-ui, sans-serif",
+      "fontSize": "16px",
+      "padding": "8px 12px"
+    },
+    "do": ["Use the saved design tokens.", "Keep one primary action per screen."],
+    "dont": ["Do not introduce values outside the saved tokens."]
+  }
+}

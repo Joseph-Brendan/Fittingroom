@@ -1,0 +1,22 @@
+{
+  "brief": "# Implementation handoff: refined\n\nApply the design to the real /dashboard route.\nReuse existing project components.\nKeep all data wiring and real content.\nUse the handoff tokens and match the reference screenshots.\nThe selected design source is in source/refined.tsx.\n\nCall fr_verify with route /dashboard and handoffId handoff-0a03f9ed.\nThe build passes with under 2% pixel difference per region, zero token mismatches and zero order mismatches.\n\nrefined keeps the dashboard content and improves the page.",
+  "designMemoryFiles": [".fittingroom/DESIGN.md", ".fittingroom/design-memory.json"],
+  "folder": "/Users/josephbrendan/Documents/fr-test-apps/metrics-dashboard/.fittingroom/handoffs/handoff-0a03f9ed",
+  "handoffId": "handoff-0a03f9ed",
+  "route": "/dashboard",
+  "screenshots": [
+    {
+      "path": "reference/375.png",
+      "width": 375
+    },
+    {
+      "path": "reference/768.png",
+      "width": 768
+    },
+    {
+      "path": "reference/1440.png",
+      "width": 1440
+    }
+  ],
+  "tokens": {}
+}
