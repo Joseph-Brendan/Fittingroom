@@ -12,12 +12,12 @@
 
 ## Commits
 
-| Commit              | Work                                             |
-| ------------------- | ------------------------------------------------ |
-| `9bf693b`           | Baseline D1 commit at the start of run 2         |
-| `1d0086d`           | D2 to D7 workflow, fixes, tests and changeset    |
-| `b19675a`           | Real app evidence, screenshots and round reports |
-| `f5f03ca`           | Run 2 summary                                    |
+| Commit    | Work                                             |
+| --------- | ------------------------------------------------ |
+| `9bf693b` | Baseline D1 commit at the start of run 2         |
+| `1d0086d` | D2 to D7 workflow, fixes, tests and changeset    |
+| `b19675a` | Real app evidence, screenshots and round reports |
+| `f5f03ca` | Run 2 summary                                    |
 
 ## Final checks
 
@@ -140,17 +140,17 @@ npm notice 9.0kB dist/board/assets/index-CMBZ724r.css
 npm notice 292.2kB dist/board/assets/index-DxcBO1Hn.js
 npm notice 480B dist/board/index.html
 npm notice 20B dist/index.d.ts
-npm notice 415.0kB dist/index.js
-npm notice 796.3kB dist/index.js.map
+npm notice 415.8kB dist/index.js
+npm notice 797.6kB dist/index.js.map
 npm notice 1.1kB package.json
 npm notice Tarball Details
 npm notice name: fitting-room
 npm notice version: 0.0.0
 npm notice filename: fitting-room-0.0.0.tgz
-npm notice package size: 331.7 kB
+npm notice package size: 332.0 kB
 npm notice unpacked size: 1.5 MB
-npm notice shasum: ecd9de73a77021bc91d7bf1801826c67a850a788
-npm notice integrity: sha512-ehQ6CXQlq/D6h[...]eCTC/rlLAMitg==
+npm notice shasum: 5c9ad22fef758724613ffdb86b36cb30dbcb15f9
+npm notice integrity: sha512-lK0svdsWlM1z5[...]OH9/K6ndPqb9g==
 npm notice total files: 7
 ```
 
