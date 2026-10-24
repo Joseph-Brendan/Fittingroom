@@ -1,18 +1,28 @@
 import path from "node:path";
 import {
+  applyStructureAction,
+  applyVariantEdit,
   detectDesignSystem,
+  type EditOperation,
+  extractStructure,
   findScope,
+  listRounds,
   loadFittingRoomFile,
   loadJsonFile,
   loadScopes,
+  parseBoardState,
   type RefinedMode,
   type RegeneratedSlot,
   type RegenerationSession,
+  readBoardState,
   readRegenerationHistory,
-  regenerateSession,
-  setSessionPinned,
+  readStructure,
+  redoVariantEdit,
+  restoreRoundVariant,
+  saveRoundSnapshot,
+  undoVariantEdit,
   type VariantRole,
-  writeRegenerationHistory,
+  writeStructure,
 } from "@fittingroom/core";
 import {
   type DesignDirection,
@@ -20,6 +30,7 @@ import {
   directionLibrary,
   getDirection,
 } from "@fittingroom/directions";
+import { previewVariant } from "@fittingroom/mcp";
 import {
   type BoardFinding,
   type BoardState,
@@ -28,59 +39,16 @@ import {
   startBoardServer,
 } from "./board-server.js";
 
-interface BoardFileState extends BoardState {
-  previews?: Record<string, string>;
-}
-
 function isRecord(value: unknown): value is Record<string, unknown> {
   return typeof value === "object" && value !== null && !Array.isArray(value);
 }
 
-function parseBoardFileState(value: unknown): BoardFileState {
+function parseBoardFileState(value: unknown): BoardState {
   if (!isRecord(value)) {
     throw new Error("The board state must be an object.");
   }
 
-  if (
-    !isRecord(value.scope) ||
-    typeof value.scope.id !== "string" ||
-    typeof value.scope.name !== "string"
-  ) {
-    throw new Error("The board state needs a scope with an id and name.");
-  }
-
-  if (!Array.isArray(value.variants)) {
-    throw new Error("The board state needs a variants array.");
-  }
-
-  if (!Array.isArray(value.findings)) {
-    throw new Error("The board state needs a findings array.");
-  }
-
-  if (value.previousRounds !== undefined && !Array.isArray(value.previousRounds)) {
-    throw new Error("The board state previousRounds must be an array.");
-  }
-
-  if (
-    value.scopes !== undefined &&
-    (!Array.isArray(value.scopes) ||
-      value.scopes.some(
-        (scope) =>
-          !isRecord(scope) || typeof scope.id !== "string" || typeof scope.name !== "string",
-      ))
-  ) {
-    throw new Error("The board state scopes must be an array of page groups.");
-  }
-
-  if (value.previews !== undefined && !isRecord(value.previews)) {
-    throw new Error("The board state previews must be an object.");
-  }
-
-  if (value.designSystem !== undefined && !isRecord(value.designSystem)) {
-    throw new Error("The board state designSystem must be an object.");
-  }
-
-  return value as unknown as BoardFileState;
+  return parseBoardState(value);
 }
 
 function designSystemSummary(info: Awaited<ReturnType<typeof detectDesignSystem>>): string {
@@ -127,6 +95,7 @@ export interface BoardCommandOptions {
   appUrl?: string;
   output?: NodeJS.WritableStream;
   port?: number;
+  projectRoot?: string;
   scope?: string;
   statePath?: string;
   token?: string;
@@ -228,22 +197,33 @@ function stateFromSession(session: RegenerationSession, findings: BoardFinding[]
     throw new Error("No board round exists.");
   }
 
+  const variants = round.slots.map((slot) => ({
+    slug: slot.directionSlug ?? "refined",
+    name: slot.name,
+    rationale: slot.rationale,
+    slot: slot.slot,
+    pinned: session.pinnedSlots.includes(slot.slot),
+    ...(slot.mode === undefined ? {} : { mode: slot.mode }),
+  }));
+
   return {
+    version: 2,
     scope: { id: session.scopeId, name: session.scopeName },
     surface: session.surface,
+    round: session.rounds.length,
+    status: variants.length === 0 ? "empty" : "directions_ready",
+    selected: null,
+    approved: null,
     findings,
-    variants: round.slots.map((slot) => ({
-      slug: slot.directionSlug ?? "refined",
-      name: slot.name,
-      rationale: slot.rationale,
-      slot: slot.slot,
-      pinned: session.pinnedSlots.includes(slot.slot),
-      ...(slot.mode === undefined ? {} : { mode: slot.mode }),
-    })),
+    variants,
     previousRounds: session.rounds.slice(0, -1).map((previous) => ({
       id: previous.id,
       createdAt: previous.createdAt,
-      variants: previous.slots.map((slot) => ({ slot: slot.slot, name: slot.name })),
+      variants: previous.slots.map((slot) => ({
+        slot: slot.slot,
+        name: slot.name,
+        slug: slot.directionSlug ?? "refined",
+      })),
     })),
   };
 }
@@ -251,7 +231,7 @@ function stateFromSession(session: RegenerationSession, findings: BoardFinding[]
 export async function runBoardCommand(
   options: BoardCommandOptions = {},
 ): Promise<RunningBoardServer> {
-  const projectRoot = process.cwd();
+  const projectRoot = options.projectRoot ?? process.cwd();
   const fallbackOptions = options.appUrl === undefined ? {} : { fallbackUrl: options.appUrl };
   let config: Awaited<ReturnType<typeof loadScopes>> | undefined;
   let requestedScope: { id: string; name: string } | undefined;
@@ -276,7 +256,7 @@ export async function runBoardCommand(
     return config;
   };
 
-  const defaultBoardState = async (): Promise<BoardFileState> => {
+  const defaultBoardState = async (): Promise<BoardState> => {
     const loaded = await loadConfig();
     const selected =
       options.scope === undefined ? loaded.scopes[0] : findScope(loaded, options.scope);
@@ -290,11 +270,16 @@ export async function runBoardCommand(
     }
 
     return {
+      version: 2,
       scope: { id: selected.id, name: selected.name },
       scopes: loaded.scopes.map((scope) => ({ id: scope.id, name: scope.name })),
+      round: 0,
+      status: "empty",
       variants: [],
       findings: [],
       previousRounds: [],
+      selected: null,
+      approved: null,
     };
   };
 
@@ -336,47 +321,156 @@ export async function runBoardCommand(
     previousRounds: initialState.previousRounds ?? [],
   };
   const history = await readRegenerationHistory(projectRoot);
-  let session = history.scopes[initial.scope.id] ?? initialSession(initial);
+  const session = history.scopes[initial.scope.id] ?? initialSession(initial);
+  const seeded = stateFromSession(session, initial.findings);
+  const base: BoardState =
+    initial.variants.length === 0 && seeded.variants.length > 0
+      ? {
+          ...initial,
+          variants: seeded.variants,
+          previousRounds: seeded.previousRounds,
+          round: seeded.round,
+          status: seeded.status,
+        }
+      : initial;
+  const variantFile = (state: BoardState, slug: string): string => {
+    const variant = state.variants.find((candidate) => candidate.slug === slug);
 
-  history.scopes[session.scopeId] = session;
+    if (variant?.filePath === undefined) {
+      throw new Error(
+        `Variant ${slug} has no editable file. Register it again from fr_register_variant.`,
+      );
+    }
 
+    return path.resolve(projectRoot, variant.filePath);
+  };
+  const rebuildPreview = async (filePath: string, slug: string): Promise<void> => {
+    await previewVariant(projectRoot, filePath, slug);
+  };
+  const saveCurrentSnapshot = async (
+    state: BoardState,
+    slug: string,
+    filePath: string,
+  ): Promise<void> => {
+    const variant = state.variants.find((candidate) => candidate.slug === slug);
+    const role = variant?.role ?? (variant === undefined ? undefined : roles[variant.slot]);
+
+    if (variant === undefined || role === undefined) {
+      return;
+    }
+
+    await saveRoundSnapshot(projectRoot, {
+      number: state.round,
+      scope: state.scope,
+      variant: {
+        editLogPath: path.join(projectRoot, ".fittingroom", "edits", `${slug}.json`),
+        filePath,
+        name: variant.name,
+        origPath: path.join(projectRoot, ".fittingroom", "variants", `${slug}.orig.tsx`),
+        rationale: variant.rationale,
+        role,
+        screenshotPath: path.join(projectRoot, ".fittingroom", "variants", slug, "preview.png"),
+        slug,
+        slot: variant.slot,
+      },
+    });
+  };
   const output = options.output ?? process.stdout;
   const server = await startBoardServer({
-    state: withBoardExtras(stateFromSession(session, initial.findings), {
+    projectRoot,
+    state: withBoardExtras(base, {
       designSystem: initial.designSystem,
       scopes: initial.scopes,
     }),
     ...(previews === undefined ? {} : { previews }),
     ...(options.port === undefined ? {} : { port: options.port }),
     ...(options.token === undefined ? {} : { token: options.token }),
-    regenerate: async ({ state, slots, mode }) => {
-      const result = await regenerateSession(
-        session,
-        {
-          ...(slots === undefined ? {} : { slots }),
-          ...(mode === undefined ? {} : { mode }),
-        },
-        path.join(projectRoot, ".fittingroom", "regenerations", session.scopeId),
+    edit: async ({ state, slug, operation }) => {
+      const filePath = variantFile(state, slug);
+
+      await applyVariantEdit(filePath, operation as unknown as EditOperation, {
+        projectRoot,
+        slug,
+      });
+      await rebuildPreview(filePath, slug);
+      await saveCurrentSnapshot(state, slug, filePath);
+
+      return { state };
+    },
+    undo: async ({ state, slug }) => {
+      const filePath = variantFile(state, slug);
+
+      await undoVariantEdit(filePath, { projectRoot, slug });
+      await rebuildPreview(filePath, slug);
+      await saveCurrentSnapshot(state, slug, filePath);
+
+      return { state };
+    },
+    redo: async ({ state, slug }) => {
+      const filePath = variantFile(state, slug);
+
+      await redoVariantEdit(filePath, { projectRoot, slug });
+      await rebuildPreview(filePath, slug);
+      await saveCurrentSnapshot(state, slug, filePath);
+
+      return { state };
+    },
+    rounds: async () => listRounds(projectRoot),
+    structure: async () => {
+      const existing = await readStructure(projectRoot);
+
+      if (existing !== null) {
+        return existing;
+      }
+
+      const state = await readBoardState(projectRoot);
+      const variant = state.variants[0];
+
+      if (variant?.filePath === undefined) {
+        return null;
+      }
+
+      const extracted = await extractStructure({
+        filePath: path.resolve(projectRoot, variant.filePath),
+        page: state.page ?? "/",
+        scope: state.scope.id,
+      });
+
+      await writeStructure(projectRoot, extracted);
+
+      return extracted;
+    },
+    structureAction: async ({ action, slug, state }) => {
+      const filePath = variantFile(state, slug);
+
+      await applyStructureAction({
+        action,
+        filePath,
+        page: state.page ?? "/",
+        projectRoot,
+        scope: state.scope.id,
+        slug,
+      });
+      await rebuildPreview(filePath, slug);
+      await saveCurrentSnapshot(state, slug, filePath);
+
+      return state;
+    },
+    restore: async ({ round, snapshotId, state }) => {
+      const result = await restoreRoundVariant(projectRoot, {
+        round,
+        scope: state.scope,
+        snapshotId,
+      });
+      const variant = result.state.variants.find(
+        (candidate) => candidate.slot === result.snapshot.slot,
       );
 
-      session = result.session;
-      history.scopes[session.scopeId] = session;
-      await writeRegenerationHistory(projectRoot, history);
+      if (variant?.filePath !== undefined) {
+        await rebuildPreview(path.resolve(projectRoot, variant.filePath), variant.slug);
+      }
 
-      return withBoardExtras(stateFromSession(session, state.findings), {
-        designSystem: state.designSystem,
-        scopes: state.scopes,
-      });
-    },
-    pin: async ({ state, slot, pinned }) => {
-      setSessionPinned(session, slot, pinned);
-      history.scopes[session.scopeId] = session;
-      await writeRegenerationHistory(projectRoot, history);
-
-      return withBoardExtras(stateFromSession(session, state.findings), {
-        designSystem: state.designSystem,
-        scopes: state.scopes,
-      });
+      return result.state;
     },
   });
 

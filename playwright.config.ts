@@ -29,5 +29,11 @@ export default defineConfig({
       reuseExistingServer: false,
       timeout: 120_000,
     },
+    {
+      command: "pnpm exec tsx e2e/bridge-server.mts",
+      url: "http://127.0.0.1:4175/health",
+      reuseExistingServer: false,
+      timeout: 120_000,
+    },
   ],
 });

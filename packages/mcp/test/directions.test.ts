@@ -283,6 +283,17 @@ describe("fr_handoff", () => {
     expect(brief).toContain("Reuse existing project components.");
     expect(brief).toContain("Keep all data wiring and real content.");
     expect(brief).toContain(`Call fr_verify with route /login and handoffId ${result.handoffId}.`);
+
+    const fittingRoom = path.resolve(result.folder, "..", "..");
+    const design = await readFile(path.join(fittingRoom, "DESIGN.md"), "utf8");
+    const memory = JSON.parse(
+      await readFile(path.join(fittingRoom, "design-memory.json"), "utf8"),
+    ) as { button?: { backgroundColor?: string }; version?: number };
+
+    expect(design).toContain("## Primary button");
+    expect(design).toContain("## Do");
+    expect(memory.version).toBe(1);
+    expect(memory.button?.backgroundColor).toBeDefined();
   }, 120_000);
 
   it("verifies the real route and fails when it does not match the handoff", async () => {

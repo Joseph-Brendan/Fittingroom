@@ -1,4 +1,4 @@
-import { readFile, writeFile } from "node:fs/promises";
+import { copyFile, mkdir, readFile, writeFile } from "node:fs/promises";
 import path from "node:path";
 import {
   JsxAttribute,
@@ -16,7 +16,7 @@ import {
   type TokenCategory,
   type TokensFile,
 } from "./design-system";
-import { loadFittingRoomFile, writeFittingRoomJson } from "./fittingroom-store";
+import { loadFittingRoomFile, writeFittingRoomJson, writeJsonAtomic } from "./fittingroom-store";
 
 export type InsertComponent = "heading" | "text" | "button" | "input" | "image";
 
@@ -59,6 +59,19 @@ export type EditOperation =
       op: "swap-section";
       firstId: string;
       secondId: string;
+    }
+  | {
+      op: "group";
+      firstId: string;
+      secondId: string;
+      containerId: string;
+    }
+  | {
+      op: "collapse";
+      id: string;
+      mode: "tab" | "accordion";
+      containerId: string;
+      label?: string;
     };
 
 export interface EditOptions {
@@ -432,6 +445,82 @@ function applyOperation(
       return false;
     }
 
+    case "group": {
+      const first = findElement(sourceFile, operation.firstId);
+      const second = findElement(sourceFile, operation.secondId);
+      const parent = parentElement(first);
+
+      if (parent === undefined || parentElement(second) !== parent) {
+        throw new Error("Both blocks must share the same parent.");
+      }
+
+      if (elementsIn(sourceFile).some((element) => elementId(element) === operation.containerId)) {
+        throw new Error(`data-fr-id ${operation.containerId} already exists.`);
+      }
+
+      const children = childElements(parent);
+      const firstIndex = children.findIndex((child) => elementId(child) === operation.firstId);
+      const secondIndex = children.findIndex((child) => elementId(child) === operation.secondId);
+
+      if (firstIndex === -1 || secondIndex === -1) {
+        throw new Error("Both blocks must be direct children of the same parent.");
+      }
+
+      const firstChild = children[firstIndex];
+      const secondChild = children[secondIndex];
+
+      if (firstChild === undefined || secondChild === undefined) {
+        throw new Error("Could not group the blocks.");
+      }
+
+      const wrapper = `<div data-fr-id="${operation.containerId}">\n${firstChild.getText()}\n${secondChild.getText()}\n</div>`;
+      const texts = children.map((child) => child.getText());
+      const low = Math.min(firstIndex, secondIndex);
+      const high = Math.max(firstIndex, secondIndex);
+
+      texts.splice(high, 1);
+      texts.splice(low, 1, wrapper);
+      parent.setBodyText(texts.join("\n"));
+      return false;
+    }
+
+    case "collapse": {
+      const element = findElement(sourceFile, operation.id);
+      const parent = parentElement(element);
+
+      if (parent === undefined) {
+        throw new Error(`Element ${operation.id} has no parent.`);
+      }
+
+      if (
+        elementsIn(sourceFile).some((candidate) => elementId(candidate) === operation.containerId)
+      ) {
+        throw new Error(`data-fr-id ${operation.containerId} already exists.`);
+      }
+
+      const children = childElements(parent);
+      const index = children.findIndex((child) => elementId(child) === operation.id);
+
+      if (index === -1) {
+        throw new Error(`Element ${operation.id} could not be collapsed.`);
+      }
+
+      const label = operation.label ?? "Show section";
+      const wrapper = [
+        `<div data-fr-id="${operation.containerId}">`,
+        `<button type="button" aria-expanded="false" aria-controls="${operation.id}-panel" data-fr-collapse="${operation.mode}">${label}</button>`,
+        `<div id="${operation.id}-panel" data-fr-collapse-panel="${operation.id}">`,
+        element.getText(),
+        "</div>",
+        "</div>",
+      ].join("\n");
+      const texts = children.map((child) => child.getText());
+
+      texts.splice(index, 1, wrapper);
+      parent.setBodyText(texts.join("\n"));
+      return false;
+    }
+
     case "swap-section": {
       const first = findElement(sourceFile, operation.firstId);
       const second = findElement(sourceFile, operation.secondId);
@@ -540,4 +629,283 @@ export async function undoEdit(filePath: string, options: EditOptions = {}): Pro
   await saveLog(projectRoot, log);
 
   return { offSystem, source: formatted };
+}
+
+export interface VariantEditOptions {
+  now?: () => Date;
+  projectRoot?: string;
+  slug: string;
+  tokens?: DesignTokens;
+}
+
+export interface VariantStampResult {
+  ids: string[];
+  source: string;
+}
+
+interface VariantEditLog {
+  version: 1;
+  slug: string;
+  baseline: string;
+  edits: EditLogEntry[];
+  redo: EditLogEntry[];
+}
+
+function safeSlug(slug: string): string {
+  if (!/^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(slug)) {
+    throw new Error(`The variant slug ${slug} must be lowercase and hyphenated.`);
+  }
+
+  return slug;
+}
+
+function variantLogPath(projectRoot: string, slug: string): string {
+  return path.join(projectRoot, ".fittingroom", "edits", `${safeSlug(slug)}.json`);
+}
+
+function variantOrigPath(projectRoot: string, slug: string): string {
+  return path.join(projectRoot, ".fittingroom", "variants", `${safeSlug(slug)}.orig.tsx`);
+}
+
+function jsxTagName(element: TargetElement): string {
+  const tag =
+    element instanceof JsxElement
+      ? element.getOpeningElement().getTagNameNode().getText()
+      : element.getTagNameNode().getText();
+  const normalized = tag
+    .replace(/([a-z0-9])([A-Z])/g, "$1-$2")
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-+|-+$/g, "");
+
+  return normalized === "" ? "element" : normalized;
+}
+
+export async function stampVariantFile(filePath: string): Promise<VariantStampResult> {
+  const source = await readFile(filePath, "utf8");
+  const project = newProject();
+  const sourceFile = project.createSourceFile("variant.tsx", source);
+  const elements = elementsIn(sourceFile).sort(
+    (first, second) => first.getStart() - second.getStart(),
+  );
+  const used = new Set(
+    elements.flatMap((element) => {
+      const id = elementId(element);
+
+      return id === undefined ? [] : [id];
+    }),
+  );
+  const ids: string[] = [];
+  const counters = new Map<string, number>();
+
+  for (const element of elements) {
+    const existing = elementId(element);
+
+    if (existing !== undefined) {
+      ids.push(existing);
+      continue;
+    }
+
+    const tag = jsxTagName(element);
+    let count = counters.get(tag) ?? 0;
+    let id = `fr-${tag}-${count + 1}`;
+
+    while (used.has(id)) {
+      count += 1;
+      id = `fr-${tag}-${count + 1}`;
+    }
+
+    counters.set(tag, count + 1);
+    used.add(id);
+    ids.push(id);
+    targetOpening(element).addAttribute({
+      initializer: JSON.stringify(id),
+      name: "data-fr-id",
+    });
+  }
+
+  const formatted = formattedSource(sourceFile);
+
+  await writeFile(filePath, formatted);
+
+  return { ids, source: formatted };
+}
+
+function isVariantEditLog(value: unknown): value is VariantEditLog {
+  return (
+    isRecord(value) &&
+    value.version === 1 &&
+    typeof value.slug === "string" &&
+    typeof value.baseline === "string" &&
+    Array.isArray(value.edits) &&
+    Array.isArray(value.redo)
+  );
+}
+
+async function readVariantLog(projectRoot: string, slug: string): Promise<VariantEditLog | null> {
+  try {
+    const raw = JSON.parse(await readFile(variantLogPath(projectRoot, slug), "utf8")) as unknown;
+
+    if (!isVariantEditLog(raw)) {
+      throw new Error("The edit log has the wrong shape.");
+    }
+
+    return raw;
+  } catch (error) {
+    if ((error as NodeJS.ErrnoException).code === "ENOENT") {
+      return null;
+    }
+
+    throw error;
+  }
+}
+
+async function writeVariantLog(
+  projectRoot: string,
+  slug: string,
+  log: VariantEditLog,
+): Promise<void> {
+  await writeJsonAtomic(variantLogPath(projectRoot, slug), log);
+}
+
+function replayVariant(
+  source: string,
+  entries: readonly EditLogEntry[],
+  tokens: DesignTokens,
+): string {
+  const project = newProject();
+  const sourceFile = project.createSourceFile("variant.tsx", source);
+
+  for (const entry of entries) {
+    applyOperation(sourceFile, entry.operation, tokens);
+  }
+
+  return formattedSource(sourceFile);
+}
+
+async function ensureVariantBaseline(
+  projectRoot: string,
+  slug: string,
+  currentSource: string,
+  log: VariantEditLog | null,
+): Promise<{ log: VariantEditLog; source: string }> {
+  if (log !== null) {
+    return { log, source: log.baseline };
+  }
+
+  const origPath = variantOrigPath(projectRoot, slug);
+
+  await mkdir(path.dirname(origPath), { recursive: true });
+
+  try {
+    const baseline = await readFile(origPath, "utf8");
+
+    return {
+      log: { version: 1, slug, baseline, edits: [], redo: [] },
+      source: baseline,
+    };
+  } catch {
+    await writeFile(origPath, currentSource);
+
+    return {
+      log: { version: 1, slug, baseline: currentSource, edits: [], redo: [] },
+      source: currentSource,
+    };
+  }
+}
+
+export async function applyVariantEdit(
+  filePath: string,
+  operation: EditOperation,
+  options: VariantEditOptions,
+): Promise<EditResult> {
+  const projectRoot = options.projectRoot ?? process.cwd();
+  const slug = safeSlug(options.slug);
+  const source = await readFile(filePath, "utf8");
+  const tokens = await loadTokens(projectRoot, options.tokens);
+  const current = await readVariantLog(projectRoot, slug);
+  const ensured = await ensureVariantBaseline(projectRoot, slug, source, current);
+  const project = newProject();
+  const sourceFile = project.createSourceFile("variant.tsx", source);
+  const offSystem = applyOperation(sourceFile, operation, tokens);
+  const formatted = formattedSource(sourceFile);
+  const timestamp = (options.now?.() ?? new Date()).toISOString();
+  const log = ensured.log;
+
+  log.edits.push({ operation, timestamp, offSystem });
+  log.redo = [];
+
+  await writeFile(filePath, formatted);
+  await writeVariantLog(projectRoot, slug, log);
+
+  return { offSystem, source: formatted };
+}
+
+export async function undoVariantEdit(
+  filePath: string,
+  options: VariantEditOptions,
+): Promise<EditResult> {
+  const projectRoot = options.projectRoot ?? process.cwd();
+  const slug = safeSlug(options.slug);
+  const log = await readVariantLog(projectRoot, slug);
+
+  if (log === null || log.edits.length === 0) {
+    throw new Error(`No edits to undo for ${slug}.`);
+  }
+
+  const entry = log.edits.pop();
+
+  if (entry === undefined) {
+    throw new Error(`No edits to undo for ${slug}.`);
+  }
+
+  log.redo.push(entry);
+  const tokens = await loadTokens(projectRoot, options.tokens);
+  const formatted = replayVariant(log.baseline, log.edits, tokens);
+
+  await writeFile(filePath, formatted);
+  await writeVariantLog(projectRoot, slug, log);
+
+  return { offSystem: log.edits.some((edit) => edit.offSystem), source: formatted };
+}
+
+export async function redoVariantEdit(
+  filePath: string,
+  options: VariantEditOptions,
+): Promise<EditResult> {
+  const projectRoot = options.projectRoot ?? process.cwd();
+  const slug = safeSlug(options.slug);
+  const log = await readVariantLog(projectRoot, slug);
+
+  if (log === null || log.redo.length === 0) {
+    throw new Error(`No edits to redo for ${slug}.`);
+  }
+
+  const entry = log.redo.pop();
+
+  if (entry === undefined) {
+    throw new Error(`No edits to redo for ${slug}.`);
+  }
+
+  log.edits.push(entry);
+  const tokens = await loadTokens(projectRoot, options.tokens);
+  const formatted = replayVariant(log.baseline, log.edits, tokens);
+
+  await writeFile(filePath, formatted);
+  await writeVariantLog(projectRoot, slug, log);
+
+  return { offSystem: log.edits.some((edit) => edit.offSystem), source: formatted };
+}
+
+export async function saveVariantOriginal(
+  filePath: string,
+  options: { projectRoot?: string; slug: string },
+): Promise<string> {
+  const projectRoot = options.projectRoot ?? process.cwd();
+  const origPath = variantOrigPath(projectRoot, options.slug);
+
+  await mkdir(path.dirname(origPath), { recursive: true });
+  await copyFile(filePath, origPath);
+
+  return origPath;
 }

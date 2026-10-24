@@ -119,10 +119,12 @@ describe("Fitting Room MCP tools", () => {
         "fr_scopes",
         "fr_capture",
         "fr_audit",
+        "fr_design_memory",
         "fr_directions",
         "fr_regenerate",
         "fr_register_variant",
         "fr_slop",
+        "fr_states",
         "fr_submit_findings",
       ]),
     );

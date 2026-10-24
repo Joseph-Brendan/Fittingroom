@@ -8,6 +8,7 @@ export const approvedSources = [
   "Material Design 3",
   "WAI-ARIA Authoring Practices Guide",
   "Laws of UX",
+  "Project design memory",
 ] as const;
 
 export const citationLevels = ["A", "AA", "AAA", "N/A"] as const;
@@ -75,6 +76,10 @@ function isCitationLevel(value: string): value is CitationLevel {
 }
 
 function isApprovedUrl(value: string): boolean {
+  if (value === ".fittingroom/DESIGN.md") {
+    return true;
+  }
+
   try {
     const url = new URL(value);
 

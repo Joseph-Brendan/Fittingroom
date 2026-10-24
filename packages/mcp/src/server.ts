@@ -1,15 +1,25 @@
+import { spawn } from "node:child_process";
 import { randomUUID } from "node:crypto";
-import { access, readFile } from "node:fs/promises";
+import { access, readFile, rm } from "node:fs/promises";
 import path from "node:path";
-import { type Finding as CitationFinding, validate } from "@fittingroom/citations";
+import {
+  type Finding as CitationFinding,
+  citationRegistry,
+  validate,
+} from "@fittingroom/citations";
 import {
   type AuditCheckError,
+  auditDesignMemory,
+  type BoardState,
   buildScopeChecklist,
   type CapturedElement,
   type CaptureResult,
   type CaptureSelection,
   capture,
+  checkStates,
+  completeBoardRequest,
   type DefaultScope,
+  type DesignMemory,
   type DiscoveredRoute,
   detectDefaultScope,
   detectDesignSystem,
@@ -17,22 +27,43 @@ import {
   detectSlop,
   discoverRoutes,
   discoverRoutesWithSource,
+  emptyBoardState,
+  ensureRound,
   findingIdForPage,
   findScope,
   findScopeForRoutes,
   groupRoutes,
   loadScopes,
   normalizePagePath,
+  openBoardRequests,
   PAGE_GROUPS,
+  type RegeneratedSlot,
+  type RegenerationSession,
+  readBoardRequests,
+  readBoardState,
   readContentInventory,
+  readDesignMemory,
+  readLiveBoardLock,
+  readRegenerationHistory,
+  readStructure,
   regenerateScope,
   renderSlopScoreCard,
   runAutomatedChecks,
   type ScopeChecklistEntry,
   type ScopeSummary,
   type ScopesConfig,
+  type StructureFile,
+  saveDesignMemory,
+  saveRoundSnapshot,
+  saveVariantOriginal,
+  stampVariantFile,
+  updateBoardState,
+  type VariantRole,
+  type VariantSlotNumber,
   verifyImplementation,
+  waitForBoardEvent,
   writeHandoff,
+  writeRegenerationHistory,
 } from "@fittingroom/core";
 import { type DesignDirection, type DirectionSurface, getDirection } from "@fittingroom/directions";
 import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
@@ -49,6 +80,8 @@ export const fittingRoomServerInfo = {
 export interface FittingRoomServerOptions {
   appUrl?: string;
   auditOutputDir?: string;
+  boardCommand?: string[];
+  boardStartTimeoutMs?: number;
   captureOutputDir?: string;
   currentPath?: string;
   projectRoot?: string;
@@ -91,6 +124,15 @@ interface RegisteredVariant {
   tokens: Record<string, string>;
   variantSlug: string;
 }
+interface RegisteredVariant {
+  filePath: string;
+  findingsFixed: StoredFinding[];
+  rationale: string;
+  reference: NonNullable<Awaited<ReturnType<typeof previewVariant>>["reference"]>;
+  route: string;
+  tokens: Record<string, string>;
+  variantSlug: string;
+}
 
 function flattenTokens(tokens: Awaited<ReturnType<typeof detectDesignSystem>>["tokens"]) {
   const flattened: Record<string, string> = {};
@@ -116,6 +158,293 @@ const designSystemSourceLabels: Record<string, string> = {
   "radix-themes": "Radix Themes",
   "ant-design": "Ant Design",
 };
+
+function pixelNumbers(values: readonly string[]): number[] {
+  return values.flatMap((value) => {
+    const match = value.trim().match(/^(-?[\d.]+)px$/);
+
+    return match === null ? [] : [Number(match[1])];
+  });
+}
+
+function stylePixels(value: string | undefined): number | null {
+  if (value === undefined) {
+    return null;
+  }
+
+  const match = value.trim().match(/^(-?[\d.]+)px$/);
+
+  return match === null ? null : Number(match[1]);
+}
+
+function stylePadding(style: Record<string, string> | undefined): string | null {
+  if (style === undefined) {
+    return null;
+  }
+
+  const values = [
+    style["padding-top"],
+    style["padding-right"],
+    style["padding-bottom"],
+    style["padding-left"],
+  ];
+
+  return values.every((value) => value !== undefined) ? values.join(" ") : null;
+}
+
+function elementIdForTag(source: string, tag: string): string | undefined {
+  const match = source.match(new RegExp(`<${tag}\\b[^>]*data-fr-id="([^"]+)"`));
+
+  return match?.[1];
+}
+
+function memoryFromDirection(input: {
+  buttonId?: string | undefined;
+  direction: DesignDirection | undefined;
+  directionName: string;
+  directionSlug: string;
+  inputId?: string | undefined;
+  reference?:
+    | {
+        styles: Record<string, Record<string, string>>;
+      }
+    | undefined;
+  structure: StructureFile | null;
+  tokens: Record<string, string>;
+}): DesignMemory {
+  const { direction, tokens } = input;
+  const referenceStyles = Object.values(input.reference?.styles ?? {});
+  const referenceColors = new Set<string>();
+  const referenceFonts = new Set<string>();
+  const referenceSizes = new Set<number>();
+  const referenceSpacing = new Set<number>();
+  const referenceRadii = new Set<number>();
+
+  for (const style of referenceStyles) {
+    for (const property of [
+      "color",
+      "background-color",
+      "border-top-color",
+      "border-right-color",
+      "border-bottom-color",
+      "border-left-color",
+    ]) {
+      const value = style[property];
+
+      if (
+        value !== undefined &&
+        value !== "" &&
+        value !== "transparent" &&
+        value !== "rgba(0, 0, 0, 0)"
+      ) {
+        referenceColors.add(value);
+      }
+    }
+
+    const font = style["font-family"];
+
+    if (font !== undefined && font !== "") {
+      referenceFonts.add(font);
+    }
+
+    const size = stylePixels(style["font-size"]);
+
+    if (size !== null && size > 0) {
+      referenceSizes.add(size);
+    }
+
+    for (const property of [
+      "padding-top",
+      "padding-right",
+      "padding-bottom",
+      "padding-left",
+      "gap",
+      "row-gap",
+      "column-gap",
+    ]) {
+      const value = stylePixels(style[property]);
+
+      if (value !== null && value > 0) {
+        referenceSpacing.add(value);
+      }
+    }
+
+    for (const property of [
+      "border-top-left-radius",
+      "border-top-right-radius",
+      "border-bottom-left-radius",
+      "border-bottom-right-radius",
+    ]) {
+      const value = stylePixels(style[property]);
+
+      if (value !== null && value > 0) {
+        referenceRadii.add(value);
+      }
+    }
+  }
+
+  const tokenFonts = Object.entries(tokens)
+    .filter(([name]) => name.startsWith("font."))
+    .map(([, value]) => value);
+  const tokenSizes = pixelNumbers(
+    Object.entries(tokens)
+      .filter(([name]) => name.startsWith("fontSize."))
+      .map(([, value]) => value),
+  );
+  const colors: Record<string, string> = {};
+
+  if (direction !== undefined) {
+    colors.accent = direction.colorRecipe.accent;
+    colors.accentText = direction.colorRecipe.accentText;
+    colors.background = direction.colorRecipe.background;
+    colors.border = direction.colorRecipe.border;
+    colors.mutedText = direction.colorRecipe.mutedText;
+    colors.surface = direction.colorRecipe.surface;
+    colors.text = direction.colorRecipe.text;
+  }
+
+  for (const [name, value] of Object.entries(tokens).filter(([name]) =>
+    name.startsWith("color."),
+  )) {
+    colors[name] = value;
+  }
+
+  let colorIndex = 1;
+
+  for (const value of referenceColors) {
+    if (!Object.values(colors).includes(value)) {
+      colors[`observed-color-${colorIndex}`] = value;
+      colorIndex += 1;
+    }
+  }
+
+  const spacing: Record<string, string> = {};
+
+  for (const [name, value] of Object.entries(tokens).filter(([name]) =>
+    name.startsWith("space."),
+  )) {
+    spacing[name] = value;
+  }
+
+  let spacingIndex = 1;
+
+  for (const value of referenceSpacing) {
+    const normalized = `${value}px`;
+
+    if (!Object.values(spacing).includes(normalized)) {
+      spacing[`observed-space-${spacingIndex}`] = normalized;
+      spacingIndex += 1;
+    }
+  }
+
+  const radii: Record<string, string> = {};
+
+  for (const [name, value] of Object.entries(tokens).filter(([name]) =>
+    name.startsWith("radius."),
+  )) {
+    radii[name] = value;
+  }
+
+  let radiusIndex = 1;
+
+  for (const value of referenceRadii) {
+    const normalized = `${value}px`;
+
+    if (!Object.values(radii).includes(normalized)) {
+      radii[`observed-radius-${radiusIndex}`] = normalized;
+      radiusIndex += 1;
+    }
+  }
+
+  const fontList = [
+    ...new Set([
+      ...(direction === undefined ? [] : [direction.typePair.display, direction.typePair.body]),
+      ...tokenFonts,
+      ...referenceFonts,
+    ]),
+  ];
+  const bodyFont = fontList[0] ?? "system-ui, sans-serif";
+  const displayFont = direction?.typePair.display ?? bodyFont;
+  const scale = [
+    ...new Set([...(direction?.typeScale.steps ?? []), ...tokenSizes, ...referenceSizes]),
+  ];
+  const resolvedScale = scale.length === 0 ? [16, 24, 32] : scale;
+  const buttonStyle =
+    input.buttonId === undefined ? undefined : input.reference?.styles[input.buttonId];
+  const inputStyle =
+    input.inputId === undefined ? undefined : input.reference?.styles[input.inputId];
+  const accent =
+    buttonStyle?.["background-color"] ??
+    direction?.colorRecipe.accent ??
+    colors["color.accent"] ??
+    "#1d4ed8";
+  const accentText =
+    buttonStyle?.color ??
+    direction?.colorRecipe.accentText ??
+    colors["color.accentText"] ??
+    "#ffffff";
+  const controlRadius =
+    buttonStyle?.["border-top-left-radius"] ??
+    direction?.radius.control ??
+    Object.values(radii)[0] ??
+    "6px";
+  const baseSize =
+    stylePixels(buttonStyle?.["font-size"]) ?? direction?.typeScale.base ?? resolvedScale[0] ?? 16;
+  const buttonPadding = stylePadding(buttonStyle) ?? "12px 18px";
+  const inputPadding = stylePadding(inputStyle) ?? "8px 12px";
+  const doList = direction?.do ?? [
+    "Use the saved design tokens.",
+    "Keep one primary action per screen.",
+  ];
+  const dontList = direction?.dont ?? ["Do not introduce values outside the saved tokens."];
+  const finalColors =
+    Object.keys(colors).length === 0
+      ? { accent, accentText, background: "#ffffff", text: "#111827" }
+      : colors;
+  const finalSpacing =
+    Object.keys(spacing).length === 0 ? { lg: "24px", md: "16px", sm: "8px" } : spacing;
+  const finalRadii =
+    Object.keys(radii).length === 0
+      ? { control: controlRadius, panel: direction?.radius.panel ?? "12px" }
+      : radii;
+
+  return {
+    version: 1,
+    direction: {
+      slug: input.directionSlug,
+      name: direction?.name ?? input.directionName,
+      description: direction?.description ?? "Keeps the approved design in its current style.",
+    },
+    type: {
+      pair: [...new Set([displayFont, bodyFont, ...fontList])],
+      scale: resolvedScale,
+    },
+    colors: finalColors,
+    spacing: finalSpacing,
+    radii: finalRadii,
+    density: input.structure?.density ?? "balanced",
+    button: {
+      backgroundColor: accent,
+      borderRadius: controlRadius,
+      color: accentText,
+      fontFamily: buttonStyle?.["font-family"] ?? bodyFont,
+      fontSize: `${stylePixels(buttonStyle?.["font-size"]) ?? baseSize}px`,
+      fontWeight: buttonStyle?.["font-weight"] ?? "600",
+      padding: buttonPadding,
+    },
+    input: {
+      backgroundColor: inputStyle?.["background-color"] ?? "#ffffff",
+      borderColor: inputStyle?.["border-top-color"] ?? direction?.colorRecipe.border ?? "#111827",
+      borderRadius: inputStyle?.["border-top-left-radius"] ?? controlRadius,
+      color: inputStyle?.color ?? direction?.colorRecipe.text ?? "#111827",
+      fontFamily: inputStyle?.["font-family"] ?? bodyFont,
+      fontSize: `${stylePixels(inputStyle?.["font-size"]) ?? baseSize}px`,
+      padding: inputPadding,
+    },
+    do: doList,
+    dont: dontList,
+  };
+}
 
 function designSystemSummary(info: Awaited<ReturnType<typeof detectDesignSystem>>): string {
   if (info.status === "none") {
@@ -370,18 +699,80 @@ function buildCritiqueBrief(
 export function createFittingRoomServer(options: FittingRoomServerOptions = {}): McpServer {
   const server = new McpServer(fittingRoomServerInfo);
   const projectRoot = options.projectRoot ?? process.cwd();
+  const configuredAppUrl = options.appUrl ?? process.env.FITTINGROOM_APP_URL;
   const configuredCurrentPath = options.currentPath ?? process.env.FITTINGROOM_CURRENT_PATH;
   const currentPath =
     configuredCurrentPath === undefined ? undefined : normalizePath(configuredCurrentPath);
+  let activeRoundSlots: Array<{
+    name: string;
+    role: VariantRole;
+    slug: string | null;
+    slot: number;
+  }> = [];
   let auditedFindings: StoredFinding[] = [];
   let lastAudit: AuditPayload | null = null;
   let activeRoute: string | null = null;
   const judgedFindings = new Map<string, StoredFinding>();
+  const registeredSlots = new Set<number>();
   const registeredVariants = new Map<string, RegisteredVariant>();
 
+  async function boardFallback(): Promise<BoardState> {
+    const current = await readBoardState(projectRoot);
+
+    if (current.scope.id !== "") {
+      return current;
+    }
+
+    if (lastAudit !== null) {
+      return emptyBoardState({ id: lastAudit.summary.id, name: lastAudit.summary.name });
+    }
+
+    try {
+      const { state } = await scopeState();
+
+      if (state.defaultScope !== null) {
+        return emptyBoardState({
+          id: state.defaultScope.scope.id,
+          name: state.defaultScope.scope.name,
+        });
+      }
+    } catch {}
+
+    return current;
+  }
+
+  async function syncBoard(
+    update: (state: BoardState) => BoardState | Promise<BoardState>,
+  ): Promise<BoardState> {
+    return updateBoardState(projectRoot, update, await boardFallback());
+  }
+
+  async function syncAuditFindings(payload: AuditPayload): Promise<void> {
+    const citationUrls = new Map(
+      citationRegistry.citations.map((citation) => [citation.id, citation.url]),
+    );
+
+    await syncBoard((current) => ({
+      ...current,
+      page: payload.pages[0]?.path ?? "/",
+      scope: { id: payload.summary.id, name: payload.summary.name },
+      findings: payload.findings.map((finding) => ({
+        id: finding.id,
+        title: finding.title,
+        citation: finding.citation,
+        citationUrl: citationUrls.get(finding.citation) ?? "",
+        severity: finding.severity,
+        confidence: finding.confidence,
+        variantSlug: "",
+        fix: finding.fix,
+        ...(finding.page === undefined ? {} : { page: finding.page }),
+      })),
+    }));
+  }
+
   async function appUrl(): Promise<string> {
-    if (options.appUrl !== undefined) {
-      return options.appUrl;
+    if (configuredAppUrl !== undefined) {
+      return configuredAppUrl;
     }
 
     const detected = await detectProjectDevServer(projectRoot);
@@ -401,7 +792,7 @@ export function createFittingRoomServer(options: FittingRoomServerOptions = {}):
   }> {
     const discovery = await discoverRoutesWithSource(
       projectRoot,
-      options.appUrl === undefined ? {} : { fallbackUrl: options.appUrl },
+      configuredAppUrl === undefined ? {} : { fallbackUrl: configuredAppUrl },
     );
     const config = await loadScopes(projectRoot, { routes: discovery.routes });
     const routes = discovery.routes;
@@ -516,7 +907,7 @@ export function createFittingRoomServer(options: FittingRoomServerOptions = {}):
   async function surfaceForRoute(route: string): Promise<DirectionSurface> {
     const routes = await discoverRoutes(
       projectRoot,
-      options.appUrl === undefined ? {} : { fallbackUrl: options.appUrl },
+      configuredAppUrl === undefined ? {} : { fallbackUrl: configuredAppUrl },
     );
     const routeInfo = routes.find((entry) => entry.path === route);
 
@@ -584,6 +975,225 @@ export function createFittingRoomServer(options: FittingRoomServerOptions = {}):
 
     return failures;
   }
+
+  function boardLaunchCommand(): { args: string[]; command: string } {
+    const base =
+      options.boardCommand ??
+      (process.argv[1] === undefined ? ["fitroom"] : [process.execPath, process.argv[1]]);
+    const command = base[0] ?? "fitroom";
+    const args = [...base.slice(1), "board"];
+
+    return { command, args };
+  }
+
+  async function waitForBoardLock(timeoutMilliseconds: number) {
+    const deadline = Date.now() + timeoutMilliseconds;
+
+    while (Date.now() <= deadline) {
+      const lock = await readLiveBoardLock(projectRoot);
+
+      if (lock !== null) {
+        return lock;
+      }
+
+      await new Promise((resolve) => setTimeout(resolve, 100));
+    }
+
+    return null;
+  }
+
+  server.registerTool(
+    "fr_states",
+    {
+      title: "Check every important UI state",
+      description:
+        "Reach empty, loading, error, long text and dark mode from outside the app, score each state, and save screenshots and a report.",
+      inputSchema: {
+        route: z.string().trim().min(1).optional(),
+        scope: z.string().trim().min(1).optional(),
+      },
+      annotations: {
+        readOnlyHint: false,
+      },
+    },
+    async ({ route, scope }) =>
+      runTool(async () => {
+        let targetRoute = route === undefined ? activeRoute : normalizePath(route);
+
+        if (scope !== undefined) {
+          const config = await loadScopes(
+            projectRoot,
+            configuredAppUrl === undefined ? {} : { fallbackUrl: configuredAppUrl },
+          );
+          const found = findScope(config, scope);
+
+          if (found === undefined) {
+            throw new Error(`Unknown scope ${scope}. Call fr_scopes to list available scopes.`);
+          }
+
+          targetRoute = found.routes[0] ?? null;
+        }
+
+        if (targetRoute === null) {
+          targetRoute = lastAudit?.pages[0]?.path ?? currentPath ?? "/";
+        }
+
+        return checkStates({
+          baseUrl: await appUrl(),
+          projectRoot,
+          route: targetRoute,
+        });
+      }),
+  );
+
+  server.registerTool(
+    "fr_open_board",
+    {
+      title: "Open the design board",
+      description:
+        "Start the local design board if it is not running, then return its address. The board stays on 127.0.0.1.",
+      inputSchema: {},
+      annotations: {
+        readOnlyHint: false,
+      },
+    },
+    async () =>
+      runTool(async () => {
+        const live = await readLiveBoardLock(projectRoot);
+
+        if (live !== null) {
+          return { ...live, started: false };
+        }
+
+        const board = await readBoardState(projectRoot);
+        const launch = boardLaunchCommand();
+        const args = [...launch.args];
+
+        if (board.scope.id !== "") {
+          args.push("--scope", board.scope.id);
+        }
+
+        if (configuredAppUrl !== undefined) {
+          args.push("--url", configuredAppUrl);
+        }
+
+        const child = spawn(launch.command, args, {
+          cwd: projectRoot,
+          detached: process.platform !== "win32",
+          env: process.env,
+          stdio: "ignore",
+        });
+        let spawnError: string | null = null;
+
+        child.once("error", (error) => {
+          spawnError = error.message;
+        });
+        child.unref();
+
+        const lock = await waitForBoardLock(options.boardStartTimeoutMs ?? 15_000);
+
+        if (lock === null) {
+          if (spawnError !== null) {
+            throw new Error(`Could not start the board. ${spawnError}`);
+          }
+
+          throw new Error(
+            "The board did not start. Run fitroom board in your project, then try again.",
+          );
+        }
+
+        return { ...lock, started: true };
+      }),
+  );
+
+  server.registerTool(
+    "fr_design_memory",
+    {
+      title: "Read the design memory",
+      description:
+        "Return the saved design memory from the latest approved handoff, or say that no design memory exists yet.",
+      inputSchema: {},
+      annotations: {
+        readOnlyHint: true,
+      },
+    },
+    async () =>
+      runTool(async () => {
+        const memory = await readDesignMemory(projectRoot);
+
+        if (memory === null) {
+          return {
+            exists: false,
+            message: "No design memory exists. Approve a design and run fr_handoff first.",
+          };
+        }
+
+        return {
+          exists: true,
+          files: [".fittingroom/DESIGN.md", ".fittingroom/design-memory.json"],
+          memory,
+        };
+      }),
+  );
+
+  server.registerTool(
+    "fr_board_status",
+    {
+      title: "Read the board status",
+      description: "Return the board state and any open requests from the board.",
+      inputSchema: {},
+      annotations: {
+        readOnlyHint: true,
+      },
+    },
+    async () =>
+      runTool(async () => {
+        const board = await readBoardState(projectRoot);
+        const requests = await readBoardRequests(projectRoot);
+
+        return {
+          board,
+          requests: openBoardRequests(requests),
+        };
+      }),
+  );
+
+  server.registerTool(
+    "fr_wait_for_user",
+    {
+      title: "Wait for the user",
+      description:
+        "Wait until the board has an open request or the user approves a direction. Returns a timeout result after 600 seconds by default.",
+      inputSchema: {
+        timeoutSeconds: z.number().int().min(1).max(3_600).optional(),
+      },
+      annotations: {
+        readOnlyHint: true,
+      },
+    },
+    async ({ timeoutSeconds }) =>
+      runTool(async () => {
+        return waitForBoardEvent(projectRoot, (timeoutSeconds ?? 600) * 1_000);
+      }),
+  );
+
+  server.registerTool(
+    "fr_complete_request",
+    {
+      title: "Complete a board request",
+      description: "Mark a board request as done.",
+      inputSchema: {
+        id: z.string().trim().min(1),
+      },
+      annotations: {
+        readOnlyHint: false,
+      },
+    },
+    async ({ id }) =>
+      runTool(async () => {
+        return completeBoardRequest(projectRoot, id);
+      }),
+  );
 
   server.registerTool(
     "fr_scopes",
@@ -666,6 +1276,7 @@ export function createFittingRoomServer(options: FittingRoomServerOptions = {}):
           path.resolve(projectRoot, ".fittingroom", "audits", resolved.selection.id);
         const errors: Array<AuditCheckError & { page: string }> = [];
         const findings: StoredFinding[] = [];
+        const designMemory = await readDesignMemory(projectRoot);
 
         for (const page of captured.pages) {
           const report = await runAutomatedChecks(page.url, {
@@ -685,6 +1296,22 @@ export function createFittingRoomServer(options: FittingRoomServerOptions = {}):
               page: page.path,
             })),
           );
+
+          if (designMemory !== null) {
+            const memoryFindings = await auditDesignMemory({
+              outputDir: path.join(auditRoot, routeDirectoryName(page.path), "design-memory"),
+              projectRoot,
+              url: page.url,
+            });
+
+            findings.push(
+              ...memoryFindings.map((finding) => ({
+                ...finding,
+                id: findingIdForPage(page.path, finding.id),
+                page: page.path,
+              })),
+            );
+          }
         }
 
         auditedFindings = findings;
@@ -704,6 +1331,7 @@ export function createFittingRoomServer(options: FittingRoomServerOptions = {}):
         };
 
         lastAudit = payload;
+        await syncAuditFindings(payload);
 
         return payload;
       }),
@@ -818,7 +1446,78 @@ export function createFittingRoomServer(options: FittingRoomServerOptions = {}):
           writingRules,
         }));
 
+        const auditSummary = lastAudit.summary;
+        const history = await readRegenerationHistory(projectRoot);
+        const existing = history.scopes[auditSummary.id];
+        const session: RegenerationSession = existing ?? {
+          scopeId: auditSummary.id,
+          scopeName: auditSummary.name,
+          surface,
+          pinnedSlots: [],
+          rounds: [],
+          seenDirections: [],
+          baselineScreenshots: page.screenshots,
+        };
+        const roundNumber = session.rounds.length + 1;
+        const regeneratedSlots: RegeneratedSlot[] = directionBySlot.map((slot) => {
+          const direction = slot.direction as { name?: string; slug?: string };
+
+          return {
+            slot: slot.slot as VariantSlotNumber,
+            role: slot.role,
+            directionSlug: slot.slot === 1 ? null : (direction.slug ?? null),
+            direction: slot.direction as RegeneratedSlot["direction"],
+            name: direction.name ?? "Refined",
+            rationale:
+              slot.slot === 1
+                ? "Keeps the current style while fixing audit findings."
+                : `${direction.name ?? "Direction"} fits the ${surface} surface.`,
+            ...(slot.slot === 1 ? { mode: "light" as const } : {}),
+            screenshotPaths:
+              slot.slot === 1 ? page.screenshots.map((screenshot) => screenshot.path) : [],
+          };
+        });
+
+        activeRoundSlots = regeneratedSlots.map((slot) => ({
+          name: slot.name,
+          role: slot.role,
+          slug: slot.directionSlug,
+          slot: slot.slot,
+        }));
+
+        session.scopeName = auditSummary.name;
+        session.surface = surface;
+        session.baselineScreenshots = page.screenshots;
+        session.rounds.push({
+          id: String(roundNumber),
+          createdAt: new Date().toISOString(),
+          mode: "light",
+          slots: regeneratedSlots,
+        });
+        session.seenDirections = [
+          ...new Set([
+            ...session.seenDirections,
+            ...regeneratedSlots.flatMap((slot) =>
+              slot.directionSlug === null ? [] : [slot.directionSlug],
+            ),
+          ]),
+        ];
+        history.scopes[auditSummary.id] = session;
+        await writeRegenerationHistory(projectRoot, history);
+        await ensureRound(projectRoot, roundNumber, auditSummary);
         activeRoute = normalizedRoute;
+        registeredSlots.clear();
+        await syncBoard((current) => ({
+          ...current,
+          page: normalizedRoute,
+          scope: { id: auditSummary.id, name: auditSummary.name },
+          surface,
+          round: roundNumber,
+          status: "directions_ready",
+          variants: [],
+          selected: null,
+          approved: null,
+        }));
 
         return {
           route: normalizedRoute,
@@ -851,7 +1550,7 @@ export function createFittingRoomServer(options: FittingRoomServerOptions = {}):
 
         const config = await loadScopes(
           projectRoot,
-          options.appUrl === undefined ? {} : { fallbackUrl: options.appUrl },
+          configuredAppUrl === undefined ? {} : { fallbackUrl: configuredAppUrl },
         );
         const scope = findScope(config, scopeId);
 
@@ -878,7 +1577,94 @@ export function createFittingRoomServer(options: FittingRoomServerOptions = {}):
           ...(slots === undefined ? {} : { slots }),
           ...(mode === undefined ? {} : { mode }),
         });
+        const roundNumber = result.session.rounds.length;
+
+        await ensureRound(projectRoot, roundNumber, scope);
+        registeredSlots.clear();
+        activeRoundSlots = result.round.slots.map((slot) => ({
+          name: slot.name,
+          role: slot.role,
+          slug: slot.directionSlug,
+          slot: slot.slot,
+        }));
         const previousRounds = result.session.rounds.slice(0, -1);
+        const boardPreviousRounds = previousRounds.map((previous) => ({
+          id: previous.id,
+          createdAt: previous.createdAt,
+          variants: previous.slots.map((slot) => ({
+            slot: slot.slot,
+            name: slot.name,
+            slug: slot.directionSlug ?? "refined",
+          })),
+        }));
+
+        const currentBoard = await syncBoard((board) => ({
+          ...board,
+          page: activeRoute ?? route,
+          scope: { id: scope.id, name: scope.name },
+          surface,
+          round: roundNumber,
+          status: "directions_ready",
+          selected: null,
+          approved: null,
+          previousRounds: boardPreviousRounds,
+          variants: result.round.slots.map((slot) => {
+            const slug = slot.directionSlug ?? "refined";
+            const previous = board.variants.find(
+              (variant) => variant.slot === slot.slot && variant.slug === slug,
+            );
+
+            return {
+              slug,
+              name: slot.name,
+              rationale: slot.rationale,
+              slot: slot.slot,
+              pinned: result.session.pinnedSlots.includes(slot.slot),
+              role: slot.role,
+              ...(slot.mode === undefined ? {} : { mode: slot.mode }),
+              ...(previous?.filePath === undefined ? {} : { filePath: previous.filePath }),
+              ...(previous?.previewPath === undefined ? {} : { previewPath: previous.previewPath }),
+              ...(previous?.screenshotPath === undefined
+                ? {}
+                : { screenshotPath: previous.screenshotPath }),
+            };
+          }),
+        }));
+
+        for (const variant of currentBoard.variants) {
+          if (variant.filePath === undefined || variant.role === undefined) {
+            continue;
+          }
+
+          try {
+            await access(path.resolve(projectRoot, variant.filePath));
+          } catch {
+            continue;
+          }
+
+          await saveRoundSnapshot(projectRoot, {
+            number: roundNumber,
+            scope: currentBoard.scope,
+            variant: {
+              editLogPath: path.join(projectRoot, ".fittingroom", "edits", `${variant.slug}.json`),
+              filePath: path.resolve(projectRoot, variant.filePath),
+              name: variant.name,
+              origPath: path.join(
+                projectRoot,
+                ".fittingroom",
+                "variants",
+                `${variant.slug}.orig.tsx`,
+              ),
+              rationale: variant.rationale,
+              role: variant.role,
+              ...(variant.screenshotPath === undefined
+                ? {}
+                : { screenshotPath: variant.screenshotPath }),
+              slug: variant.slug,
+              slot: variant.slot,
+            },
+          });
+        }
 
         return {
           scope: scope.id,
@@ -906,12 +1692,13 @@ export function createFittingRoomServer(options: FittingRoomServerOptions = {}):
           .regex(/^[a-z0-9]+(?:-[a-z0-9]+)*$/, "Use a lowercase hyphenated slug."),
         filePath: z.string().trim().min(1),
         rationale: z.string().trim().min(1),
+        slot: z.number().int().min(1).max(4).optional(),
       },
       annotations: {
         readOnlyHint: false,
       },
     },
-    async ({ slug, filePath, rationale }) =>
+    async ({ slug, filePath, rationale, slot: requestedSlot }) =>
       runTool(async () => {
         if (activeRoute === null) {
           throw new Error("Run fr_directions before registering a variant.");
@@ -946,6 +1733,10 @@ export function createFittingRoomServer(options: FittingRoomServerOptions = {}):
             typecheck,
           };
         }
+
+        await stampVariantFile(resolvedFile);
+        await saveVariantOriginal(resolvedFile, { projectRoot, slug });
+        await rm(path.join(projectRoot, ".fittingroom", "edits", `${slug}.json`), { force: true });
 
         const preview = await previewVariant(projectRoot, resolvedFile, slug);
 
@@ -989,6 +1780,78 @@ export function createFittingRoomServer(options: FittingRoomServerOptions = {}):
           });
         }
 
+        const inferredSlot =
+          requestedSlot ??
+          activeRoundSlots.find((slot) => slot.slug === slug)?.slot ??
+          activeRoundSlots.find((slot) => !registeredSlots.has(slot.slot))?.slot ??
+          1;
+        const slotNumber = inferredSlot;
+        const roundSlot = activeRoundSlots.find((slot) => slot.slot === slotNumber);
+        const scope =
+          lastAudit === null
+            ? undefined
+            : { id: lastAudit.summary.id, name: lastAudit.summary.name };
+        const directionName = roundSlot?.name ?? slug;
+        const relativeFile = path.relative(projectRoot, resolvedFile).split(path.sep).join("/");
+
+        if (accepted) {
+          registeredSlots.add(slotNumber);
+          const current = await syncBoard((board) => {
+            const previous = board.variants.find((variant) => variant.slot === slotNumber);
+            const variants = board.variants
+              .filter((variant) => variant.slot !== slotNumber)
+              .concat({
+                slug,
+                name: directionName,
+                rationale,
+                slot: slotNumber,
+                pinned: previous?.pinned ?? false,
+                ...(slotNumber === 1 ? { mode: "light" as const } : {}),
+                ...(roundSlot === undefined ? {} : { role: roundSlot.role }),
+                filePath: relativeFile,
+                previewPath: `.fittingroom/previews/${slug}/index.html`,
+                ...(preview.screenshotPath === null
+                  ? {}
+                  : {
+                      screenshotPath: path
+                        .relative(projectRoot, preview.screenshotPath)
+                        .split(path.sep)
+                        .join("/"),
+                    }),
+              })
+              .sort((first, second) => first.slot - second.slot);
+
+            return {
+              ...board,
+              ...(scope === undefined ? {} : { scope }),
+              round: Math.max(1, board.round),
+              status: "directions_ready",
+              variants,
+            };
+          });
+          const boardVariant = current.variants.find((variant) => variant.slot === slotNumber);
+
+          if (boardVariant !== undefined && boardVariant.role !== undefined) {
+            await saveRoundSnapshot(projectRoot, {
+              number: current.round,
+              scope: current.scope,
+              variant: {
+                editLogPath: path.join(projectRoot, ".fittingroom", "edits", `${slug}.json`),
+                filePath: resolvedFile,
+                name: directionName,
+                origPath: path.join(projectRoot, ".fittingroom", "variants", `${slug}.orig.tsx`),
+                rationale,
+                role: boardVariant.role,
+                ...(preview.screenshotPath === null
+                  ? {}
+                  : { screenshotPath: preview.screenshotPath }),
+                slug,
+                slot: slotNumber,
+              },
+            });
+          }
+        }
+
         return {
           accepted: newFailures.length === 0,
           errors: newFailures.length === 0 ? [] : ["The variant adds new WCAG AA failures."],
@@ -1030,10 +1893,49 @@ export function createFittingRoomServer(options: FittingRoomServerOptions = {}):
 
         try {
           edits = JSON.parse(
-            await readFile(path.join(projectRoot, ".fittingroom", "edits.json"), "utf8"),
+            await readFile(
+              path.join(projectRoot, ".fittingroom", "edits", `${variant.variantSlug}.json`),
+              "utf8",
+            ),
           ) as unknown;
-        } catch {}
+        } catch {
+          try {
+            edits = JSON.parse(
+              await readFile(path.join(projectRoot, ".fittingroom", "edits.json"), "utf8"),
+            ) as unknown;
+          } catch {}
+        }
 
+        const refreshed = await previewVariant(projectRoot, variant.filePath, variant.variantSlug);
+
+        if (refreshed.reference === null) {
+          const reason =
+            refreshed.renderErrors[0] ??
+            refreshed.errors[0] ??
+            "The current variant did not render.";
+
+          throw new Error(`Could not render variant ${variantSlug}. ${reason}`);
+        }
+
+        variant.reference = refreshed.reference;
+
+        const board = await readBoardState(projectRoot);
+        const approvedSlug = board.approved?.slug ?? variant.variantSlug;
+        const approvedVariant = board.variants.find((candidate) => candidate.slug === approvedSlug);
+        const structure = await readStructure(projectRoot);
+        const direction = getDirection(approvedSlug);
+        const variantSource = await readFile(variant.filePath, "utf8");
+        const designMemory = memoryFromDirection({
+          buttonId: elementIdForTag(variantSource, "button"),
+          direction,
+          directionName: approvedVariant?.name ?? direction?.name ?? "Refined",
+          directionSlug: approvedSlug,
+          inputId: elementIdForTag(variantSource, "input"),
+          reference: variant.reference,
+          structure,
+          tokens: variant.tokens,
+        });
+        const savedMemory = await saveDesignMemory(projectRoot, designMemory);
         const handoff = await writeHandoff({
           edits,
           findingsFixed: variant.findingsFixed,
@@ -1041,13 +1943,25 @@ export function createFittingRoomServer(options: FittingRoomServerOptions = {}):
           rationale: variant.rationale,
           reference: variant.reference,
           route: variant.route,
+          ...(structure === null ? {} : { structure }),
           tokens: variant.tokens,
           variantFile: variant.filePath,
           variantSlug: variant.variantSlug,
         });
 
+        await syncBoard((current) => ({
+          ...current,
+          approved: current.approved ?? {
+            slug: variant.variantSlug,
+            slot: current.variants.find((entry) => entry.slug === variant.variantSlug)?.slot ?? 1,
+            round: current.round,
+          },
+          status: "handoff_created",
+        }));
+
         return {
           brief: handoff.brief,
+          designMemoryFiles: savedMemory.files,
           folder: handoff.folder,
           handoffId: handoff.handoffId,
           route: variant.route,
@@ -1085,6 +1999,8 @@ export function createFittingRoomServer(options: FittingRoomServerOptions = {}):
           throw new Error(`Handoff ${handoffId} was not found.`);
         }
 
+        await syncBoard((current) => ({ ...current, status: "verifying" }));
+
         const report = await verifyImplementation({
           baseUrl: await appUrl(),
           handoffDir,
@@ -1096,6 +2012,11 @@ export function createFittingRoomServer(options: FittingRoomServerOptions = {}):
           ),
           route: normalizePath(route),
         });
+
+        await syncBoard((current) => ({
+          ...current,
+          status: report.passed ? "verified" : "verify_failed",
+        }));
 
         return {
           ...report,

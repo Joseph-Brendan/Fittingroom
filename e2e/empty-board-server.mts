@@ -10,15 +10,20 @@ async function main(): Promise<void> {
   const { url, token, close } = await startBoardServer({
     port: 4174,
     state: {
+      version: 2,
       scope: { id: "marketing", name: "Marketing" },
       scopes: [
         { id: "marketing", name: "Marketing" },
         { id: "auth", name: "Authentication" },
         { id: "dashboard", name: "Dashboard" },
       ],
+      round: 0,
+      status: "empty",
       variants: [],
       findings: [],
       previousRounds: [],
+      selected: null,
+      approved: null,
     },
   });
 

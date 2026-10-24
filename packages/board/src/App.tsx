@@ -1,6 +1,14 @@
-import { type FormEvent, useEffect, useRef, useState } from "react";
+import { type FormEvent, useCallback, useEffect, useRef, useState } from "react";
 import { type EditOperation, Inspector, type SelectedPreviewElement } from "./Inspector";
-import { type BoardFinding, type BoardState, type ViewportWidth, viewportWidths } from "./types";
+import {
+  type BoardFinding,
+  type BoardRound,
+  type BoardState,
+  type StructureAction,
+  type StructureFile,
+  type ViewportWidth,
+  viewportWidths,
+} from "./types";
 
 export interface AppProps {
   initialState?: BoardState;
@@ -32,6 +40,29 @@ function designSystemBanner(state: BoardState): string {
 function findingLabel(count: number): string {
   return `${count} ${count === 1 ? "finding" : "findings"}`;
 }
+function boardStatusMessage(state: BoardState): string {
+  switch (state.status) {
+    case "generating":
+      return `Waiting for your agent. Ask your agent: Generate 4 design directions for ${state.scope.name}.`;
+    case "approved": {
+      const name =
+        state.variants.find((variant) => variant.slug === state.approved?.slug)?.name ??
+        state.approved?.slug;
+
+      return name === undefined ? "Direction approved." : `Approved: ${name}.`;
+    }
+    case "handoff_created":
+      return "Handoff created. Ask your agent to build the approved design.";
+    case "verifying":
+      return "Checking the build against the approved design.";
+    case "verified":
+      return "The build matches the approved design.";
+    case "verify_failed":
+      return "The build does not match yet. Ask your agent to read the verify report.";
+    default:
+      return "";
+  }
+}
 
 function groupFindings(findings: BoardFinding[]): Array<[number, BoardFinding[]]> {
   const grouped = new Map<number, BoardFinding[]>();
@@ -56,11 +87,53 @@ export function App({ initialState, token: tokenProp }: AppProps) {
   const [boardError, setBoardError] = useState("");
   const [selectedScopeId, setSelectedScopeId] = useState("");
   const [emptyMessage, setEmptyMessage] = useState("");
+  const [chosen, setChosen] = useState<{ slug: string; slot: number } | null>(null);
+  const [chosenSnapshot, setChosenSnapshot] = useState<{
+    label: string;
+    round: number;
+    snapshotId: string;
+  } | null>(null);
+  const [rounds, setRounds] = useState<BoardRound[]>([]);
+  const [structure, setStructure] = useState<StructureFile | null>(null);
+  const [groupSelection, setGroupSelection] = useState<string[]>([]);
   const [selected, setSelected] = useState<SelectedPreviewElement | null>(null);
   const [activeSlug, setActiveSlug] = useState<string | null>(null);
   const [previewVersion, setPreviewVersion] = useState(0);
   const socketRef = useRef<WebSocket | null>(null);
   const token = tokenProp ?? readToken();
+
+  const loadRounds = useCallback(async (): Promise<void> => {
+    if (token === "") {
+      return;
+    }
+
+    try {
+      const response = await fetch(`/api/rounds?token=${encodeURIComponent(token)}`);
+
+      if (response.ok) {
+        setRounds((await response.json()) as BoardRound[]);
+      }
+    } catch {}
+  }, [token]);
+
+  const loadStructure = useCallback(async (): Promise<void> => {
+    if (token === "") {
+      return;
+    }
+
+    try {
+      const response = await fetch(`/api/structure?token=${encodeURIComponent(token)}`);
+
+      if (response.ok) {
+        setStructure((await response.json()) as StructureFile | null);
+      }
+    } catch {}
+  }, [token]);
+
+  useEffect(() => {
+    void loadRounds();
+    void loadStructure();
+  }, [loadRounds, loadStructure]);
 
   useEffect(() => {
     if (initialState !== undefined) {
@@ -116,9 +189,22 @@ export function App({ initialState, token: tokenProp }: AppProps) {
     });
     socket.addEventListener("message", (event) => {
       try {
-        const message = JSON.parse(String(event.data)) as { type?: string; message?: string };
+        const message = JSON.parse(String(event.data)) as {
+          type?: string;
+          message?: string;
+          requests?: Array<{ completedAt?: string }>;
+          state?: BoardState;
+        };
 
-        if (message.type === "direction-request-ack") {
+        if (message.type === "board-update" && message.state !== undefined) {
+          setState(message.state);
+          void loadRounds();
+          void loadStructure();
+        } else if (message.type === "requests-update") {
+          if ((message.requests ?? []).some((request) => request.completedAt === undefined)) {
+            setRequestStatus("Waiting for your agent.");
+          }
+        } else if (message.type === "direction-request-ack") {
           setRequestStatus("Request sent. The agent will pick a new direction.");
         } else if (message.type === "error") {
           setRequestStatus(message.message ?? "Could not send the request.");
@@ -132,10 +218,10 @@ export function App({ initialState, token: tokenProp }: AppProps) {
       socketRef.current = null;
       socket.close();
     };
-  }, [token]);
+  }, [token, loadRounds, loadStructure]);
 
   async function updateBoard(
-    pathname: "/api/regenerate" | "/api/pin",
+    pathname: "/api/regenerate" | "/api/pin" | "/api/request" | "/api/approve",
     body: Record<string, unknown>,
   ): Promise<void> {
     setBoardBusy(true);
@@ -153,6 +239,8 @@ export function App({ initialState, token: tokenProp }: AppProps) {
       }
 
       setState((await response.json()) as BoardState);
+      void loadRounds();
+      void loadStructure();
     } catch (updateError) {
       setBoardError(
         updateError instanceof Error ? updateError.message : "Could not update the board.",
@@ -169,20 +257,38 @@ export function App({ initialState, token: tokenProp }: AppProps) {
     });
   }
 
+  function requestDirections(scopeName: string): void {
+    setEmptyMessage(`Ask your agent: Generate 4 design directions for ${scopeName}.`);
+    void updateBoard("/api/request", { type: "generate" });
+  }
+
+  function approve(): void {
+    if (chosen === null) {
+      return;
+    }
+
+    void updateBoard("/api/approve", chosen);
+  }
+
   function togglePin(slot: number, pinned: boolean): void {
     void updateBoard("/api/pin", { slot, pinned });
   }
+  async function restoreSnapshot(): Promise<void> {
+    if (chosenSnapshot === null) {
+      return;
+    }
 
-  async function applyOperation(slug: string, operation: EditOperation): Promise<void> {
     setBoardBusy(true);
     setBoardError("");
-    setActiveSlug(slug);
 
     try {
-      const response = await fetch(`/api/edit?token=${encodeURIComponent(token)}`, {
+      const response = await fetch(`/api/restore?token=${encodeURIComponent(token)}`, {
         method: "POST",
         headers: { "content-type": "application/json" },
-        body: JSON.stringify({ slug, operation }),
+        body: JSON.stringify({
+          round: chosenSnapshot.round,
+          snapshotId: chosenSnapshot.snapshotId,
+        }),
       });
 
       if (!response.ok) {
@@ -190,17 +296,87 @@ export function App({ initialState, token: tokenProp }: AppProps) {
       }
 
       setState((await response.json()) as BoardState);
+      setChosenSnapshot(null);
       setPreviewVersion((version) => version + 1);
+      await loadRounds();
+      await loadStructure();
     } catch (updateError) {
       setBoardError(
-        updateError instanceof Error ? updateError.message : "Could not apply the edit.",
+        updateError instanceof Error ? updateError.message : "Could not restore the variant.",
       );
     } finally {
       setBoardBusy(false);
     }
   }
 
-  async function undo(): Promise<void> {
+  async function applyStructure(action: StructureAction): Promise<void> {
+    const slug = chosen?.slug ?? activeSlug ?? state?.variants[0]?.slug;
+
+    if (slug === undefined) {
+      return;
+    }
+
+    setBoardBusy(true);
+    setBoardError("");
+
+    try {
+      const response = await fetch(`/api/structure-action?token=${encodeURIComponent(token)}`, {
+        method: "POST",
+        headers: { "content-type": "application/json" },
+        body: JSON.stringify({ action, slug }),
+      });
+
+      if (!response.ok) {
+        throw new Error(await response.text());
+      }
+
+      setState((await response.json()) as BoardState);
+      setGroupSelection([]);
+      setPreviewVersion((version) => version + 1);
+      await loadStructure();
+      await loadRounds();
+    } catch (updateError) {
+      setBoardError(
+        updateError instanceof Error ? updateError.message : "Could not update the structure.",
+      );
+    } finally {
+      setBoardBusy(false);
+    }
+  }
+
+  const applyOperation = useCallback(
+    async (slug: string, operation: EditOperation): Promise<void> => {
+      setBoardBusy(true);
+      setBoardError("");
+      setActiveSlug(slug);
+
+      try {
+        const response = await fetch(`/api/edit?token=${encodeURIComponent(token)}`, {
+          method: "POST",
+          headers: { "content-type": "application/json" },
+          body: JSON.stringify({ slug, operation }),
+        });
+
+        if (!response.ok) {
+          throw new Error(await response.text());
+        }
+
+        setState((await response.json()) as BoardState);
+        setPreviewVersion((version) => version + 1);
+        void loadRounds();
+        void loadStructure();
+      } catch (updateError) {
+        setBoardError(
+          updateError instanceof Error ? updateError.message : "Could not apply the edit.",
+        );
+      } finally {
+        setBoardBusy(false);
+      }
+    },
+    [token, loadRounds, loadStructure],
+  );
+
+  const undo = useCallback(async (): Promise<void> => {
     if (activeSlug === null) {
       return;
     }
@@ -221,12 +397,87 @@ export function App({ initialState, token: tokenProp }: AppProps) {
 
       setState((await response.json()) as BoardState);
       setPreviewVersion((version) => version + 1);
+      void loadRounds();
+      void loadStructure();
     } catch (updateError) {
       setBoardError(updateError instanceof Error ? updateError.message : "Could not undo.");
     } finally {
       setBoardBusy(false);
     }
-  }
+  }, [activeSlug, token, loadRounds, loadStructure]);
+
+  const redo = useCallback(async (): Promise<void> => {
+    if (activeSlug === null) {
+      return;
+    }
+
+    setBoardBusy(true);
+    setBoardError("");
+
+    try {
+      const response = await fetch(`/api/redo?token=${encodeURIComponent(token)}`, {
+        method: "POST",
+        headers: { "content-type": "application/json" },
+        body: JSON.stringify({ slug: activeSlug }),
+      });
+
+      if (!response.ok) {
+        throw new Error(await response.text());
+      }
+
+      setState((await response.json()) as BoardState);
+      setPreviewVersion((version) => version + 1);
+      void loadRounds();
+      void loadStructure();
+    } catch (updateError) {
+      setBoardError(updateError instanceof Error ? updateError.message : "Could not redo.");
+    } finally {
+      setBoardBusy(false);
+    }
+  }, [activeSlug, token, loadRounds, loadStructure]);
+
+  useEffect(() => {
+    function onKeyDown(event: KeyboardEvent): void {
+      const target = event.target;
+
+      if (
+        target instanceof HTMLInputElement ||
+        target instanceof HTMLTextAreaElement ||
+        target instanceof HTMLSelectElement ||
+        (target instanceof HTMLElement && target.isContentEditable)
+      ) {
+        return;
+      }
+
+      const modifier = event.metaKey || event.ctrlKey;
+
+      if (modifier && event.key.toLowerCase() === "z") {
+        event.preventDefault();
+
+        if (event.shiftKey) {
+          void redo();
+        } else {
+          void undo();
+        }
+
+        return;
+      }
+
+      if (event.key === "Delete" && selected !== null) {
+        event.preventDefault();
+        void applyOperation(selected.slug, { op: "delete", id: selected.id });
+        return;
+      }
+
+      if (event.key === "Escape") {
+        setSelected(null);
+      }
+    }
+
+    window.addEventListener("keydown", onKeyDown);
+
+    return () => window.removeEventListener("keydown", onKeyDown);
+  }, [selected, applyOperation, undo, redo]);
 
   useEffect(() => {
     function onMessage(event: MessageEvent): void {
@@ -241,7 +492,31 @@ export function App({ initialState, token: tokenProp }: AppProps) {
         label?: unknown;
         parentId?: unknown;
         siblings?: unknown;
+        key?: unknown;
+        metaKey?: unknown;
+        ctrlKey?: unknown;
+        shiftKey?: unknown;
       };
+
+      if (
+        data.type === "fittingroom:key" &&
+        typeof data.key === "string" &&
+        (data.key === "Escape" || data.key === "Delete" || data.key.toLowerCase() === "z") &&
+        typeof data.metaKey === "boolean" &&
+        typeof data.ctrlKey === "boolean" &&
+        typeof data.shiftKey === "boolean"
+      ) {
+        window.dispatchEvent(
+          new KeyboardEvent("keydown", {
+            bubbles: true,
+            ctrlKey: data.ctrlKey,
+            key: data.key,
+            metaKey: data.metaKey,
+            shiftKey: data.shiftKey,
+          }),
+        );
+        return;
+      }
 
       if (
         data.type !== "fittingroom:select" ||
@@ -364,21 +639,14 @@ export function App({ initialState, token: tokenProp }: AppProps) {
             <p className="empty-title">No directions yet.</p>
             <p>Run an audit and generate directions, or click Generate directions.</p>
             <button
-              onClick={() => {
-                setEmptyMessage(
-                  `Use fitting-room to generate 4 directions for ${selectedScope.name} and open the board.`,
-                );
-              }}
+              disabled={boardBusy}
+              onClick={() => requestDirections(selectedScope.name)}
               type="button"
             >
               Generate directions
             </button>
-            {emptyMessage === "" ? null : (
-              <>
-                <p role="status">This board cannot generate directions on its own.</p>
-                <p role="status">{emptyMessage}</p>
-              </>
-            )}
+            {state.status === "generating" ? <p role="status">Waiting for your agent.</p> : null}
+            {emptyMessage === "" ? null : <p role="status">{emptyMessage}</p>}
           </section>
         </main>
       </div>
@@ -422,6 +690,22 @@ export function App({ initialState, token: tokenProp }: AppProps) {
           >
             Undo
           </button>
+          <button
+            className="redo-button"
+            disabled={boardBusy || activeSlug === null}
+            onClick={() => void redo()}
+            type="button"
+          >
+            Redo
+          </button>
+          <button
+            className="approve-button"
+            disabled={boardBusy || chosen === null}
+            onClick={approve}
+            type="button"
+          >
+            Approve selected direction
+          </button>
           <fieldset className="viewport-switch" aria-label="Preview viewport">
             {viewportWidths.map((width) => (
               <button
@@ -445,6 +729,12 @@ export function App({ initialState, token: tokenProp }: AppProps) {
         {designSystemBanner(state)}
       </div>
 
+      {boardStatusMessage(state) === "" ? null : (
+        <p className="board-status" role="status">
+          {boardStatusMessage(state)}
+        </p>
+      )}
+
       <main className="comparison">
         <div className="variant-grid">
           {state.variants.map((variant, index) => {
@@ -453,7 +743,11 @@ export function App({ initialState, token: tokenProp }: AppProps) {
             ).length;
 
             return (
-              <article className="variant-card" key={variant.slot}>
+              <article
+                className="variant-card"
+                data-chosen={chosen?.slot === variant.slot}
+                key={variant.slot}
+              >
                 <div className="variant-copy">
                   <div className="variant-heading">
                     <p className="slot-label">Slot {variant.slot || index + 1}</p>
@@ -463,6 +757,16 @@ export function App({ initialState, token: tokenProp }: AppProps) {
                   <p className="rationale">{variant.rationale}</p>
                 </div>
                 <div className="card-actions">
+                  <button
+                    aria-label={`Choose ${variant.name}`}
+                    aria-pressed={chosen?.slot === variant.slot && chosen.slug === variant.slug}
+                    className="choose-button"
+                    disabled={boardBusy}
+                    onClick={() => setChosen({ slug: variant.slug, slot: variant.slot })}
+                    type="button"
+                  >
+                    Choose
+                  </button>
                   <button
                     aria-label={`Regenerate ${variant.name}`}
                     className="icon-button"
@@ -498,7 +802,201 @@ export function App({ initialState, token: tokenProp }: AppProps) {
           })}
         </div>
 
-        {state.previousRounds.length > 0 ? (
+        {structure === null || structure.blocks.length === 0 ? null : (
+          <section className="structure-panel" aria-label="Information design">
+            <div className="structure-heading">
+              <div>
+                <h2>Information design</h2>
+                <p className="structure-line">
+                  Editing {chosen?.slug ?? activeSlug ?? state.variants[0]?.slug ?? "this variant"}
+                </p>
+              </div>
+              <label>
+                Density
+                <select
+                  aria-label="Density"
+                  onChange={(event) =>
+                    void applyStructure({
+                      action: "density",
+                      density: event.target.value as "sparse" | "balanced" | "dense",
+                    })
+                  }
+                  value={structure.density}
+                >
+                  <option value="sparse">Sparse</option>
+                  <option value="balanced">Balanced</option>
+                  <option value="dense">Dense</option>
+                </select>
+              </label>
+            </div>
+            <ul className="structure-block-list">
+              {structure.blocks.map((block) => (
+                <li data-block-id={block.id} data-visible={block.visible} key={block.id}>
+                  <div className="structure-block-copy">
+                    <strong>{block.label}</strong>
+                    <span>
+                      {block.kind}
+                      {block.visible ? "" : " · hidden"}
+                    </span>
+                  </div>
+                  <div className="structure-block-actions">
+                    <button
+                      aria-label={`Move ${block.label} up`}
+                      disabled={boardBusy || !block.visible || block.order === 1}
+                      onClick={() =>
+                        void applyStructure({
+                          action: "reorder",
+                          id: block.id,
+                          index: block.order - 2,
+                        })
+                      }
+                      type="button"
+                    >
+                      Up
+                    </button>
+                    <button
+                      aria-label={`Move ${block.label} down`}
+                      disabled={
+                        boardBusy || !block.visible || block.order === structure.blocks.length
+                      }
+                      onClick={() =>
+                        void applyStructure({
+                          action: "reorder",
+                          id: block.id,
+                          index: block.order,
+                        })
+                      }
+                      type="button"
+                    >
+                      Down
+                    </button>
+                    <button
+                      aria-label={`Hide ${block.label}`}
+                      disabled={boardBusy || !block.visible}
+                      onClick={() => void applyStructure({ action: "hide", id: block.id })}
+                      type="button"
+                    >
+                      Hide
+                    </button>
+                    <button
+                      aria-label={`Promote ${block.label}`}
+                      disabled={boardBusy || !block.visible}
+                      onClick={() => void applyStructure({ action: "promote", id: block.id })}
+                      type="button"
+                    >
+                      Promote
+                    </button>
+                    <label className="structure-check">
+                      <input
+                        aria-label={`Select ${block.label} for grouping`}
+                        checked={groupSelection.includes(block.id)}
+                        disabled={!block.visible}
+                        onChange={() =>
+                          setGroupSelection((current) =>
+                            current.includes(block.id)
+                              ? current.filter((id) => id !== block.id)
+                              : [...current, block.id],
+                          )
+                        }
+                        type="checkbox"
+                      />
+                      Group
+                    </label>
+                    <select
+                      aria-label={`Collapse ${block.label}`}
+                      disabled={boardBusy || !block.visible}
+                      onChange={(event) => {
+                        const mode = event.target.value;
+
+                        if (mode === "tab" || mode === "accordion") {
+                          void applyStructure({ action: "collapse", id: block.id, mode });
+                        }
+                      }}
+                      value={block.collapse}
+                    >
+                      <option value="none">Open</option>
+                      <option value="tab">Tab</option>
+                      <option value="accordion">Accordion</option>
+                    </select>
+                  </div>
+                </li>
+              ))}
+            </ul>
+            <button
+              disabled={boardBusy || groupSelection.length !== 2}
+              onClick={() => {
+                const [first, second] = groupSelection;
+
+                if (first !== undefined && second !== undefined) {
+                  void applyStructure({ action: "group", firstId: first, secondId: second });
+                }
+              }}
+              type="button"
+            >
+              Group selected
+            </button>
+          </section>
+        )}
+
+        {rounds.length > 0 ? (
+          <section className="previous-strip" aria-label="Previous rounds">
+            <h2>Previous</h2>
+            <div className="previous-rounds">
+              {rounds.map((round) => (
+                <article className="previous-round" data-round={round.number} key={round.id}>
+                  <p className="slot-label">
+                    Round {round.number}
+                    {round.number === state.round ? " (current)" : ""}
+                  </p>
+                  <div className="round-snapshots">
+                    {round.variants.map((snapshot) => (
+                      <button
+                        aria-label={`Restore ${snapshot.name} from round ${round.number}`}
+                        aria-pressed={chosenSnapshot?.snapshotId === snapshot.id}
+                        className="round-snapshot"
+                        data-snapshot-id={snapshot.id}
+                        key={snapshot.id}
+                        onClick={() =>
+                          setChosenSnapshot({
+                            label: `${snapshot.name} from round ${round.number}`,
+                            round: round.number,
+                            snapshotId: snapshot.id,
+                          })
+                        }
+                        type="button"
+                      >
+                        {snapshot.screenshot === null ? (
+                          <span className="snapshot-placeholder">Slot {snapshot.slot}</span>
+                        ) : (
+                          <img
+                            alt=""
+                            src={`/round-assets/${round.number}/${snapshot.screenshot}?token=${encodeURIComponent(token)}`}
+                          />
+                        )}
+                        <span>{snapshot.name}</span>
+                        <span className="snapshot-state">
+                          {snapshot.current ? "Current" : "Replaced"}
+                        </span>
+                      </button>
+                    ))}
+                  </div>
+                </article>
+              ))}
+            </div>
+            <div className="restore-controls">
+              <button
+                disabled={boardBusy || chosenSnapshot === null}
+                onClick={() => void restoreSnapshot()}
+                type="button"
+              >
+                Restore
+              </button>
+              {chosenSnapshot === null ? null : (
+                <p role="status">Restoring {chosenSnapshot.label}.</p>
+              )}
+            </div>
+          </section>
+        ) : state.previousRounds.length > 0 ? (
           <section className="previous-strip" aria-label="Previous rounds">
             <h2>Previous</h2>
             <div className="previous-rounds">
@@ -538,6 +1036,7 @@ export function App({ initialState, token: tokenProp }: AppProps) {
       {selected === null ? null : (
         <Inspector
           designSystem={state.designSystem}
+          key={selected.id}
           onEdit={(slug, operation) => {
             void applyOperation(slug, operation);
           }}

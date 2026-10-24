@@ -1,0 +1,23 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Projects</title>
+    <link rel="stylesheet" href="/styles.css" />
+  </head>
+  <body>
+    <main>
+      <h1>Projects</h1>
+      <div id="projects">Loading projects.</div>
+    </main>
+    <script>
+      fetch("/api/projects")
+        .then((response) => response.json())
+        .then((projects) => {
+          const root = document.getElementById("projects");
+          root.textContent = projects.length === 0 ? "Nothing." : `${projects.length} projects`;
+        });
+    </script>
+  </body>
+</html>

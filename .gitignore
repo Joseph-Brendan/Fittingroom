@@ -13,3 +13,5 @@ blob-report/
 .tmp-*/
 e2e/.board-session.json
 e2e/.empty-board-session.json
+
+e2e/.bridge-session.json

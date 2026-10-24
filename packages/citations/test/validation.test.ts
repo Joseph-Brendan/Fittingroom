@@ -32,6 +32,11 @@ describe("citation registry entries", () => {
       expect(["A", "AA", "AAA", "N/A"]).toContain(citation.level);
       expect(approvedSources).toContain(citation.source);
 
+      if (citation.source === "Project design memory") {
+        expect(citation.url).toBe(".fittingroom/DESIGN.md");
+        continue;
+      }
+
       const url = new URL(citation.url);
 
       expect(url.protocol).toBe("https:");

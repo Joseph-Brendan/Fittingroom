@@ -154,6 +154,7 @@ export function Inspector({ designSystem, onEdit, selected }: InspectorProps) {
   const [insertComponent, setInsertComponent] = useState(
     designSystem?.components[0]?.toLowerCase() ?? basicComponents[0],
   );
+  const [text, setText] = useState(selected.label);
   const sensors = useSensors(
     useSensor(PointerSensor),
     useSensor(KeyboardSensor, { coordinateGetter: sortableKeyboardCoordinates }),
@@ -200,6 +201,78 @@ export function Inspector({ designSystem, onEdit, selected }: InspectorProps) {
       </div>
 
       <div className="inspector-fields">
+        <div className="inspector-field">
+          <label>
+            Text
+            <input
+              aria-label="Text content"
+              onChange={(event) => setText(event.target.value)}
+              type="text"
+              value={text}
+            />
+          </label>
+          <button
+            className="apply-text"
+            onClick={() =>
+              onEdit(selected.slug, { op: "set-text", id: selected.id, text: text.trim() })
+            }
+            type="button"
+          >
+            Apply text
+          </button>
+        </div>
+        <div className="inspector-field">
+          <label>
+            Font weight
+            <select
+              aria-label="Font weight"
+              defaultValue=""
+              onChange={(event) => {
+                if (event.target.value === "") {
+                  return;
+                }
+
+                onEdit(selected.slug, {
+                  op: "set-token",
+                  id: selected.id,
+                  property: "fontWeight",
+                  token: event.target.value,
+                });
+              }}
+            >
+              <option value="">Choose a weight</option>
+              <option value="400">400 Regular</option>
+              <option value="500">500 Medium</option>
+              <option value="600">600 Semibold</option>
+              <option value="700">700 Bold</option>
+            </select>
+          </label>
+        </div>
+        <div className="inspector-field">
+          <label>
+            Visibility
+            <select
+              aria-label="Visibility"
+              defaultValue=""
+              onChange={(event) => {
+                if (event.target.value === "") {
+                  return;
+                }
+
+                onEdit(selected.slug, {
+                  op: "set-token",
+                  id: selected.id,
+                  property: "visibility",
+                  token: event.target.value,
+                });
+              }}
+            >
+              <option value="">Choose visibility</option>
+              <option value="visible">Visible</option>
+              <option value="hidden">Hidden</option>
+            </select>
+          </label>
+        </div>
         <TokenField
           category="color"
           designSystem={designSystem}

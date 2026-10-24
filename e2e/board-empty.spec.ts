@@ -40,13 +40,10 @@ test("shows the page group picker, banner, empty state and agent sentence", asyn
   await page.getByLabel("Page group").selectOption("auth");
   await page.getByRole("button", { name: "Generate directions" }).click();
 
+  await expect(page.getByText("Waiting for your agent.", { exact: true })).toBeVisible();
   await expect(
-    page.getByText("This board cannot generate directions on its own.", { exact: true }),
-  ).toBeVisible();
-  await expect(
-    page.getByText(
-      "Use fitting-room to generate 4 directions for Authentication and open the board.",
-      { exact: true },
-    ),
+    page.getByText("Ask your agent: Generate 4 design directions for Authentication.", {
+      exact: true,
+    }),
   ).toBeVisible();
 });

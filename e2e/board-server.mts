@@ -268,11 +268,16 @@ function applyPreviewOperation(slug: string, operation: Record<string, unknown>)
 }
 
 const state: BoardState = {
+  version: 2,
   scope: { id: "auth", name: "Authentication" },
   surface: "app",
   designSystem,
+  round: 1,
+  status: "directions_ready",
   variants,
   previousRounds: [],
+  selected: null,
+  approved: null,
   findings: [
     {
       id: "F-1",

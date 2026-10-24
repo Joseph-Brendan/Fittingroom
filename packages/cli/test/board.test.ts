@@ -56,6 +56,38 @@ async function writeConnectedProject(): Promise<string> {
 }
 
 describe("fitroom board", () => {
+  it("keeps the connected design system after a board request", async () => {
+    const projectRoot = await writeConnectedProject();
+    const previousDirectory = process.cwd();
+    let server: Awaited<ReturnType<typeof runBoardCommand>> | undefined;
+
+    process.chdir(projectRoot);
+
+    try {
+      server = await runBoardCommand({ port: 0 });
+
+      const response = await fetch(
+        `http://127.0.0.1:${server.port}/api/request?token=${server.token}`,
+        {
+          body: JSON.stringify({ type: "generate" }),
+          headers: { "content-type": "application/json" },
+          method: "POST",
+        },
+      );
+      const state = (await response.json()) as {
+        designSystem?: { status?: string };
+        status: string;
+      };
+
+      expect(response.ok).toBe(true);
+      expect(state.status).toBe("generating");
+      expect(state.designSystem).toMatchObject({ status: "connected" });
+    } finally {
+      await server?.close();
+      process.chdir(previousDirectory);
+    }
+  }, 120_000);
+
   it("shows a connected design system for a connected app", async () => {
     const projectRoot = await writeConnectedProject();
     const previousDirectory = process.cwd();

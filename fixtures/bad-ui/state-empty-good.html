@@ -1,0 +1,28 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Projects</title>
+    <link rel="stylesheet" href="/styles.css" />
+  </head>
+  <body>
+    <main>
+      <h1>Projects</h1>
+      <div id="projects">Loading projects.</div>
+    </main>
+    <script>
+      fetch("/api/projects")
+        .then((response) => response.json())
+        .then((projects) => {
+          const root = document.getElementById("projects");
+          if (projects.length === 0) {
+            root.innerHTML =
+              '<p>No projects yet. Create your first project to get started.</p><a href="/new">Create project</a>';
+            return;
+          }
+          root.textContent = `${projects.length} projects`;
+        });
+    </script>
+  </body>
+</html>

@@ -1,4 +1,5 @@
 import { randomBytes } from "node:crypto";
+import { type FSWatcher, watch } from "node:fs";
 import { access, readFile } from "node:fs/promises";
 import {
   createServer as createHttpServer,
@@ -7,32 +8,33 @@ import {
 } from "node:http";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
-import { type WebSocket, WebSocketServer } from "ws";
+import {
+  appendBoardRequest,
+  type BoardApproval,
+  type BoardFinding,
+  type BoardRequest,
+  type BoardState,
+  type BoardStatus,
+  type BoardVariant,
+  type RoundRecord,
+  readBoardRequests,
+  readBoardState,
+  readLiveBoardLock,
+  removeBoardLock,
+  type StructureAction,
+  type StructureFile,
+  updateBoardState,
+  writeBoardLock,
+  writeBoardState,
+} from "@fittingroom/core";
+import { WebSocket, WebSocketServer } from "ws";
 
-export interface BoardFinding {
-  id: string;
-  title: string;
-  citation: string;
-  citationUrl: string;
-  severity: number;
-  confidence: "measured" | "judged";
-  variantSlug: string;
-  fix: string;
-}
-
-export interface BoardVariant {
-  slug: string;
-  name: string;
-  rationale: string;
-  slot: number;
-  pinned: boolean;
-  mode?: "light" | "deep";
-}
+export type { BoardApproval, BoardFinding, BoardRequest, BoardState, BoardStatus, BoardVariant };
 
 export interface BoardRoundSummary {
   id: string;
   createdAt: string;
-  variants: Array<{ slot: number; name: string }>;
+  variants: Array<{ slot: number; name: string; slug?: string }>;
 }
 
 export interface BoardDesignSystem {
@@ -47,19 +49,6 @@ export interface BoardDesignSystem {
     shadow: Record<string, string>;
     space: Record<string, string>;
   };
-}
-
-export interface BoardState {
-  scope: {
-    id: string;
-    name: string;
-  };
-  scopes?: Array<{ id: string; name: string }>;
-  surface?: "marketing" | "app" | "dashboard";
-  designSystem?: BoardDesignSystem;
-  variants: BoardVariant[];
-  findings: BoardFinding[];
-  previousRounds: BoardRoundSummary[];
 }
 
 export interface BoardEditOperation {
@@ -79,6 +68,11 @@ export interface BoardEditOutput {
 }
 
 export interface BoardUndoInput {
+  slug: string;
+  state: BoardState;
+}
+
+export interface BoardRedoInput {
   slug: string;
   state: BoardState;
 }
@@ -103,14 +97,28 @@ export interface DirectionRequest {
 
 export interface BoardServerOptions {
   edit?: (input: BoardEditInput) => BoardEditOutput | Promise<BoardEditOutput>;
-  undo?: (input: BoardUndoInput) => BoardEditOutput | Promise<BoardEditOutput>;
+  onDirectionRequest?: (request: DirectionRequest) => void;
   pin?: (input: BoardPinInput) => BoardState | Promise<BoardState>;
   port?: number;
+  redo?: (input: BoardRedoInput) => BoardEditOutput | Promise<BoardEditOutput>;
   previews?: Record<string, string>;
+  projectRoot?: string;
   regenerate?: (input: BoardRegenerateInput) => BoardState | Promise<BoardState>;
-  state: BoardState;
+  restore?: (input: {
+    round: number;
+    snapshotId: string;
+    state: BoardState;
+  }) => BoardState | Promise<BoardState>;
+  rounds?: () => RoundRecord[] | Promise<RoundRecord[]>;
+  state?: BoardState;
+  structure?: () => StructureFile | null | Promise<StructureFile | null>;
+  structureAction?: (input: {
+    action: StructureAction;
+    slug: string;
+    state: BoardState;
+  }) => BoardState | Promise<BoardState>;
   token?: string;
-  onDirectionRequest?: (request: DirectionRequest) => void;
+  undo?: (input: BoardUndoInput) => BoardEditOutput | Promise<BoardEditOutput>;
 }
 
 export interface RunningBoardServer {
@@ -219,6 +227,23 @@ async function serveBoardFile(
 
 function withPreviewBridge(html: string, slug: string): string {
   const script = `<script>
+    document.addEventListener("keydown", (event) => {
+      if (
+        event.key === "Escape" ||
+        event.key === "Delete" ||
+        ((event.metaKey || event.ctrlKey) && event.key.toLowerCase() === "z")
+      ) {
+        event.preventDefault();
+        window.parent.postMessage({
+          type: "fittingroom:key",
+          key: event.key,
+          metaKey: event.metaKey,
+          ctrlKey: event.ctrlKey,
+          shiftKey: event.shiftKey,
+        }, "*");
+      }
+    });
+
     document.addEventListener("click", (event) => {
       const target = event.target;
       if (!(target instanceof Element)) return;
@@ -270,8 +295,85 @@ export async function startBoardServer(options: BoardServerOptions): Promise<Run
   const previews = options.previews ?? {};
   const requests: DirectionRequest[] = [];
   const editRequests: BoardEditOperation[] = [];
-  let state = options.state;
+  const projectRoot = options.projectRoot;
+  const fittingRoomDirectory =
+    projectRoot === undefined ? undefined : path.join(projectRoot, ".fittingroom");
+  const initial =
+    options.state ?? (projectRoot === undefined ? undefined : await readBoardState(projectRoot));
+
+  if (initial === undefined) {
+    throw new Error("The board needs a state or a project root.");
+  }
+
+  if (projectRoot !== undefined) {
+    const live = await readLiveBoardLock(projectRoot);
+
+    if (live !== null) {
+      throw new Error(`The board is already running at ${live.url}.`);
+    }
+
+    const statePath = path.join(projectRoot, ".fittingroom", "board.json");
+
+    try {
+      await access(statePath);
+    } catch {
+      if (options.state !== undefined) {
+        await writeBoardState(projectRoot, options.state);
+      }
+    }
+  }
+
+  let state: BoardState = initial;
+  const mergeDisplayState = (next: BoardState): BoardState => ({
+    ...next,
+    ...(next.designSystem === undefined && state.designSystem !== undefined
+      ? { designSystem: state.designSystem }
+      : {}),
+    ...(next.scopes === undefined && state.scopes !== undefined ? { scopes: state.scopes } : {}),
+  });
+  let watcher: FSWatcher | undefined;
+  let refreshTimer: NodeJS.Timeout | undefined;
+  let lockToken: string | undefined;
   const boardRoot = await resolveBoardRoot();
+  const previewDirectory =
+    projectRoot === undefined ? undefined : path.join(projectRoot, ".fittingroom", "previews");
+  const sockets = new WebSocketServer({ noServer: true });
+  const broadcast = (message: unknown): void => {
+    const payload = JSON.stringify(message);
+
+    for (const client of sockets.clients) {
+      if (client.readyState === WebSocket.OPEN) {
+        client.send(payload);
+      }
+    }
+  };
+  const refreshFromFiles = async (): Promise<void> => {
+    if (projectRoot === undefined) {
+      return;
+    }
+
+    try {
+      const next = await readBoardState(projectRoot);
+      const requestFile = await readBoardRequests(projectRoot);
+
+      state = mergeDisplayState(next);
+      broadcast({ type: "board-update", state });
+      broadcast({ type: "requests-update", requests: requestFile.requests });
+    } catch {}
+  };
+  const scheduleRefresh = (): void => {
+    if (projectRoot === undefined) {
+      return;
+    }
+
+    if (refreshTimer !== undefined) {
+      clearTimeout(refreshTimer);
+    }
+
+    refreshTimer = setTimeout(() => {
+      void refreshFromFiles();
+    }, 40);
+  };
   const httpServer = createHttpServer((request, response) => {
     void (async () => {
       const url = new URL(request.url ?? "/", "http://127.0.0.1");
@@ -312,6 +414,100 @@ export async function startBoardServer(options: BoardServerOptions): Promise<Run
         return;
       }
 
+      if (request.method === "GET" && url.pathname === "/api/rounds") {
+        if (!authorized(url, token)) {
+          response.writeHead(401, { "content-type": "text/plain; charset=utf-8" });
+          response.end("Unauthorized");
+          return;
+        }
+
+        sendJson(response, options.rounds === undefined ? [] : await options.rounds());
+        return;
+      }
+
+      if (request.method === "GET" && url.pathname === "/api/structure") {
+        if (!authorized(url, token)) {
+          response.writeHead(401, { "content-type": "text/plain; charset=utf-8" });
+          response.end("Unauthorized");
+          return;
+        }
+
+        sendJson(response, options.structure === undefined ? null : await options.structure());
+        return;
+      }
+
+      if (request.method === "POST" && url.pathname === "/api/structure-action") {
+        if (!authorized(url, token)) {
+          response.writeHead(401, { "content-type": "text/plain; charset=utf-8" });
+          response.end("Unauthorized");
+          return;
+        }
+
+        if (options.structureAction === undefined) {
+          response.writeHead(501, { "content-type": "text/plain; charset=utf-8" });
+          response.end("Information design is not configured.");
+          return;
+        }
+
+        const body = (await readJsonBody(request)) as { action?: unknown; slug?: unknown };
+
+        if (
+          typeof body.slug !== "string" ||
+          typeof body.action !== "object" ||
+          body.action === null ||
+          !("action" in body.action)
+        ) {
+          response.writeHead(400, { "content-type": "text/plain; charset=utf-8" });
+          response.end("Structure action needs a slug and action.");
+          return;
+        }
+
+        state = await options.structureAction({
+          action: body.action as StructureAction,
+          slug: body.slug,
+          state,
+        });
+        broadcast({ type: "board-update", state });
+        sendJson(response, state);
+        return;
+      }
+
+      if (request.method === "POST" && url.pathname === "/api/request") {
+        if (!authorized(url, token)) {
+          response.writeHead(401, { "content-type": "text/plain; charset=utf-8" });
+          response.end("Unauthorized");
+          return;
+        }
+
+        const body = (await readJsonBody(request)) as {
+          slot?: number;
+          type?: string;
+        };
+        const types = ["generate", "regenerate", "regenerate-slot", "approve"];
+
+        if (typeof body.type !== "string" || !types.includes(body.type)) {
+          response.writeHead(400, { "content-type": "text/plain; charset=utf-8" });
+          response.end("Request needs a type of generate, regenerate, regenerate-slot or approve.");
+          return;
+        }
+
+        if (projectRoot === undefined) {
+          state = { ...state, status: "generating" };
+          broadcast({ type: "board-update", state });
+          sendJson(response, state);
+          return;
+        }
+
+        await appendBoardRequest(projectRoot, {
+          type: body.type as BoardRequest["type"],
+          ...(typeof body.slot === "number" ? { slot: body.slot } : {}),
+        });
+        state = mergeDisplayState(await readBoardState(projectRoot));
+        broadcast({ type: "board-update", state });
+        sendJson(response, state);
+        return;
+      }
+
       if (request.method === "POST" && url.pathname === "/api/regenerate") {
         if (!authorized(url, token)) {
           response.writeHead(401, { "content-type": "text/plain; charset=utf-8" });
@@ -319,16 +515,30 @@ export async function startBoardServer(options: BoardServerOptions): Promise<Run
           return;
         }
 
-        if (options.regenerate === undefined) {
-          response.writeHead(501, { "content-type": "text/plain; charset=utf-8" });
-          response.end("Regeneration is not configured.");
-          return;
-        }
-
         const body = (await readJsonBody(request)) as {
           mode?: "light" | "deep";
           slots?: number[];
         };
+
+        if (options.regenerate === undefined) {
+          if (projectRoot === undefined) {
+            response.writeHead(501, { "content-type": "text/plain; charset=utf-8" });
+            response.end("Regeneration is not configured.");
+            return;
+          }
+
+          await appendBoardRequest(projectRoot, {
+            type: body.slots?.length === 1 ? "regenerate-slot" : "regenerate",
+            ...(body.slots?.length === 1 && body.slots[0] !== undefined
+              ? { slot: body.slots[0] }
+              : {}),
+          });
+          state = mergeDisplayState(await readBoardState(projectRoot));
+          broadcast({ type: "board-update", state });
+          sendJson(response, state);
+          return;
+        }
+
         const next = await options.regenerate({
           state,
           ...(body.slots === undefined ? {} : { slots: body.slots }),
@@ -336,6 +546,7 @@ export async function startBoardServer(options: BoardServerOptions): Promise<Run
         });
 
         state = next;
+        broadcast({ type: "board-update", state });
         sendJson(response, state);
         return;
       }
@@ -344,12 +555,6 @@ export async function startBoardServer(options: BoardServerOptions): Promise<Run
         if (!authorized(url, token)) {
           response.writeHead(401, { "content-type": "text/plain; charset=utf-8" });
           response.end("Unauthorized");
-          return;
-        }
-
-        if (options.pin === undefined) {
-          response.writeHead(501, { "content-type": "text/plain; charset=utf-8" });
-          response.end("Pinning is not configured.");
           return;
         }
 
@@ -364,6 +569,24 @@ export async function startBoardServer(options: BoardServerOptions): Promise<Run
           return;
         }
 
+        if (options.pin === undefined) {
+          const pinVariants = (current: BoardState): BoardState => ({
+            ...current,
+            variants: current.variants.map((variant) =>
+              variant.slot === body.slot ? { ...variant, pinned: body.pinned === true } : variant,
+            ),
+          });
+
+          state = mergeDisplayState(
+            projectRoot === undefined
+              ? pinVariants(state)
+              : await updateBoardState(projectRoot, pinVariants, state),
+          );
+          broadcast({ type: "board-update", state });
+          sendJson(response, state);
+          return;
+        }
+
         const next = await options.pin({
           state,
           slot: body.slot,
@@ -371,6 +594,87 @@ export async function startBoardServer(options: BoardServerOptions): Promise<Run
         });
 
         state = next;
+        broadcast({ type: "board-update", state });
+        sendJson(response, state);
+        return;
+      }
+
+      if (request.method === "POST" && url.pathname === "/api/restore") {
+        if (!authorized(url, token)) {
+          response.writeHead(401, { "content-type": "text/plain; charset=utf-8" });
+          response.end("Unauthorized");
+          return;
+        }
+
+        if (options.restore === undefined) {
+          response.writeHead(501, { "content-type": "text/plain; charset=utf-8" });
+          response.end("Restoring a round is not configured.");
+          return;
+        }
+
+        const body = (await readJsonBody(request)) as { round?: number; snapshotId?: string };
+
+        if (typeof body.round !== "number" || typeof body.snapshotId !== "string") {
+          response.writeHead(400, { "content-type": "text/plain; charset=utf-8" });
+          response.end("Restore needs a round and snapshot id.");
+          return;
+        }
+
+        state = mergeDisplayState(
+          await options.restore({
+            round: body.round,
+            snapshotId: body.snapshotId,
+            state,
+          }),
+        );
+        broadcast({ type: "board-update", state });
+        sendJson(response, state);
+        return;
+      }
+
+      if (request.method === "POST" && url.pathname === "/api/approve") {
+        if (!authorized(url, token)) {
+          response.writeHead(401, { "content-type": "text/plain; charset=utf-8" });
+          response.end("Unauthorized");
+          return;
+        }
+
+        const body = (await readJsonBody(request)) as { slug?: string; slot?: number };
+        const variant = state.variants.find(
+          (candidate) => candidate.slot === body.slot && candidate.slug === body.slug,
+        );
+
+        if (
+          typeof body.slug !== "string" ||
+          typeof body.slot !== "number" ||
+          variant === undefined
+        ) {
+          response.writeHead(400, { "content-type": "text/plain; charset=utf-8" });
+          response.end("Pick a direction before approving.");
+          return;
+        }
+
+        const approval: BoardApproval = {
+          slot: body.slot,
+          slug: body.slug,
+          round: state.round,
+        };
+        const approve = (current: BoardState): BoardState => ({
+          ...current,
+          approved: approval,
+          selected: { slot: approval.slot, slug: approval.slug },
+          status: "approved",
+        });
+
+        if (projectRoot === undefined) {
+          state = approve(state);
+        } else {
+          state = await updateBoardState(projectRoot, approve, state);
+          await appendBoardRequest(projectRoot, { type: "approve", slot: body.slot });
+          state = mergeDisplayState(await readBoardState(projectRoot));
+        }
+
+        broadcast({ type: "board-update", state });
         sendJson(response, state);
         return;
       }
@@ -412,6 +716,7 @@ export async function startBoardServer(options: BoardServerOptions): Promise<Run
           previews[body.slug] = result.previewHtml;
         }
 
+        broadcast({ type: "board-update", state });
         sendJson(response, state);
         return;
       }
@@ -445,6 +750,41 @@ export async function startBoardServer(options: BoardServerOptions): Promise<Run
           previews[body.slug] = result.previewHtml;
         }
 
+        broadcast({ type: "board-update", state });
+        sendJson(response, state);
+        return;
+      }
+
+      if (request.method === "POST" && url.pathname === "/api/redo") {
+        if (!authorized(url, token)) {
+          response.writeHead(401, { "content-type": "text/plain; charset=utf-8" });
+          response.end("Unauthorized");
+          return;
+        }
+
+        if (options.redo === undefined) {
+          response.writeHead(501, { "content-type": "text/plain; charset=utf-8" });
+          response.end("Redo is not configured.");
+          return;
+        }
+
+        const body = (await readJsonBody(request)) as { slug?: string };
+
+        if (typeof body.slug !== "string") {
+          response.writeHead(400, { "content-type": "text/plain; charset=utf-8" });
+          response.end("Redo needs a slug.");
+          return;
+        }
+
+        const result = await options.redo({ state, slug: body.slug });
+
+        state = result.state;
+
+        if (result.previewHtml !== undefined) {
+          previews[body.slug] = result.previewHtml;
+        }
+
+        broadcast({ type: "board-update", state });
         sendJson(response, state);
         return;
       }
@@ -471,6 +811,103 @@ export async function startBoardServer(options: BoardServerOptions): Promise<Run
         return;
       }
 
+      if (request.method === "GET" && url.pathname.startsWith("/round-assets/")) {
+        if (!authorized(url, token)) {
+          response.writeHead(401, { "content-type": "text/plain; charset=utf-8" });
+          response.end("Unauthorized");
+          return;
+        }
+
+        if (projectRoot === undefined) {
+          response.writeHead(404, { "content-type": "text/plain; charset=utf-8" });
+          response.end("Not found");
+          return;
+        }
+
+        const rest = url.pathname.slice("/round-assets/".length);
+        const separator = rest.indexOf("/");
+
+        if (separator === -1) {
+          response.writeHead(404, { "content-type": "text/plain; charset=utf-8" });
+          response.end("Not found");
+          return;
+        }
+
+        const roundNumber = decodeURIComponent(rest.slice(0, separator));
+        const requested = decodeURIComponent(rest.slice(separator + 1));
+        const roundRoot = path.resolve(projectRoot, ".fittingroom", "rounds", roundNumber);
+        const filePath = path.resolve(roundRoot, requested);
+
+        if (!/^\d+$/.test(roundNumber) || !filePath.startsWith(`${roundRoot}${path.sep}`)) {
+          response.writeHead(403, { "content-type": "text/plain; charset=utf-8" });
+          response.end("Forbidden");
+          return;
+        }
+
+        try {
+          const content = await readFile(filePath);
+
+          response.writeHead(200, {
+            "cache-control": "no-store",
+            "content-type": boardContentType(filePath),
+          });
+          response.end(content);
+        } catch {
+          response.writeHead(404, { "content-type": "text/plain; charset=utf-8" });
+          response.end("Not found");
+        }
+
+        return;
+      }
+
+      if (request.method === "GET" && url.pathname.startsWith("/preview-assets/")) {
+        if (!authorized(url, token)) {
+          response.writeHead(401, { "content-type": "text/plain; charset=utf-8" });
+          response.end("Unauthorized");
+          return;
+        }
+
+        if (previewDirectory === undefined) {
+          response.writeHead(404, { "content-type": "text/plain; charset=utf-8" });
+          response.end("Not found");
+          return;
+        }
+
+        const rest = url.pathname.slice("/preview-assets/".length);
+        const separator = rest.indexOf("/");
+
+        if (separator === -1) {
+          response.writeHead(404, { "content-type": "text/plain; charset=utf-8" });
+          response.end("Not found");
+          return;
+        }
+
+        const slug = decodeURIComponent(rest.slice(0, separator));
+        const requested = decodeURIComponent(rest.slice(separator + 1));
+        const filePath = path.resolve(previewDirectory, slug, requested);
+
+        if (!filePath.startsWith(`${path.resolve(previewDirectory, slug)}${path.sep}`)) {
+          response.writeHead(403, { "content-type": "text/plain; charset=utf-8" });
+          response.end("Forbidden");
+          return;
+        }
+
+        try {
+          const content = await readFile(filePath);
+
+          response.writeHead(200, {
+            "cache-control": "no-store",
+            "content-type": boardContentType(filePath),
+          });
+          response.end(content);
+        } catch {
+          response.writeHead(404, { "content-type": "text/plain; charset=utf-8" });
+          response.end("Not found");
+        }
+
+        return;
+      }
+
       if (request.method === "GET" && url.pathname.startsWith("/preview/")) {
         if (!authorized(url, token)) {
           response.writeHead(401, { "content-type": "text/plain; charset=utf-8" });
@@ -479,7 +916,13 @@ export async function startBoardServer(options: BoardServerOptions): Promise<Run
         }
 
         const slug = decodeURIComponent(url.pathname.slice("/preview/".length));
-        const preview = previews[slug];
+        let preview = previews[slug];
+
+        if (preview === undefined && previewDirectory !== undefined) {
+          try {
+            preview = await readFile(path.join(previewDirectory, slug, "index.html"), "utf8");
+          } catch {}
+        }
 
         if (preview === undefined) {
           response.writeHead(404, { "content-type": "text/plain; charset=utf-8" });
@@ -487,11 +930,21 @@ export async function startBoardServer(options: BoardServerOptions): Promise<Run
           return;
         }
 
+        const assetPrefix = `/__fittingroom/preview/${encodeURIComponent(slug)}/`;
+        const boardPrefix = `/preview-assets/${encodeURIComponent(slug)}/`;
+        const html = preview
+          .replaceAll(assetPrefix, boardPrefix)
+          .replace(
+            /(src|href)="(\/preview-assets\/[^"]+)"/g,
+            (_match, attribute: string, assetPath: string) =>
+              `${attribute}="${assetPath}?token=${encodeURIComponent(token)}"`,
+          );
+
         response.writeHead(200, {
           "cache-control": "no-store",
           "content-type": "text/html; charset=utf-8",
         });
-        response.end(withPreviewBridge(preview, slug));
+        response.end(withPreviewBridge(html, slug));
         return;
       }
 
@@ -507,7 +960,6 @@ export async function startBoardServer(options: BoardServerOptions): Promise<Run
       response.end(error instanceof Error ? error.message : "Board server error.");
     });
   });
-  const sockets = new WebSocketServer({ noServer: true });
 
   httpServer.on("upgrade", (request, socket, head) => {
     const url = new URL(request.url ?? "/", "http://127.0.0.1");
@@ -572,12 +1024,40 @@ export async function startBoardServer(options: BoardServerOptions): Promise<Run
   const port = address !== null && typeof address !== "string" ? address.port : requestedPort;
   const url = `http://127.0.0.1:${port}/?token=${encodeURIComponent(token)}`;
 
+  if (projectRoot !== undefined && fittingRoomDirectory !== undefined) {
+    await writeBoardLock(projectRoot, {
+      pid: process.pid,
+      port,
+      token,
+      url,
+      ...(state.scope.id === "" ? {} : { scopeId: state.scope.id }),
+    });
+    lockToken = token;
+    watcher = watch(fittingRoomDirectory, (_event, fileName) => {
+      const changed = fileName === null ? undefined : String(fileName);
+
+      if (
+        changed === undefined ||
+        changed === "board.json" ||
+        changed === "requests.json" ||
+        changed.endsWith(".tmp")
+      ) {
+        scheduleRefresh();
+      }
+    });
+  }
+
   return {
     token,
     port,
     url,
     requests,
     close: async () => {
+      if (refreshTimer !== undefined) {
+        clearTimeout(refreshTimer);
+      }
+
+      watcher?.close();
       for (const client of sockets.clients) {
         client.terminate();
       }
@@ -586,6 +1066,10 @@ export async function startBoardServer(options: BoardServerOptions): Promise<Run
         sockets.close(() => resolve());
       });
       await closeHttpServer(httpServer);
+
+      if (lockToken !== undefined && projectRoot !== undefined) {
+        await removeBoardLock(projectRoot);
+      }
     },
   };
 }

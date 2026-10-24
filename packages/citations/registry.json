@@ -648,6 +648,15 @@
       "url": "https://www.w3.org/WAI/ARIA/apg/patterns/combobox/",
       "version": "current",
       "level": "N/A"
+    },
+    {
+      "id": "project-design-memory",
+      "source": "Project design memory",
+      "criterion": "Approved design memory",
+      "title": "The project's approved design memory",
+      "url": ".fittingroom/DESIGN.md",
+      "version": "1",
+      "level": "N/A"
     }
   ]
 }

@@ -5,6 +5,7 @@ import pixelmatch from "pixelmatch";
 import { chromium } from "playwright";
 import { PNG } from "pngjs";
 import { writeFileAtomic, writeJsonAtomic } from "./fittingroom-store";
+import type { StructureBlock, StructureFile } from "./structure";
 
 export const HANDOFF_WIDTHS = [375, 768, 1440] as const;
 export const HANDOFF_HEIGHT = 900;
@@ -12,8 +13,12 @@ export const HANDOFF_PIXEL_THRESHOLD = 2;
 
 export const HANDOFF_STYLE_PROPERTIES = [
   "background-color",
+  "border-bottom-color",
   "border-bottom-left-radius",
   "border-bottom-right-radius",
+  "border-left-color",
+  "border-right-color",
+  "border-top-color",
   "border-top-left-radius",
   "border-top-right-radius",
   "color",
@@ -64,6 +69,7 @@ export interface WriteHandoffInput {
   rationale: string;
   reference: HandoffReference;
   route: string;
+  structure?: StructureFile;
   tokens: Record<string, string>;
   variantFile?: string;
   variantSlug: string;
@@ -81,6 +87,7 @@ export interface CreateHandoffInput {
   rationale: string;
   referenceUrl: string;
   route: string;
+  structure?: StructureFile;
   tokens: Record<string, string>;
   variantSlug: string;
 }
@@ -116,6 +123,7 @@ export interface VerifyReport {
   regionDiffs: RegionDiff[];
   route: string;
   screenshots: Array<{ path: string; width: number }>;
+  structureMismatches: OrderMismatch[];
   styleMismatches: StyleMismatch[];
   tokenMismatches: StyleMismatch[];
 }
@@ -154,7 +162,11 @@ async function captureReference(
 
       if (width === 1440) {
         const snapshot = await page.evaluate((properties) => {
-          const elements = [...document.querySelectorAll<HTMLElement>("[data-fr-id]")];
+          const elements = [
+            ...document.querySelectorAll<HTMLElement>(
+              "[data-fr-id]:not(style):not(script):not(link):not(meta)",
+            ),
+          ];
           const styleMap: Record<string, Record<string, string>> = {};
 
           for (const element of elements) {
@@ -267,12 +279,15 @@ export async function writeHandoff(input: WriteHandoffInput): Promise<HandoffRes
 
   await writeJsonAtomic(path.join(folder, "handoff.json"), manifest);
   await writeJsonAtomic(path.join(folder, "tokens.json"), input.tokens);
-  await writeJsonAtomic(path.join(folder, "structure.json"), {
-    version: 1,
-    route: input.route,
-    order: input.reference.order,
-    styles: input.reference.styles,
-  });
+  await writeJsonAtomic(
+    path.join(folder, "structure.json"),
+    input.structure ?? {
+      version: 1,
+      route: input.route,
+      order: input.reference.order,
+      styles: input.reference.styles,
+    },
+  );
   await writeJsonAtomic(path.join(folder, "edits.json"), input.edits ?? { version: 1, files: {} });
   await writeJsonAtomic(path.join(folder, "findings-fixed.json"), {
     version: 1,
@@ -301,6 +316,7 @@ export async function createHandoff(input: CreateHandoffInput): Promise<HandoffR
       rationale: input.rationale,
       reference,
       route: input.route,
+      ...(input.structure === undefined ? {} : { structure: input.structure }),
       tokens: input.tokens,
       variantSlug: input.variantSlug,
     });
@@ -384,6 +400,10 @@ function compareStyles(expected: HandoffStyleMap, actual: HandoffStyleMap): Styl
     }
 
     for (const [property, value] of Object.entries(properties)) {
+      if (property.startsWith("border-") && property.endsWith("-color")) {
+        continue;
+      }
+
       const actualValue = actualProperties[property] ?? "missing";
 
       if (actualValue !== value) {
@@ -405,6 +425,33 @@ function compareOrder(expected: string[], actual: string[]): OrderMismatch[] {
 
     if (expectedId !== actualId) {
       mismatches.push({ actual: actualId, expected: expectedId, index });
+    }
+  }
+
+  return mismatches;
+}
+
+interface HandoffStructureFile {
+  blocks?: StructureBlock[];
+}
+
+function compareStructure(structure: HandoffStructureFile, actualOrder: string[]): OrderMismatch[] {
+  if (!Array.isArray(structure.blocks)) {
+    return [];
+  }
+
+  const expected = structure.blocks
+    .filter((block) => block.visible !== false)
+    .sort((first, second) => first.order - second.order)
+    .map((block) => block.id);
+  const blockIds = new Set(structure.blocks.map((block) => block.id));
+  const actual = actualOrder.filter((id) => blockIds.has(id));
+  const mismatches = compareOrder(expected, actual);
+  const hidden = structure.blocks.filter((block) => block.visible === false);
+
+  for (const block of hidden) {
+    if (actual.includes(block.id)) {
+      mismatches.push({ actual: block.id, expected: null, index: -1 });
     }
   }
 
@@ -468,7 +515,11 @@ export async function verifyImplementation(
 
       if (width === 1440) {
         const snapshot = await page.evaluate((properties) => {
-          const elements = [...document.querySelectorAll<HTMLElement>("[data-fr-id]")];
+          const elements = [
+            ...document.querySelectorAll<HTMLElement>(
+              "[data-fr-id]:not(style):not(script):not(link):not(meta)",
+            ),
+          ];
           const styleMap: Record<string, Record<string, string>> = {};
 
           for (const element of elements) {
@@ -525,12 +576,22 @@ export async function verifyImplementation(
     }
   }
 
+  let structure: HandoffStructureFile = {};
+
+  try {
+    structure = JSON.parse(
+      await readFile(path.join(input.handoffDir, "structure.json"), "utf8"),
+    ) as HandoffStructureFile;
+  } catch {}
+
   const styleMismatches = compareStyles(manifest.styles, actualStyles);
   const orderMismatches = compareOrder(manifest.order, actualOrder);
+  const structureMismatches = compareStructure(structure, actualOrder);
   const passed =
     regionDiffs.every((region) => region.passed) &&
     styleMismatches.length === 0 &&
-    orderMismatches.length === 0;
+    orderMismatches.length === 0 &&
+    structureMismatches.length === 0;
 
   return {
     handoffId: manifest.id,
@@ -539,6 +600,7 @@ export async function verifyImplementation(
     regionDiffs,
     route: manifest.route,
     screenshots,
+    structureMismatches,
     styleMismatches,
     tokenMismatches: styleMismatches,
   };

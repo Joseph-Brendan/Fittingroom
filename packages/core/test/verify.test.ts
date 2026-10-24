@@ -1,4 +1,4 @@
-import { mkdtemp, readFile, rm, stat } from "node:fs/promises";
+import { mkdtemp, readFile, rm, stat, writeFile } from "node:fs/promises";
 import os from "node:os";
 import path from "node:path";
 import { afterAll, beforeAll, describe, expect, it } from "vitest";
@@ -54,6 +54,16 @@ describe("handoff", () => {
     expect(brief).toContain(`Call fr_verify with route /workspace and handoffId ${handoffId}.`);
   }, 120_000);
 
+  it("ignores style elements in the handoff style map", async () => {
+    const manifest = JSON.parse(await readFile(path.join(handoffDir, "handoff.json"), "utf8")) as {
+      order: string[];
+      styles: Record<string, Record<string, string>>;
+    };
+
+    expect(manifest.order).not.toContain("style-block");
+    expect(manifest.styles["style-block"]).toBeUndefined();
+  });
+
   it("writes tokens, structure, edits, fixed findings and the checklist", async () => {
     for (const fileName of [
       "tokens.json",
@@ -87,6 +97,116 @@ describe("handoff", () => {
     expect(report.tokenMismatches).toEqual([]);
     expect(report.orderMismatches).toEqual([]);
     expect(report.screenshots.map((screenshot) => screenshot.width)).toEqual([375, 768, 1440]);
+  }, 120_000);
+
+  it("passes when structure block order matches and fails when it does not", async () => {
+    const structurePath = path.join(handoffDir, "structure.json");
+    const originalStructure = await readFile(structurePath, "utf8");
+    const blocks = [
+      {
+        id: "top",
+        label: "Top",
+        kind: "hero",
+        order: 1,
+        visible: true,
+        priority: "hero",
+        group: null,
+        collapse: "none",
+      },
+      {
+        id: "hero",
+        label: "Hero",
+        kind: "hero",
+        order: 2,
+        visible: true,
+        priority: "normal",
+        group: null,
+        collapse: "none",
+      },
+      {
+        id: "features",
+        label: "Features",
+        kind: "features",
+        order: 3,
+        visible: true,
+        priority: "normal",
+        group: null,
+        collapse: "none",
+      },
+      {
+        id: "footer",
+        label: "Footer",
+        kind: "footer",
+        order: 4,
+        visible: true,
+        priority: "normal",
+        group: null,
+        collapse: "none",
+      },
+    ];
+
+    await writeFile(
+      structurePath,
+      `${JSON.stringify({ scope: "marketing", page: "/workspace", density: "balanced", blocks }, null, 2)}\n`,
+    );
+
+    const pass = await verifyImplementation({
+      baseUrl: server.origin,
+      route: "/correct/index",
+      handoffDir,
+      outputDir: path.join(temporaryDirectory, "verify-structure-pass"),
+    });
+
+    expect(pass.structureMismatches).toEqual([]);
+    expect(pass.passed).toBe(true);
+
+    const wrong = [blocks[0], { ...blocks[2], order: 2 }, { ...blocks[1], order: 3 }, blocks[3]];
+
+    await writeFile(
+      structurePath,
+      `${JSON.stringify({ scope: "marketing", page: "/workspace", density: "balanced", blocks: wrong }, null, 2)}\n`,
+    );
+
+    const fail = await verifyImplementation({
+      baseUrl: server.origin,
+      route: "/correct/index",
+      handoffDir,
+      outputDir: path.join(temporaryDirectory, "verify-structure-fail"),
+    });
+
+    expect(fail.structureMismatches.length).toBeGreaterThan(0);
+    expect(fail.passed).toBe(false);
+    await writeFile(structurePath, originalStructure);
+  }, 120_000);
+
+  it("does not fail on inherited border colors", async () => {
+    const manifestPath = path.join(handoffDir, "handoff.json");
+    const original = await readFile(manifestPath, "utf8");
+    const manifest = JSON.parse(original) as {
+      styles: Record<string, Record<string, string>>;
+    };
+
+    for (const style of Object.values(manifest.styles)) {
+      style["border-top-color"] = "rgb(1, 2, 3)";
+    }
+
+    await writeFile(manifestPath, `${JSON.stringify(manifest, null, 2)}\n`);
+
+    try {
+      const report = await verifyImplementation({
+        baseUrl: server.origin,
+        route: "/correct/index",
+        handoffDir,
+        outputDir: path.join(temporaryDirectory, "verify-border-color"),
+      });
+
+      expect(
+        report.styleMismatches.some((mismatch) => mismatch.property === "border-top-color"),
+      ).toBe(false);
+      expect(report.passed).toBe(true);
+    } finally {
+      await writeFile(manifestPath, original);
+    }
   }, 120_000);
 
   it("fails a hand-made bad implementation on pixels, tokens and content order", async () => {

@@ -182,6 +182,9 @@ export async function previewVariant(
   ]
     .filter((line) => line !== "")
     .join("\n");
+
+  await writeFile(path.join(previewRoot, "index.html"), `${html}\n`);
+
   const server = createServer(async (request, response) => {
     const pathname = new URL(request.url ?? "/", "http://127.0.0.1").pathname;
 
@@ -263,7 +266,11 @@ export async function previewVariant(
 
         if (width === 1440) {
           const snapshot = await page.evaluate((properties) => {
-            const elements = [...document.querySelectorAll<HTMLElement>("[data-fr-id]")];
+            const elements = [
+              ...document.querySelectorAll<HTMLElement>(
+                "[data-fr-id]:not(style):not(script):not(link):not(meta)",
+              ),
+            ];
             const styleMap: Record<string, Record<string, string>> = {};
 
             for (const element of elements) {

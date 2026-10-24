@@ -1,0 +1,29 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Projects</title>
+    <style>
+      * { box-sizing: border-box; }
+      body { margin: 0; padding: 16px; font-family: system-ui, sans-serif; overflow-wrap: anywhere; }
+      main, section, div, p, h1, h2, label, button { max-width: 100%; overflow-wrap: anywhere; }
+    </style>
+  </head>
+  <body>
+    <main>
+      <h1>Projects</h1>
+      <div id="projects">Loading projects.</div>
+    </main>
+    <script>
+      fetch("/api/projects")
+        .then((response) => response.json())
+        .then((projects) => {
+          const root = document.getElementById("projects");
+          root.innerHTML = projects
+            .map((project) => `<section><h2>${project.name}</h2><p>${project.description}</p></section>`)
+            .join("");
+        });
+    </script>
+  </body>
+</html>
