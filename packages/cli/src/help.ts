@@ -15,6 +15,7 @@ const helpText = [
   "  --scope <scope>   Use a saved page group.",
   "  --pages <pages>   Use pages separated by commas for audit.",
   "  --state <file>    Read board state from this file.",
+  "  --port <port>     Start the board on this port. Use 0 for any free port.",
   "",
   "Examples:",
   "  fitroom audit --url http://localhost:3000",
@@ -53,12 +54,14 @@ const boardHelpText = [
   "  --url <url>       Set the app URL for this board session.",
   "  --scope <scope>   Show this saved page group.",
   "  --state <file>    Read board state from this file. Defaults to .fittingroom/board.json.",
+  "  --port <port>     Start on this port. Use 0 for any free port. The default tries 4173 to 4183.",
   "  -h, --help        Show this help.",
   "",
   "Examples:",
   "  fitroom board --url http://localhost:3000",
   "  fitroom board --url http://localhost:3000 --scope marketing",
   "  fitroom board --state .fittingroom/board.json",
+  "  fitroom board --url http://localhost:3000 --port 0",
 ].join("\n");
 
 const scopesHelpText = [

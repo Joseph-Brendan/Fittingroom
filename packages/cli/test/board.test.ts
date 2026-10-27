@@ -1,6 +1,7 @@
 import { mkdir, mkdtemp, rm, writeFile } from "node:fs/promises";
 import os from "node:os";
 import path from "node:path";
+import { Writable } from "node:stream";
 import { afterAll, beforeAll, describe, expect, it } from "vitest";
 import { runBoardCommand } from "../src/board-command";
 
@@ -13,6 +14,18 @@ beforeAll(async () => {
 afterAll(async () => {
   await rm(temporaryDirectory, { force: true, recursive: true });
 });
+
+function captureOutput(): { output: NodeJS.WritableStream; text: () => string } {
+  let text = "";
+  const output = new Writable({
+    write(chunk, _encoding, callback) {
+      text += chunk.toString();
+      callback();
+    },
+  });
+
+  return { output, text: () => text };
+}
 
 async function writeConnectedProject(): Promise<string> {
   const projectRoot = path.join(temporaryDirectory, "connected-app");
@@ -84,6 +97,38 @@ describe("fitroom board", () => {
       expect(state.designSystem).toMatchObject({ status: "connected" });
     } finally {
       await server?.close();
+      process.chdir(previousDirectory);
+    }
+  }, 120_000);
+
+  it("reuses a live board and prints its URL", async () => {
+    const projectRoot = await writeConnectedProject();
+    const previousDirectory = process.cwd();
+    const firstOutput = captureOutput();
+    const secondOutput = captureOutput();
+    let first: Awaited<ReturnType<typeof runBoardCommand>> | undefined;
+    let second: Awaited<ReturnType<typeof runBoardCommand>> | undefined;
+
+    process.chdir(projectRoot);
+
+    try {
+      first = await runBoardCommand({ output: firstOutput.output, port: 0 });
+      second = await runBoardCommand({ output: secondOutput.output, port: 0 });
+
+      expect(second.reused).toBe(true);
+      expect(second.url).toBe(first.url);
+      expect(second.port).toBe(first.port);
+      expect(second.token).toBe(first.token);
+      expect(secondOutput.text()).toContain(`Board ready: ${first.url}`);
+
+      await second.close();
+
+      const response = await fetch(first.url);
+
+      expect(response.ok).toBe(true);
+    } finally {
+      await second?.close();
+      await first?.close();
       process.chdir(previousDirectory);
     }
   }, 120_000);

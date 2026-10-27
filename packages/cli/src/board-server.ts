@@ -12,6 +12,7 @@ import {
   appendBoardRequest,
   type BoardApproval,
   type BoardFinding,
+  type BoardLock,
   type BoardRequest,
   type BoardState,
   type BoardStatus,
@@ -125,8 +126,22 @@ export interface RunningBoardServer {
   close: () => Promise<void>;
   port: number;
   requests: DirectionRequest[];
+  reused?: boolean;
   token: string;
   url: string;
+}
+
+const defaultBoardPorts = [4173, 4174, 4175, 4176, 4177, 4178, 4179, 4180, 4181, 4182, 4183];
+
+function reusedBoardServer(lock: BoardLock): RunningBoardServer {
+  return {
+    close: async () => {},
+    port: lock.port,
+    requests: [],
+    reused: true,
+    token: lock.token,
+    url: lock.url,
+  };
 }
 
 function closeHttpServer(server: ReturnType<typeof createHttpServer>): Promise<void> {
@@ -139,6 +154,29 @@ function closeHttpServer(server: ReturnType<typeof createHttpServer>): Promise<v
 
       resolve();
     });
+  });
+}
+
+function listenOnPort(server: ReturnType<typeof createHttpServer>, port: number): Promise<boolean> {
+  return new Promise((resolve, reject) => {
+    const onError = (error: NodeJS.ErrnoException): void => {
+      server.off("listening", onListening);
+
+      if (error.code === "EADDRINUSE") {
+        resolve(false);
+        return;
+      }
+
+      reject(error);
+    };
+    const onListening = (): void => {
+      server.off("error", onError);
+      resolve(true);
+    };
+
+    server.once("error", onError);
+    server.once("listening", onListening);
+    server.listen(port, "127.0.0.1");
   });
 }
 
@@ -298,6 +336,15 @@ export async function startBoardServer(options: BoardServerOptions): Promise<Run
   const projectRoot = options.projectRoot;
   const fittingRoomDirectory =
     projectRoot === undefined ? undefined : path.join(projectRoot, ".fittingroom");
+
+  if (projectRoot !== undefined) {
+    const live = await readLiveBoardLock(projectRoot);
+
+    if (live !== null) {
+      return reusedBoardServer(live);
+    }
+  }
+
   const initial =
     options.state ?? (projectRoot === undefined ? undefined : await readBoardState(projectRoot));
 
@@ -306,12 +353,6 @@ export async function startBoardServer(options: BoardServerOptions): Promise<Run
   }
 
   if (projectRoot !== undefined) {
-    const live = await readLiveBoardLock(projectRoot);
-
-    if (live !== null) {
-      throw new Error(`The board is already running at ${live.url}.`);
-    }
-
     const statePath = path.join(projectRoot, ".fittingroom", "board.json");
 
     try {
@@ -1010,18 +1051,30 @@ export async function startBoardServer(options: BoardServerOptions): Promise<Run
     });
   });
 
-  const requestedPort = options.port ?? 4173;
+  const ports = options.port === undefined ? defaultBoardPorts : [options.port];
+  let listening = false;
 
-  await new Promise<void>((resolve, reject) => {
-    httpServer.once("error", reject);
-    httpServer.listen(requestedPort, "127.0.0.1", () => {
-      httpServer.off("error", reject);
-      resolve();
-    });
-  });
+  for (const port of ports) {
+    if (await listenOnPort(httpServer, port)) {
+      listening = true;
+      break;
+    }
+  }
+
+  if (!listening && options.port === undefined) {
+    listening = await listenOnPort(httpServer, 0);
+  }
+
+  if (!listening) {
+    throw new Error(
+      options.port === undefined
+        ? "The board could not find a free port. Stop the other process and try again."
+        : `Port ${options.port} is already in use. Stop the other process or omit --port to use a free port.`,
+    );
+  }
 
   const address = httpServer.address();
-  const port = address !== null && typeof address !== "string" ? address.port : requestedPort;
+  const port = address !== null && typeof address !== "string" ? address.port : (options.port ?? 0);
   const url = `http://127.0.0.1:${port}/?token=${encodeURIComponent(token)}`;
 
   if (projectRoot !== undefined && fittingRoomDirectory !== undefined) {

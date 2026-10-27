@@ -1,4 +1,5 @@
 import { mkdir, mkdtemp, readFile, rm, writeFile } from "node:fs/promises";
+import { createServer, type Server } from "node:net";
 import os from "node:os";
 import path from "node:path";
 import { afterEach, describe, expect, it } from "vitest";
@@ -43,6 +44,39 @@ async function writeState(projectRoot: string, approved: boolean): Promise<void>
       2,
     )}\n`,
   );
+}
+
+async function holdPort(port: number): Promise<Server | null> {
+  return new Promise((resolve, reject) => {
+    const server = createServer();
+
+    server.once("error", (error: NodeJS.ErrnoException) => {
+      if (error.code === "EADDRINUSE") {
+        resolve(null);
+        return;
+      }
+
+      reject(error);
+    });
+    server.listen(port, "127.0.0.1", () => resolve(server));
+  });
+}
+
+async function closeServer(server: Server | null): Promise<void> {
+  if (server === null) {
+    return;
+  }
+
+  await new Promise<void>((resolve, reject) => {
+    server.close((error) => {
+      if (error) {
+        reject(error);
+        return;
+      }
+
+      resolve();
+    });
+  });
 }
 
 afterEach(async () => {
@@ -100,6 +134,41 @@ describe("board bridge server", () => {
     await expect(
       readFile(path.join(projectRoot, ".fittingroom", "board.lock"), "utf8"),
     ).rejects.toThrow();
+  });
+
+  it("starts on another port when 4173 is busy", async () => {
+    const projectRoot = await temporaryProject();
+
+    await writeState(projectRoot, false);
+
+    const blocker = await holdPort(4173);
+    const server = await startBoardServer({ projectRoot });
+
+    try {
+      expect(server.port).not.toBe(4173);
+      expect(server.url).toContain(`127.0.0.1:${server.port}`);
+    } finally {
+      await server.close();
+      await closeServer(blocker);
+    }
+  });
+
+  it("tries every default port before using any free port", async () => {
+    const projectRoot = await temporaryProject();
+    const defaultPorts = [4173, 4174, 4175, 4176, 4177, 4178, 4179, 4180, 4181, 4182, 4183];
+
+    await writeState(projectRoot, false);
+
+    const blockers = await Promise.all(defaultPorts.map(holdPort));
+    const server = await startBoardServer({ projectRoot });
+
+    try {
+      expect(defaultPorts).not.toContain(server.port);
+      expect(server.url).toContain(`127.0.0.1:${server.port}`);
+    } finally {
+      await server.close();
+      await Promise.all(blockers.map(closeServer));
+    }
   });
 
   it("restores the approved board state after a restart", async () => {

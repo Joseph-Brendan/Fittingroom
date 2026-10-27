@@ -215,7 +215,11 @@ async function writeBoardState(): Promise<void> {
 }
 
 async function startBoard(args: string[]): Promise<RunningBoard> {
-  const child = spawn(process.execPath, [cliPath, "board", ...args], {
+  const boardArgs =
+    args.includes("--port") || args.some((arg) => arg.startsWith("--port="))
+      ? args
+      : [...args, "--port", "0"];
+  const child = spawn(process.execPath, [cliPath, "board", ...boardArgs], {
     cwd: fixtureRoot,
     detached: process.platform !== "win32",
     env: { ...process.env, NO_COLOR: "1" },
@@ -367,6 +371,30 @@ describe("fitroom binary", () => {
     }
   }, 120_000);
 
+  it("reuses a live board and prints its URL", async () => {
+    await resetFixtureState();
+    await startBadUiDevServer();
+    await writeBoardState();
+    let board: RunningBoard | undefined;
+
+    try {
+      board = await startBoard(["--url", appUrl]);
+      const firstUrl = board.output().match(/Board ready: (\S+)/)?.[1];
+
+      expect(firstUrl).toBeTruthy();
+
+      const result = await runFitroom(["board", "--url", appUrl]);
+
+      expect(result.code).toBe(0);
+      expect(result.stdout).toContain(`Board ready: ${firstUrl ?? ""}`);
+      expect(`${result.stdout}${result.stderr}`).not.toContain("EADDRINUSE");
+    } finally {
+      await stopProcess(board?.child);
+      await stopBadUiDevServer();
+      await resetFixtureState();
+    }
+  }, 120_000);
+
   it("creates .fittingroom and a valid empty board.json when it is missing", async () => {
     await resetFixtureState();
     let board: RunningBoard | undefined;
@@ -401,7 +429,7 @@ describe("fitroom binary", () => {
     await writeFile(path.join(fixtureRoot, ".fittingroom", "board.json"), '{"scope": ');
 
     try {
-      const result = await runFitroom(["board", "--url", appUrl]);
+      const result = await runFitroom(["board", "--url", appUrl, "--port", "0"]);
 
       expect(result.code).toBe(1);
       expect(result.stderr).toContain("board.json");
@@ -454,6 +482,7 @@ describe("fitroom binary", () => {
     expect(result.stderr).toContain("--url");
     expect(result.stderr).toContain("--scope");
     expect(result.stderr).toContain("--state");
+    expect(result.stderr).toContain("--port");
   });
 
   it("lists every audit option with a description and an example", async () => {
@@ -476,6 +505,7 @@ describe("fitroom binary", () => {
     expect(result.stdout).toContain("--url");
     expect(result.stdout).toContain("--scope");
     expect(result.stdout).toContain("--state");
+    expect(result.stdout).toContain("--port");
     expect(result.stdout).toContain("Examples:");
     expect(result.stdout).toContain("fitroom board --url http://localhost:3000");
   });

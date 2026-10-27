@@ -145,9 +145,13 @@ describe("installed package", () => {
   }, 300_000);
 
   it("runs fitroom board and serves the built board", async () => {
-    const child = execFile(process.execPath, [installedEntry, "board", "--url", badServer.origin], {
-      cwd: projectRoot,
-    });
+    const child = execFile(
+      process.execPath,
+      [installedEntry, "board", "--url", badServer.origin, "--port", "0"],
+      {
+        cwd: projectRoot,
+      },
+    );
     let output = "";
 
     child.stdout?.on("data", (chunk: Buffer) => {

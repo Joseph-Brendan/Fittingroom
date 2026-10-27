@@ -12,9 +12,20 @@ interface AuditFlags {
 }
 
 interface BoardFlags {
+  port?: number;
   scope?: string;
   state?: string;
   url?: string;
+}
+
+function portValue(value: string): number {
+  const port = Number(value);
+
+  if (!Number.isInteger(port) || port < 0 || port > 65535) {
+    throw new Error("Port must be a whole number from 0 to 65535. Run fitroom board --help.");
+  }
+
+  return port;
 }
 
 function flagValue(args: readonly string[], index: number, name: string, command: string): string {
@@ -103,8 +114,14 @@ function boardFlags(args: readonly string[]): BoardFlags {
       continue;
     }
 
+    if (value === "--port" || value.startsWith("--port=")) {
+      flags.port = portValue(flagValue(args, index, "--port", "board"));
+      index += value.includes("=") ? 0 : 1;
+      continue;
+    }
+
     throw new Error(
-      `Unknown option ${value}. Valid options: --url, --scope, --state. Run fitroom board --help.`,
+      `Unknown option ${value}. Valid options: --url, --scope, --state, --port. Run fitroom board --help.`,
     );
   }
 
@@ -146,7 +163,12 @@ async function main(args: string[]): Promise<void> {
       ...(flags.state === undefined ? {} : { statePath: flags.state }),
       ...(flags.scope === undefined ? {} : { scope: flags.scope }),
       ...(flags.url === undefined ? {} : { appUrl: flags.url }),
+      ...(flags.port === undefined ? {} : { port: flags.port }),
     });
+
+    if (server.reused === true) {
+      return;
+    }
 
     await new Promise<void>((resolve) => {
       process.once("SIGINT", resolve);

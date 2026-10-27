@@ -15,6 +15,7 @@ import {
   type RegeneratedSlot,
   type RegenerationSession,
   readBoardState,
+  readLiveBoardLock,
   readRegenerationHistory,
   readStructure,
   redoVariantEdit,
@@ -232,6 +233,16 @@ export async function runBoardCommand(
   options: BoardCommandOptions = {},
 ): Promise<RunningBoardServer> {
   const projectRoot = options.projectRoot ?? process.cwd();
+  const output = options.output ?? process.stdout;
+  const live = await readLiveBoardLock(projectRoot);
+
+  if (live !== null) {
+    const server = await startBoardServer({ projectRoot });
+
+    output.write(`Board ready: ${server.url}\n`);
+    return server;
+  }
+
   const fallbackOptions = options.appUrl === undefined ? {} : { fallbackUrl: options.appUrl };
   let config: Awaited<ReturnType<typeof loadScopes>> | undefined;
   let requestedScope: { id: string; name: string } | undefined;
@@ -375,7 +386,6 @@ export async function runBoardCommand(
       },
     });
   };
-  const output = options.output ?? process.stdout;
   const server = await startBoardServer({
     projectRoot,
     state: withBoardExtras(base, {
