@@ -1,4 +1,4 @@
-import { type ChildProcess, spawn } from "node:child_process";
+import { type ChildProcess, execFile, spawn } from "node:child_process";
 import { readFile } from "node:fs/promises";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
@@ -47,12 +47,16 @@ async function stop(child: ChildProcess): Promise<void> {
 
   const exited = waitForExit(child);
 
+  if (process.platform === "win32") {
+    await new Promise<void>((resolve) => {
+      execFile("taskkill", ["/pid", String(child.pid), "/t", "/f"], () => resolve());
+    });
+    await exited;
+    return;
+  }
+
   try {
-    if (process.platform === "win32") {
-      child.kill("SIGTERM");
-    } else {
-      process.kill(-child.pid, "SIGTERM");
-    }
+    process.kill(-child.pid, "SIGTERM");
   } catch (error) {
     void error;
     child.kill("SIGTERM");
@@ -60,10 +64,8 @@ async function stop(child: ChildProcess): Promise<void> {
 
   const forceKill = setTimeout(() => {
     try {
-      if (process.platform !== "win32" && child.pid !== undefined) {
+      if (child.pid !== undefined) {
         process.kill(-child.pid, "SIGKILL");
-      } else {
-        child.kill("SIGKILL");
       }
     } catch (error) {
       void error;
@@ -151,6 +153,7 @@ for (const fixture of fixtures) {
       const child = spawn(pnpmCommand, ["run", "dev"], {
         cwd: root,
         detached: process.platform !== "win32",
+        shell: process.platform === "win32",
         stdio: ["ignore", "pipe", "pipe"],
       });
 

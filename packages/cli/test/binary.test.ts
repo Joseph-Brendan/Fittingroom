@@ -70,12 +70,14 @@ async function stopProcess(child: ChildProcess | undefined): Promise<void> {
 
   const exited = waitForExit(child);
 
+  if (process.platform === "win32") {
+    await execFileAsync("taskkill", ["/pid", String(child.pid), "/t", "/f"]).catch(() => {});
+    await exited;
+    return;
+  }
+
   try {
-    if (process.platform === "win32") {
-      child.kill("SIGTERM");
-    } else {
-      process.kill(-child.pid, "SIGTERM");
-    }
+    process.kill(-child.pid, "SIGTERM");
   } catch (error) {
     void error;
     child.kill("SIGTERM");
@@ -83,10 +85,8 @@ async function stopProcess(child: ChildProcess | undefined): Promise<void> {
 
   const forceKill = setTimeout(() => {
     try {
-      if (process.platform !== "win32" && child.pid !== undefined) {
+      if (child.pid !== undefined) {
         process.kill(-child.pid, "SIGKILL");
-      } else {
-        child.kill("SIGKILL");
       }
     } catch (error) {
       void error;
@@ -131,6 +131,7 @@ async function startBadUiDevServer(): Promise<void> {
   const child = spawn(pnpmCommand, ["run", "dev"], {
     cwd: fixtureRoot,
     detached: process.platform !== "win32",
+    shell: process.platform === "win32",
     stdio: ["ignore", "pipe", "pipe"],
   });
 
@@ -268,7 +269,10 @@ async function startBoard(args: string[]): Promise<RunningBoard> {
 }
 
 beforeAll(async () => {
-  await execFileAsync(pnpmCommand, ["build"], { cwd: repoRoot });
+  await execFileAsync(pnpmCommand, ["build"], {
+    cwd: repoRoot,
+    shell: process.platform === "win32",
+  });
 }, 300_000);
 
 afterAll(async () => {

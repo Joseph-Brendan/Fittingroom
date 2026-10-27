@@ -52,6 +52,7 @@ async function run(file: string, args: readonly string[], cwd: string): Promise<
   return execFileAsync(file, args, {
     cwd,
     maxBuffer: 20 * 1024 * 1024,
+    shell: process.platform === "win32" && file.endsWith(".cmd"),
     timeout: 600_000,
   });
 }
