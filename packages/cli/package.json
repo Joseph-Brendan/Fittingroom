@@ -1,6 +1,6 @@
 {
   "name": "fitting-room",
-  "version": "0.0.0",
+  "version": "1.0.0",
   "description": "The fitroom command for Fitting Room.",
   "license": "Apache-2.0",
   "type": "module",
