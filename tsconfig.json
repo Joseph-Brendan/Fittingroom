@@ -2,7 +2,13 @@
   "extends": "./tsconfig.base.json",
   "compilerOptions": {
     "lib": ["ES2023", "DOM", "DOM.Iterable"],
-    "types": ["node"]
+    "types": ["node"],
+    "paths": {
+      "@fitroom/citations": ["./packages/citations/src/index.ts"],
+      "@fitroom/core": ["./packages/core/src/index.ts"],
+      "@fitroom/directions": ["./packages/directions/src/index.ts"],
+      "@fitroom/mcp": ["./packages/mcp/src/index.ts"]
+    }
   },
   "include": ["playwright.config.ts", "e2e/**/*.ts", "e2e/**/*.mts"]
 }
