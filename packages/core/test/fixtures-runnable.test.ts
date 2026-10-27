@@ -19,6 +19,8 @@ const fixtures: FixtureCase[] = [
   { name: "good-ui", port: 3001 },
 ];
 
+const pnpmCommand = process.platform === "win32" ? "pnpm.cmd" : "pnpm";
+
 function fixtureRoot(name: string): string {
   return fileURLToPath(new URL(`../../../fixtures/${name}`, import.meta.url));
 }
@@ -146,7 +148,7 @@ for (const fixture of fixtures) {
 
       let output = "";
       let spawnError: Error | undefined;
-      const child = spawn("pnpm", ["run", "dev"], {
+      const child = spawn(pnpmCommand, ["run", "dev"], {
         cwd: root,
         detached: process.platform !== "win32",
         stdio: ["ignore", "pipe", "pipe"],
