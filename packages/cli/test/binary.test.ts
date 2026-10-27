@@ -98,7 +98,7 @@ async function stopProcess(child: ChildProcess | undefined): Promise<void> {
 }
 
 async function resetFixtureState(): Promise<void> {
-  await rm(path.join(fixtureRoot, ".fittingroom"), { force: true, recursive: true });
+  await rm(path.join(fixtureRoot, ".fitroom"), { force: true, recursive: true });
 }
 
 function portIsInUse(port: number): Promise<boolean> {
@@ -208,7 +208,7 @@ function runFitroom(
 }
 
 async function writeBoardState(): Promise<void> {
-  const stateRoot = path.join(fixtureRoot, ".fittingroom");
+  const stateRoot = path.join(fixtureRoot, ".fitroom");
 
   await mkdir(stateRoot, { recursive: true });
   await writeFile(path.join(stateRoot, "board.json"), `${JSON.stringify(boardState, null, 2)}\n`);
@@ -319,8 +319,8 @@ describe("fitroom binary", () => {
 
     try {
       const result = await runFitroom(["audit", "--url", appUrl, "--pages", "/,/pricing"]);
-      const captureRoot = path.join(fixtureRoot, ".fittingroom", "captures", "marketing");
-      const auditRoot = path.join(fixtureRoot, ".fittingroom", "audits", "marketing");
+      const captureRoot = path.join(fixtureRoot, ".fitroom", "captures", "marketing");
+      const auditRoot = path.join(fixtureRoot, ".fitroom", "audits", "marketing");
 
       expect(result.code).toBe(0);
       expect(result.stdout).toContain("Capturing: Marketing (2 pages): / /pricing");
@@ -370,7 +370,7 @@ describe("fitroom binary", () => {
     await startBadUiDevServer();
     await writeBoardState();
     let board: RunningBoard | undefined;
-    const statePath = path.join(fixtureRoot, ".fittingroom", "board.json");
+    const statePath = path.join(fixtureRoot, ".fitroom", "board.json");
     const before = await readFile(statePath, "utf8");
 
     try {
@@ -410,14 +410,14 @@ describe("fitroom binary", () => {
     }
   }, 120_000);
 
-  it("creates .fittingroom and a valid empty board.json when it is missing", async () => {
+  it("creates .fitroom and a valid empty board.json when it is missing", async () => {
     await resetFixtureState();
     let board: RunningBoard | undefined;
 
     try {
       board = await startBoard(["--url", appUrl]);
 
-      const statePath = path.join(fixtureRoot, ".fittingroom", "board.json");
+      const statePath = path.join(fixtureRoot, ".fitroom", "board.json");
       const state = JSON.parse(await readFile(statePath, "utf8")) as {
         findings: unknown[];
         previousRounds: unknown[];
@@ -438,10 +438,34 @@ describe("fitroom binary", () => {
     }
   }, 120_000);
 
+  it("moves an old state folder to .fitroom on the first run", async () => {
+    const legacyStateFolder = [".", "fitting", "room"].join("");
+    const stateFolder = ".fitroom";
+    const legacyPath = path.join(fixtureRoot, legacyStateFolder);
+    const statePath = path.join(fixtureRoot, stateFolder);
+
+    await rm(legacyPath, { force: true, recursive: true });
+    await rm(statePath, { force: true, recursive: true });
+    await mkdir(legacyPath, { recursive: true });
+    await writeFile(path.join(legacyPath, "board.json"), "{}\n");
+
+    try {
+      const result = await runFitroom(["scopes"]);
+
+      expect(result.code).toBe(0);
+      expect(result.stdout).toContain(`Moved ${legacyStateFolder} to ${stateFolder}.`);
+      expect(await readFile(path.join(statePath, "board.json"), "utf8")).toBe("{}\n");
+      await expect(readFile(path.join(legacyPath, "board.json"), "utf8")).rejects.toThrow();
+    } finally {
+      await rm(legacyPath, { force: true, recursive: true });
+      await rm(statePath, { force: true, recursive: true });
+    }
+  }, 60_000);
+
   it("gives a plain error when board.json is corrupt", async () => {
     await resetFixtureState();
-    await mkdir(path.join(fixtureRoot, ".fittingroom"), { recursive: true });
-    await writeFile(path.join(fixtureRoot, ".fittingroom", "board.json"), '{"scope": ');
+    await mkdir(path.join(fixtureRoot, ".fitroom"), { recursive: true });
+    await writeFile(path.join(fixtureRoot, ".fitroom", "board.json"), '{"scope": ');
 
     try {
       const result = await runFitroom(["board", "--url", appUrl, "--port", "0"]);
@@ -456,13 +480,13 @@ describe("fitroom binary", () => {
     }
   }, 60_000);
 
-  it("creates scopes.json when fitroom scopes runs with no .fittingroom", async () => {
+  it("creates scopes.json when fitroom scopes runs with no .fitroom", async () => {
     await resetFixtureState();
 
     try {
       const result = await runFitroom(["scopes"]);
       const state = JSON.parse(
-        await readFile(path.join(fixtureRoot, ".fittingroom", "scopes.json"), "utf8"),
+        await readFile(path.join(fixtureRoot, ".fitroom", "scopes.json"), "utf8"),
       ) as { scopes: unknown[] };
 
       expect(result.code).toBe(0);

@@ -8,18 +8,18 @@ import { startBoardServer } from "../src/board-server";
 const temporaryDirectories: string[] = [];
 
 async function temporaryProject(): Promise<string> {
-  const directory = await mkdtemp(path.join(os.tmpdir(), "fittingroom-board-bridge-"));
+  const directory = await mkdtemp(path.join(os.tmpdir(), "fitroom-board-bridge-"));
   temporaryDirectories.push(directory);
 
   return directory;
 }
 
 async function writeState(projectRoot: string, approved: boolean): Promise<void> {
-  const fittingRoom = path.join(projectRoot, ".fittingroom");
+  const fitroom = path.join(projectRoot, ".fitroom");
 
-  await mkdir(fittingRoom, { recursive: true });
+  await mkdir(fitroom, { recursive: true });
   await writeFile(
-    path.join(fittingRoom, "board.json"),
+    path.join(fitroom, "board.json"),
     `${JSON.stringify(
       {
         version: 2,
@@ -97,7 +97,7 @@ describe("board bridge server", () => {
 
     try {
       const lock = JSON.parse(
-        await readFile(path.join(projectRoot, ".fittingroom", "board.lock"), "utf8"),
+        await readFile(path.join(projectRoot, ".fitroom", "board.lock"), "utf8"),
       ) as { pid: number; port: number; token: string };
 
       expect(lock.pid).toBe(process.pid);
@@ -116,7 +116,7 @@ describe("board bridge server", () => {
       expect(response.ok).toBe(true);
 
       const requests = JSON.parse(
-        await readFile(path.join(projectRoot, ".fittingroom", "requests.json"), "utf8"),
+        await readFile(path.join(projectRoot, ".fitroom", "requests.json"), "utf8"),
       ) as { requests: Array<{ type: string; completedAt?: string }> };
 
       expect(requests.requests).toHaveLength(1);
@@ -132,7 +132,7 @@ describe("board bridge server", () => {
     }
 
     await expect(
-      readFile(path.join(projectRoot, ".fittingroom", "board.lock"), "utf8"),
+      readFile(path.join(projectRoot, ".fitroom", "board.lock"), "utf8"),
     ).rejects.toThrow();
   });
 

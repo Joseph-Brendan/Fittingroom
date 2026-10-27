@@ -1,12 +1,12 @@
 import { cp, mkdtemp, readFile, rm } from "node:fs/promises";
 import os from "node:os";
 import path from "node:path";
-import { setPinnedSlot } from "@fittingroom/core";
-import { directionLibrary } from "@fittingroom/directions";
+import { setPinnedSlot } from "@fitroom/core";
+import { directionLibrary } from "@fitroom/directions";
 import { Client } from "@modelcontextprotocol/sdk/client/index.js";
 import { InMemoryTransport } from "@modelcontextprotocol/sdk/inMemory.js";
 import { afterAll, beforeAll, describe, expect, it } from "vitest";
-import { createFittingRoomServer } from "../src/index";
+import { createFitroomServer } from "../src/index";
 import { type FixtureServer, fixturePath, startFixtureServer } from "./helpers/fixture-server";
 
 interface AuditPage {
@@ -40,7 +40,7 @@ interface RegeneratePayload {
 
 let fixture: FixtureServer;
 let client: Client;
-let server: ReturnType<typeof createFittingRoomServer>;
+let server: ReturnType<typeof createFitroomServer>;
 let temporaryDirectory: string;
 let projectRoot: string;
 let audit: AuditPayload;
@@ -83,17 +83,17 @@ async function callJson<T>(name: string, args: Record<string, unknown>): Promise
 
 beforeAll(async () => {
   fixture = await startFixtureServer(fixturePath("scope-app"));
-  temporaryDirectory = await mkdtemp(path.join(os.tmpdir(), "fittingroom-regenerate-"));
+  temporaryDirectory = await mkdtemp(path.join(os.tmpdir(), "fitroom-regenerate-"));
   projectRoot = path.join(temporaryDirectory, "scope-app");
   await cp(fixturePath("scope-app"), projectRoot, { recursive: true });
-  server = createFittingRoomServer({
+  server = createFitroomServer({
     appUrl: fixture.origin,
     auditOutputDir: path.join(temporaryDirectory, "audits"),
     captureOutputDir: path.join(temporaryDirectory, "captures"),
     currentPath: "/login",
     projectRoot,
   });
-  client = new Client({ name: "fittingroom-regenerate-test", version: "0.0.0" });
+  client = new Client({ name: "fitroom-regenerate-test", version: "0.0.0" });
   const [clientTransport, serverTransport] = InMemoryTransport.createLinkedPair();
 
   await Promise.all([server.connect(serverTransport), client.connect(clientTransport)]);
@@ -108,7 +108,7 @@ afterAll(async () => {
 });
 
 async function clearHistory(): Promise<void> {
-  await rm(path.join(projectRoot, ".fittingroom", "history.json"), { force: true });
+  await rm(path.join(projectRoot, ".fitroom", "history.json"), { force: true });
 }
 
 describe("fr_regenerate", () => {

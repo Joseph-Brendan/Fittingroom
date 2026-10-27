@@ -102,7 +102,7 @@ async function prepareState(page: Page, state: StateName, theme: Theme): Promise
 
   await page.emulateMedia({ colorScheme: theme });
   await page.goto(session.url, { waitUntil: "domcontentloaded" });
-  await page.getByRole("heading", { name: "Fitting Room", level: 1 }).waitFor();
+  await page.getByRole("heading", { name: "Fitroom", level: 1 }).waitFor();
   await waitForFonts(page);
 
   if (state === "waiting") {

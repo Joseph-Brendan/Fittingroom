@@ -8,7 +8,7 @@ describe("core package", () => {
       await readFile(new URL("../package.json", import.meta.url), "utf8"),
     ) as { version?: unknown };
 
-    expect(corePackage.name).toBe("@fittingroom/core");
+    expect(corePackage.name).toBe("@fitroom/core");
     expect(corePackage.version).toBe(manifest.version);
     expect(coreModules).toEqual(["capture", "audit", "detection", "diff"]);
   });

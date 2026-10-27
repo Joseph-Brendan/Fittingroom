@@ -12,7 +12,7 @@ let handoffId: string;
 
 beforeAll(async () => {
   server = await startFixtureServer(fixturePath("handoff"));
-  temporaryDirectory = await mkdtemp(path.join(os.tmpdir(), "fittingroom-handoff-"));
+  temporaryDirectory = await mkdtemp(path.join(os.tmpdir(), "fitroom-handoff-"));
   const handoff = await createHandoff({
     projectRoot: temporaryDirectory,
     referenceUrl: `${server.origin}/reference/index`,

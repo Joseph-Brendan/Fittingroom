@@ -2,7 +2,7 @@ import { randomUUID } from "node:crypto";
 import { copyFile, mkdir, readdir, readFile, rm } from "node:fs/promises";
 import path from "node:path";
 import { type BoardScope, type BoardState, readBoardState, writeBoardState } from "./board-state";
-import { writeJsonAtomic } from "./fittingroom-store";
+import { writeJsonAtomic } from "./fitroom-store";
 import {
   readRegenerationHistory,
   type VariantRole,
@@ -56,7 +56,7 @@ export interface RestoreRoundInput {
 }
 
 function roundsDirectory(projectRoot: string): string {
-  return path.join(projectRoot, ".fittingroom", "rounds");
+  return path.join(projectRoot, ".fitroom", "rounds");
 }
 
 export function roundDirectory(projectRoot: string, number: number): string {
@@ -348,13 +348,13 @@ export async function restoreRoundVariant(
       number: state.round,
       scope: input.scope,
       variant: {
-        editLogPath: path.join(projectRoot, ".fittingroom", "edits", `${current.slug}.json`),
+        editLogPath: path.join(projectRoot, ".fitroom", "edits", `${current.slug}.json`),
         filePath: projectPath(
           projectRoot,
-          current.filePath ?? `.fittingroom/variants/${current.slug}.tsx`,
+          current.filePath ?? `.fitroom/variants/${current.slug}.tsx`,
         ),
         name: current.name,
-        origPath: path.join(projectRoot, ".fittingroom", "variants", `${current.slug}.orig.tsx`),
+        origPath: path.join(projectRoot, ".fitroom", "variants", `${current.slug}.orig.tsx`),
         rationale: current.rationale,
         role: snapshot.role,
         ...(screenshotPathFor(projectRoot, state, current.slug) === undefined
@@ -368,20 +368,20 @@ export async function restoreRoundVariant(
 
   const currentPath =
     current?.filePath === undefined
-      ? path.join(projectRoot, ".fittingroom", "variants", `${snapshot.slug}.tsx`)
+      ? path.join(projectRoot, ".fitroom", "variants", `${snapshot.slug}.tsx`)
       : projectPath(projectRoot, current.filePath);
 
   await mkdir(path.dirname(currentPath), { recursive: true });
   await copyFile(path.join(roundDirectory(projectRoot, round.number), snapshot.file), currentPath);
   const origTarget = path.join(
     projectRoot,
-    ".fittingroom",
+    ".fitroom",
     "variants",
     `${current?.slug ?? snapshot.slug}.orig.tsx`,
   );
   const logTarget = path.join(
     projectRoot,
-    ".fittingroom",
+    ".fitroom",
     "edits",
     `${current?.slug ?? snapshot.slug}.json`,
   );
@@ -411,7 +411,7 @@ export async function restoreRoundVariant(
     slot: snapshot.slot,
     pinned: current?.pinned ?? false,
     role: snapshot.role,
-    filePath: current?.filePath ?? `.fittingroom/variants/${snapshot.slug}.tsx`,
+    filePath: current?.filePath ?? `.fitroom/variants/${snapshot.slug}.tsx`,
     ...(restoredScreenshot === undefined ? {} : { screenshotPath: restoredScreenshot }),
   };
   const variants = state.variants

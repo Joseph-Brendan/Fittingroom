@@ -32,7 +32,7 @@ export default function Variant() {
 async function projectWithVariant(
   variantSource = source,
 ): Promise<{ filePath: string; projectRoot: string }> {
-  const projectRoot = await mkdtemp(path.join(os.tmpdir(), "fittingroom-structure-"));
+  const projectRoot = await mkdtemp(path.join(os.tmpdir(), "fitroom-structure-"));
   temporaryDirectories.push(projectRoot);
   const filePath = path.join(projectRoot, "variants", "refined.tsx");
 

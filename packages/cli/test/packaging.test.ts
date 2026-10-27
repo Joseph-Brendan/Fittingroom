@@ -35,6 +35,19 @@ function requireFromMcp(name: string): string {
   return require.resolve(name);
 }
 
+async function remoteOwner(): Promise<string> {
+  const { stdout } = await execFileAsync("git", ["remote", "get-url", "origin"], {
+    cwd: repoRoot,
+  });
+  const owner = stdout.trim().match(/github\.com[:/]([^/]+)\//i)?.[1];
+
+  if (owner === undefined) {
+    throw new Error("Could not read the GitHub owner from origin.");
+  }
+
+  return owner;
+}
+
 async function run(file: string, args: readonly string[], cwd: string): Promise<CommandOutput> {
   return execFileAsync(file, args, {
     cwd,
@@ -69,7 +82,7 @@ async function packTarball(): Promise<string> {
 }
 
 beforeAll(async () => {
-  temporaryDirectory = await mkdtemp(path.join(os.tmpdir(), "fittingroom-pack-"));
+  temporaryDirectory = await mkdtemp(path.join(os.tmpdir(), "fitroom-pack-"));
   projectRoot = path.join(temporaryDirectory, "app");
   strangerRoot = path.join(temporaryDirectory, "stranger");
   const manifest = JSON.parse(await readFile(path.join(cliRoot, "package.json"), "utf8")) as {
@@ -114,8 +127,9 @@ describe("npm pack", () => {
       mcpName?: unknown;
       name?: unknown;
     };
+    const owner = await remoteOwner();
 
-    expect(manifest.mcpName).toBe(manifest.name);
+    expect(manifest.mcpName).toBe(`io.github.${owner}/${manifest.name}`);
     expect(manifest.bin).toMatchObject({ fitroom: "dist/index.js" });
 
     const entry = path.join(cliRoot, "dist", "index.js");
@@ -129,12 +143,12 @@ describe("npm pack", () => {
 
     expect(readme).toContain(`npx ${packageName}`);
     expect(readme).toContain(`npx -y ${packageName} mcp`);
-    expect(readme).toContain(`claude mcp add fitting-room -- npx -y ${packageName} mcp`);
+    expect(readme).toContain(`claude mcp add fitroom -- npx -y ${packageName} mcp`);
     expect(readme).toContain(`"args": ["-y", "${packageName}", "mcp"]`);
     expect(readme).toContain(`npm install -g ${packageName}`);
   });
 
-  it("lists only dist files and no fixtures, tests, reports or env files", async () => {
+  it("lists the package files and no fixtures, tests, reports or env files", async () => {
     const { stdout } = await run(npmCommand, ["pack", "--dry-run", "--json"], cliRoot);
     const packages = JSON.parse(stdout) as Array<{
       files: Array<{ path: string }>;
@@ -144,7 +158,9 @@ describe("npm pack", () => {
     expect(files).toContain("dist/board/index.html");
 
     for (const file of files) {
-      expect(file === "package.json" || file.startsWith("dist/")).toBe(true);
+      expect(file === "package.json" || file === "README.md" || file.startsWith("dist/")).toBe(
+        true,
+      );
       expect(file).not.toMatch(/(^|\/)(fixtures|test|test-reports|src)(\/|$)/);
       expect(file).not.toMatch(/\.env/);
     }

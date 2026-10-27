@@ -33,7 +33,7 @@ const ruleCases: RuleCase[] = [
 let temporaryDirectory: string;
 
 beforeAll(async () => {
-  temporaryDirectory = await mkdtemp(path.join(os.tmpdir(), "fittingroom-slop-"));
+  temporaryDirectory = await mkdtemp(path.join(os.tmpdir(), "fitroom-slop-"));
 });
 
 afterAll(async () => {
@@ -122,7 +122,7 @@ describe("slop score card", () => {
     expect(html).toContain("Generic headline phrases");
     expect(html).toContain("Three identical feature cards");
     expect(html).not.toContain("Stock 3D blobs");
-    expect(html).toContain("Checked with Fitting Room");
+    expect(html).toContain("Checked with Fitroom");
   });
 
   it("exports a 1200 by 630 PNG", async () => {

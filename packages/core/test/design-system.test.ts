@@ -126,7 +126,7 @@ const cases: DetectionCase[] = [
 let temporaryDirectory: string;
 
 beforeAll(async () => {
-  temporaryDirectory = await mkdtemp(path.join(os.tmpdir(), "fittingroom-design-system-"));
+  temporaryDirectory = await mkdtemp(path.join(os.tmpdir(), "fitroom-design-system-"));
 });
 
 afterAll(async () => {
@@ -153,7 +153,7 @@ describe.each(cases)("detectDesignSystem: $fixture", (testCase) => {
       expect(result.tokens[category as TokenCategory]).toEqual(expectedTokens);
     }
 
-    const tokensPath = path.join(projectRoot, ".fittingroom", "tokens.json");
+    const tokensPath = path.join(projectRoot, ".fitroom", "tokens.json");
 
     if (testCase.writesTokens) {
       const raw = JSON.parse(await readFile(tokensPath, "utf8")) as {

@@ -2,7 +2,7 @@ import { cp, mkdir, mkdtemp, readFile, rm, writeFile } from "node:fs/promises";
 import os from "node:os";
 import path from "node:path";
 import { PassThrough } from "node:stream";
-import { loadScopes } from "@fittingroom/core";
+import { loadScopes } from "@fitroom/core";
 import { afterAll, beforeAll, describe, expect, it } from "vitest";
 import { runAuditCommand, selectAuditScope } from "../src/audit";
 import { runScopesCommand } from "../src/scopes";
@@ -31,12 +31,12 @@ beforeAll(async () => {
   badFixture = await startFixtureServer(fixturePath("bad-ui"));
   fixture = await startFixtureServer(fixturePath("scope-app"));
   goodFixture = await startFixtureServer(fixturePath("good-ui"));
-  temporaryDirectory = await mkdtemp(path.join(os.tmpdir(), "fittingroom-cli-"));
+  temporaryDirectory = await mkdtemp(path.join(os.tmpdir(), "fitroom-cli-"));
   projectRoot = path.join(temporaryDirectory, "scope-app");
   await cp(fixturePath("scope-app"), projectRoot, { recursive: true });
-  await mkdir(path.join(projectRoot, ".fittingroom"), { recursive: true });
+  await mkdir(path.join(projectRoot, ".fitroom"), { recursive: true });
   await writeFile(
-    path.join(projectRoot, ".fittingroom", "last-request.json"),
+    path.join(projectRoot, ".fitroom", "last-request.json"),
     JSON.stringify({ path: "/login" }),
   );
 });
@@ -71,9 +71,9 @@ describe("fitroom audit scope selection", () => {
     const input = new PassThrough();
 
     await cp(fixturePath("scope-app"), noDefaultRoot, { recursive: true });
-    await mkdir(path.join(noDefaultRoot, ".fittingroom"), { recursive: true });
+    await mkdir(path.join(noDefaultRoot, ".fitroom"), { recursive: true });
     await writeFile(
-      path.join(noDefaultRoot, ".fittingroom", "scopes.json"),
+      path.join(noDefaultRoot, ".fitroom", "scopes.json"),
       JSON.stringify({
         version: 1,
         scopes: [{ id: "other", name: "Other", routes: ["/other"] }],

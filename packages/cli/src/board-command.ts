@@ -7,7 +7,7 @@ import {
   extractStructure,
   findScope,
   listRounds,
-  loadFittingRoomFile,
+  loadFitroomFile,
   loadJsonFile,
   loadScopes,
   parseBoardState,
@@ -24,14 +24,14 @@ import {
   undoVariantEdit,
   type VariantRole,
   writeStructure,
-} from "@fittingroom/core";
+} from "@fitroom/core";
 import {
   type DesignDirection,
   type DirectionSurface,
   directionLibrary,
   getDirection,
-} from "@fittingroom/directions";
-import { previewVariant } from "@fittingroom/mcp";
+} from "@fitroom/directions";
+import { previewVariant } from "@fitroom/mcp";
 import {
   type BoardFinding,
   type BoardState,
@@ -296,7 +296,7 @@ export async function runBoardCommand(
 
   const raw =
     options.statePath === undefined
-      ? await loadFittingRoomFile({
+      ? await loadFitroomFile({
           projectRoot,
           fileName: "board.json",
           schema: parseBoardFileState,
@@ -374,13 +374,13 @@ export async function runBoardCommand(
       number: state.round,
       scope: state.scope,
       variant: {
-        editLogPath: path.join(projectRoot, ".fittingroom", "edits", `${slug}.json`),
+        editLogPath: path.join(projectRoot, ".fitroom", "edits", `${slug}.json`),
         filePath,
         name: variant.name,
-        origPath: path.join(projectRoot, ".fittingroom", "variants", `${slug}.orig.tsx`),
+        origPath: path.join(projectRoot, ".fitroom", "variants", `${slug}.orig.tsx`),
         rationale: variant.rationale,
         role,
-        screenshotPath: path.join(projectRoot, ".fittingroom", "variants", slug, "preview.png"),
+        screenshotPath: path.join(projectRoot, ".fitroom", "variants", slug, "preview.png"),
         slug,
         slot: variant.slot,
       },

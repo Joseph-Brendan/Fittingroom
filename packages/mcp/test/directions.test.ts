@@ -3,7 +3,7 @@ import path from "node:path";
 import { Client } from "@modelcontextprotocol/sdk/client/index.js";
 import { InMemoryTransport } from "@modelcontextprotocol/sdk/inMemory.js";
 import { afterAll, beforeAll, describe, expect, it } from "vitest";
-import { createFittingRoomServer } from "../src/index";
+import { createFitroomServer } from "../src/index";
 import { type FixtureServer, fixturePath, startFixtureServer } from "./helpers/fixture-server";
 
 interface DirectionSlotPayload {
@@ -61,7 +61,7 @@ interface VerifyPayload {
 
 let fixture: FixtureServer;
 let client: Client;
-let server: ReturnType<typeof createFittingRoomServer>;
+let server: ReturnType<typeof createFitroomServer>;
 let temporaryDirectory: string;
 let directions: DirectionsPayload;
 
@@ -146,14 +146,14 @@ beforeAll(async () => {
   await writeFile(path.join(projectRoot, "variants", "bad-type.tsx"), badTypeVariant);
   await writeFile(path.join(projectRoot, "variants", "bad-render.tsx"), badRenderVariant);
 
-  server = createFittingRoomServer({
+  server = createFitroomServer({
     appUrl: fixture.origin,
     auditOutputDir: path.join(temporaryDirectory, "audits"),
     captureOutputDir: path.join(temporaryDirectory, "captures"),
     currentPath: "/login",
     projectRoot,
   });
-  client = new Client({ name: "fittingroom-directions-test", version: "0.0.0" });
+  client = new Client({ name: "fitroom-directions-test", version: "0.0.0" });
   const [clientTransport, serverTransport] = InMemoryTransport.createLinkedPair();
 
   await Promise.all([server.connect(serverTransport), client.connect(clientTransport)]);
@@ -284,11 +284,12 @@ describe("fr_handoff", () => {
     expect(brief).toContain("Keep all data wiring and real content.");
     expect(brief).toContain(`Call fr_verify with route /login and handoffId ${result.handoffId}.`);
 
-    const fittingRoom = path.resolve(result.folder, "..", "..");
-    const design = await readFile(path.join(fittingRoom, "DESIGN.md"), "utf8");
-    const memory = JSON.parse(
-      await readFile(path.join(fittingRoom, "design-memory.json"), "utf8"),
-    ) as { button?: { backgroundColor?: string }; version?: number };
+    const fitroom = path.resolve(result.folder, "..", "..");
+    const design = await readFile(path.join(fitroom, "DESIGN.md"), "utf8");
+    const memory = JSON.parse(await readFile(path.join(fitroom, "design-memory.json"), "utf8")) as {
+      button?: { backgroundColor?: string };
+      version?: number;
+    };
 
     expect(design).toContain("## Primary button");
     expect(design).toContain("## Do");

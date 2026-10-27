@@ -380,7 +380,7 @@ export function slopScoreCardHtml(report: SlopReport): string {
       <ol>${rules}</ol>
     </main>
     <footer>
-      <span class="brand">Checked with Fitting Room</span>
+      <span class="brand">Checked with Fitroom</span>
       <span>Try your UI on before you ship it.</span>
     </footer>
   </body>

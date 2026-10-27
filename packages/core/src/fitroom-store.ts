@@ -1,8 +1,8 @@
 import { randomUUID } from "node:crypto";
-import { mkdir, readFile, rename, unlink, writeFile } from "node:fs/promises";
+import { access, mkdir, readFile, rename, unlink, writeFile } from "node:fs/promises";
 import path from "node:path";
 
-export interface LoadFittingRoomFileOptions<T> {
+export interface LoadFitroomFileOptions<T> {
   defaultValue: () => T | Promise<T>;
   fileName: string;
   projectRoot: string;
@@ -15,8 +15,34 @@ export interface LoadJsonFileOptions<T> {
   schema: (value: unknown) => T;
 }
 
-export function fittingRoomFilePath(projectRoot: string, fileName: string): string {
-  return path.join(projectRoot, ".fittingroom", fileName);
+export function fitroomFilePath(projectRoot: string, fileName: string): string {
+  return path.join(projectRoot, ".fitroom", fileName);
+}
+
+const legacyStateDirectory = [".", "fitting", "room"].join("");
+
+export async function migrateLegacyState(
+  projectRoot: string,
+  output?: { write: (chunk: string) => unknown },
+): Promise<boolean> {
+  const legacyPath = path.join(projectRoot, legacyStateDirectory);
+  const statePath = path.join(projectRoot, ".fitroom");
+
+  try {
+    await access(legacyPath);
+  } catch {
+    return false;
+  }
+
+  try {
+    await access(statePath);
+    return false;
+  } catch {}
+
+  await rename(legacyPath, statePath);
+  output?.write(`Moved ${legacyStateDirectory} to .fitroom.\n`);
+
+  return true;
 }
 
 export async function writeFileAtomic(filePath: string, content: string): Promise<void> {
@@ -40,12 +66,12 @@ export async function writeJsonAtomic(filePath: string, value: unknown): Promise
   await writeFileAtomic(filePath, content);
 }
 
-export async function writeFittingRoomJson(
+export async function writeFitroomJson(
   projectRoot: string,
   fileName: string,
   value: unknown,
 ): Promise<void> {
-  await writeJsonAtomic(fittingRoomFilePath(projectRoot, fileName), value);
+  await writeJsonAtomic(fitroomFilePath(projectRoot, fileName), value);
 }
 
 function fileError(filePath: string, reason: string): Error {
@@ -103,10 +129,10 @@ export async function loadJsonFile<T>(options: LoadJsonFileOptions<T>): Promise<
   }
 }
 
-export async function loadFittingRoomFile<T>(options: LoadFittingRoomFileOptions<T>): Promise<T> {
+export async function loadFitroomFile<T>(options: LoadFitroomFileOptions<T>): Promise<T> {
   return loadJsonFile({
     defaultValue: options.defaultValue,
-    filePath: fittingRoomFilePath(options.projectRoot, options.fileName),
+    filePath: fitroomFilePath(options.projectRoot, options.fileName),
     schema: options.schema,
   });
 }

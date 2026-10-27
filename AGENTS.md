@@ -1,10 +1,10 @@
 # AGENTS.md
 
-Rules for any AI agent working on Fitting Room. Read this file fully before you write code. If a rule here conflicts with a prompt, follow this file and say so.
+Rules for any AI agent working on Fitroom. Read this file fully before you write code. If a rule here conflicts with a prompt, follow this file and say so.
 
 ## What we are building
 
-Fitting Room is an open-source MCP server and CLI for vibe coders. It captures the UI an agent built, audits it with a citation on every finding, shows 4 redesign directions as real code on a local board, lets the user edit them, hands the chosen design back to the agent, and checks the build matches it.
+Fitroom is an open-source MCP server and CLI for vibe coders. It captures the UI an agent built, audits it with a citation on every finding, shows 4 redesign directions as real code on a local board, lets the user edit them, hands the chosen design back to the agent, and checks the build matches it.
 
 Tagline: Try your UI on before you ship it.
 
@@ -96,7 +96,7 @@ Keep each change small. One feature or fix per pull request. If a task is big, s
 - Page groups: marketing, authentication, onboarding, dashboard, app screens, settings, checkout.
 - Default scope is the page the user is viewing or the route the agent last edited. If unknown, ask.
 - Show a scope summary before capture: group name, page list, widths, estimated time.
-- Save user changes to groups in `.fittingroom/scopes.json`.
+- Save user changes to groups in `.fitroom/scopes.json`.
 - Directions, edits, handoff and verify all apply to the chosen scope only.
 
 ## Direction and regenerate rules
@@ -104,7 +104,7 @@ Keep each change small. One feature or fix per pull request. If a task is big, s
 - Slots: 1 Refined, 2 Native, 3 Bold, 4 Wildcard.
 - Only offer directions whose `surfaces` include the detected page group.
 - Refined has two modes: `light` (audit fixes only) and `deep` (also spacing, type and hierarchy). Both keep the user's layout, brand colors, fonts and style.
-- Regenerate replaces unpinned slots only. Slots 2 to 4 never repeat a direction in `.fittingroom/history.json` for that scope until the list runs out.
+- Regenerate replaces unpinned slots only. Slots 2 to 4 never repeat a direction in `.fitroom/history.json` for that scope until the list runs out.
 - Every variant ships with a one-line rationale in plain English.
 - Variants keep all real content. No placeholder or lorem copy.
 - A variant that fails to render or adds a new WCAG AA failure is rejected.
@@ -115,7 +115,7 @@ Keep each change small. One feature or fix per pull request. If a task is big, s
 - The board banner shows one of: connected, partial, not found. Use the exact copy in `packages/board/src/copy.ts`.
 - When connected, the inspector offers tokens and project components first.
 - Off-system values are allowed but flagged `offSystem: true` and listed in the handoff.
-- When not found, save every choice as a token in `.fittingroom/tokens.json`. Never write loose values.
+- When not found, save every choice as a token in `.fitroom/tokens.json`. Never write loose values.
 
 ## Editing rules
 
@@ -140,7 +140,7 @@ Bad: `Initiating comprehensive multi-viewport capture sequence — please wait!`
 - Bind the board and WebSocket to `127.0.0.1`. Require the session token on every request.
 - Never send source code, screenshots or findings over the network.
 - Never run user code outside their own dev server.
-- Write only inside the project and `.fittingroom/`. Never touch files outside the project root.
+- Write only inside the project and `.fitroom/`. Never touch files outside the project root.
 - Pin GitHub Actions to full commit SHAs. Publish to npm only through OIDC trusted publishing.
 
 ## Git rules
@@ -148,7 +148,7 @@ Bad: `Initiating comprehensive multi-viewport capture sequence — please wait!`
 - Branch per task: `feat/scope-picker`, `fix/contrast-check`.
 - Conventional commits: `feat:`, `fix:`, `test:`, `docs:`, `chore:`.
 - Add a changeset for any user-facing change.
-- Never commit `.fittingroom/` from fixtures runs, secrets or `.env` files.
+- Never commit `.fitroom/` from fixtures runs, secrets or `.env` files.
 
 ## When you are unsure
 

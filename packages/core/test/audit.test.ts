@@ -15,7 +15,7 @@ let temporaryDirectory: string;
 beforeAll(async () => {
   badServer = await startFixtureServer(fixturePath("bad-ui"));
   goodServer = await startFixtureServer(fixturePath("good-ui"));
-  temporaryDirectory = await mkdtemp(path.join(os.tmpdir(), "fittingroom-audit-"));
+  temporaryDirectory = await mkdtemp(path.join(os.tmpdir(), "fitroom-audit-"));
 });
 
 afterAll(async () => {

@@ -1,7 +1,7 @@
 {
   "name": "fitroom",
   "version": "1.0.0",
-  "description": "The fitroom command for Fitting Room.",
+  "description": "The fitroom command for Fitroom.",
   "license": "Apache-2.0",
   "type": "module",
   "bin": {
@@ -11,7 +11,7 @@
     "dist"
   ],
   "scripts": {
-    "build": "pnpm --filter @fittingroom/board build && tsup && node scripts/copy-board.mjs",
+    "build": "pnpm --filter @fitroom/board build && tsup && node scripts/copy-board.mjs",
     "test": "vitest run",
     "typecheck": "tsc --noEmit"
   },
@@ -36,11 +36,19 @@
     "zod": "^4.6.7"
   },
   "devDependencies": {
-    "@fittingroom/board": "workspace:*",
-    "@fittingroom/citations": "workspace:*",
-    "@fittingroom/core": "workspace:*",
-    "@fittingroom/directions": "workspace:*",
-    "@fittingroom/mcp": "workspace:*"
+    "@fitroom/board": "workspace:*",
+    "@fitroom/citations": "workspace:*",
+    "@fitroom/core": "workspace:*",
+    "@fitroom/directions": "workspace:*",
+    "@fitroom/mcp": "workspace:*"
   },
-  "mcpName": "fitroom"
+  "mcpName": "io.github.Joseph-Brendan/fitroom",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Joseph-Brendan/fitroom.git"
+  },
+  "homepage": "https://github.com/Joseph-Brendan/fitroom",
+  "bugs": {
+    "url": "https://github.com/Joseph-Brendan/fitroom/issues"
+  }
 }

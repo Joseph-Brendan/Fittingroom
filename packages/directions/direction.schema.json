@@ -1,7 +1,7 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "title": "Fitting Room design direction",
-  "description": "One named design direction from the Fitting Room direction library.",
+  "title": "Fitroom design direction",
+  "description": "One named design direction from the Fitroom direction library.",
   "type": "object",
   "additionalProperties": false,
   "required": [

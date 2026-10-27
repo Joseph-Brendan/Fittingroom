@@ -8,7 +8,7 @@ import { runBoardCommand } from "../src/board-command";
 let temporaryDirectory: string;
 
 beforeAll(async () => {
-  temporaryDirectory = await mkdtemp(path.join(os.tmpdir(), "fittingroom-board-"));
+  temporaryDirectory = await mkdtemp(path.join(os.tmpdir(), "fitroom-board-"));
 });
 
 afterAll(async () => {

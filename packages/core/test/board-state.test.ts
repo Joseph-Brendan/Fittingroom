@@ -17,7 +17,7 @@ import {
 const temporaryDirectories: string[] = [];
 
 async function temporaryProject(): Promise<string> {
-  const directory = await mkdtemp(path.join(os.tmpdir(), "fittingroom-bridge-"));
+  const directory = await mkdtemp(path.join(os.tmpdir(), "fitroom-bridge-"));
   temporaryDirectories.push(directory);
 
   return directory;
@@ -102,11 +102,11 @@ describe("board bridge", () => {
 
   it("ignores a stale lock and keeps the lock file for diagnosis", async () => {
     const projectRoot = await temporaryProject();
-    const fittingRoom = path.join(projectRoot, ".fittingroom");
+    const fitroom = path.join(projectRoot, ".fitroom");
 
-    await mkdir(fittingRoom, { recursive: true });
+    await mkdir(fitroom, { recursive: true });
     await writeFile(
-      path.join(fittingRoom, "board.lock"),
+      path.join(fitroom, "board.lock"),
       `${JSON.stringify({
         version: 1,
         pid: 999_999,
@@ -153,7 +153,7 @@ describe("board bridge", () => {
       token: "live-token",
     });
     expect(
-      JSON.parse(await readFile(path.join(projectRoot, ".fittingroom", "board.json"), "utf8")),
+      JSON.parse(await readFile(path.join(projectRoot, ".fitroom", "board.json"), "utf8")),
     ).toEqual(state);
   });
 });

@@ -2,11 +2,7 @@ import { spawn } from "node:child_process";
 import { randomUUID } from "node:crypto";
 import { access, readFile, rm } from "node:fs/promises";
 import path from "node:path";
-import {
-  type Finding as CitationFinding,
-  citationRegistry,
-  validate,
-} from "@fittingroom/citations";
+import { type Finding as CitationFinding, citationRegistry, validate } from "@fitroom/citations";
 import {
   type AuditCheckError,
   auditDesignMemory,
@@ -64,20 +60,20 @@ import {
   waitForBoardEvent,
   writeHandoff,
   writeRegenerationHistory,
-} from "@fittingroom/core";
-import { type DesignDirection, type DirectionSurface, getDirection } from "@fittingroom/directions";
+} from "@fitroom/core";
+import { type DesignDirection, type DirectionSurface, getDirection } from "@fitroom/directions";
 import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import type { CallToolResult } from "@modelcontextprotocol/sdk/types.js";
 import { z } from "zod";
 import { previewVariant } from "./preview.js";
 import { typecheckVariant } from "./typecheck.js";
 
-export const fittingRoomServerInfo = {
-  name: "fittingroom",
+export const fitroomServerInfo = {
+  name: "fitroom",
   version: "0.0.0",
 } as const;
 
-export interface FittingRoomServerOptions {
+export interface FitroomServerOptions {
   appUrl?: string;
   auditOutputDir?: string;
   boardCommand?: string[];
@@ -696,11 +692,11 @@ function buildCritiqueBrief(
   ].join("\n");
 }
 
-export function createFittingRoomServer(options: FittingRoomServerOptions = {}): McpServer {
-  const server = new McpServer(fittingRoomServerInfo);
+export function createFitroomServer(options: FitroomServerOptions = {}): McpServer {
+  const server = new McpServer(fitroomServerInfo);
   const projectRoot = options.projectRoot ?? process.cwd();
-  const configuredAppUrl = options.appUrl ?? process.env.FITTINGROOM_APP_URL;
-  const configuredCurrentPath = options.currentPath ?? process.env.FITTINGROOM_CURRENT_PATH;
+  const configuredAppUrl = options.appUrl ?? process.env.FITROOM_APP_URL;
+  const configuredCurrentPath = options.currentPath ?? process.env.FITROOM_CURRENT_PATH;
   const currentPath =
     configuredCurrentPath === undefined ? undefined : normalizePath(configuredCurrentPath);
   let activeRoundSlots: Array<{
@@ -1130,7 +1126,7 @@ export function createFittingRoomServer(options: FittingRoomServerOptions = {}):
 
         return {
           exists: true,
-          files: [".fittingroom/DESIGN.md", ".fittingroom/design-memory.json"],
+          files: [".fitroom/DESIGN.md", ".fitroom/design-memory.json"],
           memory,
         };
       }),
@@ -1198,9 +1194,9 @@ export function createFittingRoomServer(options: FittingRoomServerOptions = {}):
   server.registerTool(
     "fr_scopes",
     {
-      title: "List Fitting Room scopes",
+      title: "List Fitroom scopes",
       description:
-        "List every Fitting Room page group with its routes and identify the group for the page in view.",
+        "List every Fitroom page group with its routes and identify the group for the page in view.",
       annotations: {
         readOnlyHint: true,
       },
@@ -1225,7 +1221,7 @@ export function createFittingRoomServer(options: FittingRoomServerOptions = {}):
     {
       title: "Capture a page group",
       description:
-        "Capture only the selected Fitting Room page group at 375, 768, and 1440 pixels. Uses the current route scope when no scope is given. Returns the scope summary and screenshot paths.",
+        "Capture only the selected Fitroom page group at 375, 768, and 1440 pixels. Uses the current route scope when no scope is given. Returns the scope summary and screenshot paths.",
       inputSchema: scopeInputSchema,
       annotations: {
         readOnlyHint: false,
@@ -1273,7 +1269,7 @@ export function createFittingRoomServer(options: FittingRoomServerOptions = {}):
         const captured = await runCapture(resolved.selection);
         const auditRoot =
           options.auditOutputDir ??
-          path.resolve(projectRoot, ".fittingroom", "audits", resolved.selection.id);
+          path.resolve(projectRoot, ".fitroom", "audits", resolved.selection.id);
         const errors: Array<AuditCheckError & { page: string }> = [];
         const findings: StoredFinding[] = [];
         const designMemory = await readDesignMemory(projectRoot);
@@ -1360,7 +1356,7 @@ export function createFittingRoomServer(options: FittingRoomServerOptions = {}):
         });
         const scoreCardPath = path.join(
           projectRoot,
-          ".fittingroom",
+          ".fitroom",
           "slop",
           `${lastAudit.summary.id}-${Date.now()}.png`,
         );
@@ -1646,15 +1642,10 @@ export function createFittingRoomServer(options: FittingRoomServerOptions = {}):
             number: roundNumber,
             scope: currentBoard.scope,
             variant: {
-              editLogPath: path.join(projectRoot, ".fittingroom", "edits", `${variant.slug}.json`),
+              editLogPath: path.join(projectRoot, ".fitroom", "edits", `${variant.slug}.json`),
               filePath: path.resolve(projectRoot, variant.filePath),
               name: variant.name,
-              origPath: path.join(
-                projectRoot,
-                ".fittingroom",
-                "variants",
-                `${variant.slug}.orig.tsx`,
-              ),
+              origPath: path.join(projectRoot, ".fitroom", "variants", `${variant.slug}.orig.tsx`),
               rationale: variant.rationale,
               role: variant.role,
               ...(variant.screenshotPath === undefined
@@ -1736,7 +1727,7 @@ export function createFittingRoomServer(options: FittingRoomServerOptions = {}):
 
         await stampVariantFile(resolvedFile);
         await saveVariantOriginal(resolvedFile, { projectRoot, slug });
-        await rm(path.join(projectRoot, ".fittingroom", "edits", `${slug}.json`), { force: true });
+        await rm(path.join(projectRoot, ".fitroom", "edits", `${slug}.json`), { force: true });
 
         const preview = await previewVariant(projectRoot, resolvedFile, slug);
 
@@ -1809,7 +1800,7 @@ export function createFittingRoomServer(options: FittingRoomServerOptions = {}):
                 ...(slotNumber === 1 ? { mode: "light" as const } : {}),
                 ...(roundSlot === undefined ? {} : { role: roundSlot.role }),
                 filePath: relativeFile,
-                previewPath: `.fittingroom/previews/${slug}/index.html`,
+                previewPath: `.fitroom/previews/${slug}/index.html`,
                 ...(preview.screenshotPath === null
                   ? {}
                   : {
@@ -1836,10 +1827,10 @@ export function createFittingRoomServer(options: FittingRoomServerOptions = {}):
               number: current.round,
               scope: current.scope,
               variant: {
-                editLogPath: path.join(projectRoot, ".fittingroom", "edits", `${slug}.json`),
+                editLogPath: path.join(projectRoot, ".fitroom", "edits", `${slug}.json`),
                 filePath: resolvedFile,
                 name: directionName,
-                origPath: path.join(projectRoot, ".fittingroom", "variants", `${slug}.orig.tsx`),
+                origPath: path.join(projectRoot, ".fitroom", "variants", `${slug}.orig.tsx`),
                 rationale,
                 role: boardVariant.role,
                 ...(preview.screenshotPath === null
@@ -1894,14 +1885,14 @@ export function createFittingRoomServer(options: FittingRoomServerOptions = {}):
         try {
           edits = JSON.parse(
             await readFile(
-              path.join(projectRoot, ".fittingroom", "edits", `${variant.variantSlug}.json`),
+              path.join(projectRoot, ".fitroom", "edits", `${variant.variantSlug}.json`),
               "utf8",
             ),
           ) as unknown;
         } catch {
           try {
             edits = JSON.parse(
-              await readFile(path.join(projectRoot, ".fittingroom", "edits.json"), "utf8"),
+              await readFile(path.join(projectRoot, ".fitroom", "edits.json"), "utf8"),
             ) as unknown;
           } catch {}
         }
@@ -1991,7 +1982,7 @@ export function createFittingRoomServer(options: FittingRoomServerOptions = {}):
           throw new Error(`Unknown handoff ${handoffId}.`);
         }
 
-        const handoffDir = path.join(projectRoot, ".fittingroom", "handoffs", handoffId);
+        const handoffDir = path.join(projectRoot, ".fitroom", "handoffs", handoffId);
 
         try {
           await access(handoffDir);
@@ -2006,7 +1997,7 @@ export function createFittingRoomServer(options: FittingRoomServerOptions = {}):
           handoffDir,
           outputDir: path.join(
             projectRoot,
-            ".fittingroom",
+            ".fitroom",
             "verifications",
             `${handoffId}-${Date.now()}`,
           ),
@@ -2107,7 +2098,7 @@ export function createFittingRoomServer(options: FittingRoomServerOptions = {}):
         "Review captured screenshots against Nielsen's 10 heuristics and submit judged findings.",
     },
     () => ({
-      description: "Review Fitting Room screenshots with Nielsen's heuristics.",
+      description: "Review Fitroom screenshots with Nielsen's heuristics.",
       messages: [
         {
           role: "user",

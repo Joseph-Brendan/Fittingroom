@@ -22,6 +22,6 @@ describe("cli package", () => {
     const help = getHelpText("mcp");
 
     expect(help).toContain(`npx -y ${manifest.name} mcp`);
-    expect(help).toContain(`claude mcp add fitting-room -- npx -y ${manifest.name} mcp`);
+    expect(help).toContain(`claude mcp add fitroom -- npx -y ${manifest.name} mcp`);
   });
 });

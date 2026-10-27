@@ -1,6 +1,6 @@
 export { previewVariant } from "./preview.js";
 export {
-  createFittingRoomServer,
-  type FittingRoomServerOptions,
-  fittingRoomServerInfo,
+  createFitroomServer,
+  type FitroomServerOptions,
+  fitroomServerInfo,
 } from "./server.js";

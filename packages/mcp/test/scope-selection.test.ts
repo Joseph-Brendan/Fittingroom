@@ -4,7 +4,7 @@ import path from "node:path";
 import { Client } from "@modelcontextprotocol/sdk/client/index.js";
 import { InMemoryTransport } from "@modelcontextprotocol/sdk/inMemory.js";
 import { afterAll, beforeAll, describe, expect, it } from "vitest";
-import { createFittingRoomServer } from "../src/index";
+import { createFitroomServer } from "../src/index";
 import { type FixtureServer, fixturePath, startFixtureServer } from "./helpers/fixture-server";
 
 const authPages = ["/login", "/signup", "/forgot-password", "/verify"];
@@ -30,28 +30,28 @@ interface CapturePayload {
 
 let fixture: FixtureServer;
 let client: Client;
-let server: ReturnType<typeof createFittingRoomServer>;
+let server: ReturnType<typeof createFitroomServer>;
 let temporaryDirectory: string;
 
 beforeAll(async () => {
   fixture = await startFixtureServer(fixturePath("scope-app"));
-  temporaryDirectory = await mkdtemp(path.join(os.tmpdir(), "fittingroom-mcp-scopes-"));
+  temporaryDirectory = await mkdtemp(path.join(os.tmpdir(), "fitroom-mcp-scopes-"));
   const projectRoot = path.join(temporaryDirectory, "scope-app");
 
   await cp(fixturePath("scope-app"), projectRoot, { recursive: true });
-  await mkdir(path.join(projectRoot, ".fittingroom"), { recursive: true });
+  await mkdir(path.join(projectRoot, ".fitroom"), { recursive: true });
   await writeFile(
-    path.join(projectRoot, ".fittingroom", "last-request.json"),
+    path.join(projectRoot, ".fitroom", "last-request.json"),
     JSON.stringify({ path: "/login" }),
   );
 
-  server = createFittingRoomServer({
+  server = createFitroomServer({
     appUrl: fixture.origin,
     auditOutputDir: path.join(temporaryDirectory, "audits"),
     captureOutputDir: path.join(temporaryDirectory, "captures"),
     projectRoot,
   });
-  client = new Client({ name: "fittingroom-scope-test", version: "0.0.0" });
+  client = new Client({ name: "fitroom-scope-test", version: "0.0.0" });
   const [clientTransport, serverTransport] = InMemoryTransport.createLinkedPair();
 
   await Promise.all([server.connect(serverTransport), client.connect(clientTransport)]);
@@ -111,20 +111,20 @@ describe("MCP scope selection", () => {
 
   it("returns a scope checklist instead of capturing when there is no default", async () => {
     const projectRoot = path.join(temporaryDirectory, "no-default");
-    const serverWithoutDefault = createFittingRoomServer({
+    const serverWithoutDefault = createFitroomServer({
       appUrl: fixture.origin,
       projectRoot,
     });
     const clientWithoutDefault = new Client({
-      name: "fittingroom-no-default-test",
+      name: "fitroom-no-default-test",
       version: "0.0.0",
     });
     const [clientTransport, serverTransport] = InMemoryTransport.createLinkedPair();
 
     await cp(fixturePath("scope-app"), projectRoot, { recursive: true });
-    await mkdir(path.join(projectRoot, ".fittingroom"), { recursive: true });
+    await mkdir(path.join(projectRoot, ".fitroom"), { recursive: true });
     await writeFile(
-      path.join(projectRoot, ".fittingroom", "scopes.json"),
+      path.join(projectRoot, ".fitroom", "scopes.json"),
       JSON.stringify({
         version: 1,
         scopes: [{ id: "other", name: "Other", routes: ["/other"] }],

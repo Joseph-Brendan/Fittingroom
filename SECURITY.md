@@ -6,7 +6,7 @@
 | ------- | --------- |
 | 0.0.x   | Yes       |
 
-Fitting Room is pre-1.0. Security fixes go to the latest release only.
+Fitroom is pre-1.0. Security fixes go to the latest release only.
 
 ## Reporting a vulnerability
 
@@ -32,12 +32,12 @@ details.
 
 ## Security design
 
-Fitting Room follows these rules:
+Fitroom follows these rules:
 - The board and WebSocket bind to `127.0.0.1`.
 - The board requires a session token on every request.
 - Source code, screenshots, and findings stay on the user's machine.
 - User code runs only in the user's own dev server.
-- Writes stay inside the project and `.fittingroom/`.
+- Writes stay inside the project and `.fitroom/`.
 - GitHub Actions are pinned to full commit SHAs.
 - npm releases use OIDC trusted publishing.
 

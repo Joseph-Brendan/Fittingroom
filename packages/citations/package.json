@@ -1,7 +1,7 @@
 {
-  "name": "@fittingroom/citations",
+  "name": "@fitroom/citations",
   "version": "0.0.0",
-  "description": "Citation registry and validator for Fitting Room audits.",
+  "description": "Citation registry and validator for Fitroom audits.",
   "license": "Apache-2.0",
   "type": "module",
   "sideEffects": false,
@@ -28,5 +28,13 @@
   "publishConfig": {
     "access": "public"
   },
-  "private": true
+  "private": true,
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Joseph-Brendan/fitroom.git"
+  },
+  "homepage": "https://github.com/Joseph-Brendan/fitroom",
+  "bugs": {
+    "url": "https://github.com/Joseph-Brendan/fitroom/issues"
+  }
 }

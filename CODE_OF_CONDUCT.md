@@ -2,7 +2,7 @@
 
 ## Our pledge
 
-We want Fitting Room to be a place where people can ask questions, share work, and disagree about
+We want Fitroom to be a place where people can ask questions, share work, and disagree about
 code without being treated badly. We welcome contributors of every background and experience level.
 
 ## Expected behavior
@@ -24,7 +24,7 @@ code without being treated badly. We welcome contributors of every background an
 ## Scope
 
 This policy applies in the repository, issues, pull requests, discussions, and any project space. It
-also applies when you represent Fitting Room in public.
+also applies when you represent Fitroom in public.
 
 ## Reporting
 
@@ -44,4 +44,4 @@ Retaliation against a person who reports a problem is not allowed.
 
 ## Attribution
 
-This policy is original to Fitting Room and may be reused under the Apache-2.0 license.
+This policy is original to Fitroom and may be reused under the Apache-2.0 license.

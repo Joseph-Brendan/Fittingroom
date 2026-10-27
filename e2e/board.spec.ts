@@ -35,7 +35,7 @@ test("shows four variants in iframes with names, rationales and finding counts",
 }) => {
   await page.goto(boardUrl());
 
-  await expect(page.getByRole("heading", { name: "Fitting Room", level: 1 })).toBeVisible();
+  await expect(page.getByRole("heading", { name: "Fitroom", level: 1 })).toBeVisible();
 
   const cards = page.getByTestId("variant-card");
 

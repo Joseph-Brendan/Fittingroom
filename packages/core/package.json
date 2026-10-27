@@ -1,7 +1,7 @@
 {
-  "name": "@fittingroom/core",
+  "name": "@fitroom/core",
   "version": "0.0.0",
-  "description": "Capture, audit, detect, and diff UI for Fitting Room.",
+  "description": "Capture, audit, detect, and diff UI for Fitroom.",
   "license": "Apache-2.0",
   "type": "module",
   "sideEffects": false,
@@ -19,7 +19,7 @@
     "schemas"
   ],
   "scripts": {
-    "build": "tsup src/index.ts --format esm --dts --clean --sourcemap --external @fittingroom/directions",
+    "build": "tsup src/index.ts --format esm --dts --clean --sourcemap --external @fitroom/directions",
     "test": "vitest run",
     "typecheck": "tsc --noEmit"
   },
@@ -30,7 +30,7 @@
     "access": "public"
   },
   "dependencies": {
-    "@fittingroom/directions": "workspace:*",
+    "@fitroom/directions": "workspace:*",
     "axe-core": "^4.14.0",
     "pixelmatch": "8.0.0",
     "playwright": "^1.64.1",
@@ -40,5 +40,13 @@
   "devDependencies": {
     "@types/pngjs": "6.0.5"
   },
-  "private": true
+  "private": true,
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Joseph-Brendan/fitroom.git"
+  },
+  "homepage": "https://github.com/Joseph-Brendan/fitroom",
+  "bugs": {
+    "url": "https://github.com/Joseph-Brendan/fitroom/issues"
+  }
 }

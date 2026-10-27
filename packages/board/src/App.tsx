@@ -782,7 +782,7 @@ export function App({ initialState, token: tokenProp }: AppProps) {
       };
 
       if (
-        data.type === "fittingroom:key" &&
+        data.type === "fitroom:key" &&
         typeof data.key === "string" &&
         (data.key === "Escape" || data.key === "Delete" || data.key.toLowerCase() === "z") &&
         typeof data.metaKey === "boolean" &&
@@ -802,7 +802,7 @@ export function App({ initialState, token: tokenProp }: AppProps) {
       }
 
       if (
-        data.type !== "fittingroom:select" ||
+        data.type !== "fitroom:select" ||
         typeof data.slug !== "string" ||
         typeof data.id !== "string"
       ) {
@@ -899,12 +899,12 @@ export function App({ initialState, token: tokenProp }: AppProps) {
             <span className="brand-mark">
               <MarkIcon />
             </span>
-            <h1 className="brand-name">Fitting Room</h1>
+            <h1 className="brand-name">Fitroom</h1>
           </div>
         </header>
         <div className="board-main">
           <section className="empty-state">
-            <h2>Fitting Room</h2>
+            <h2>Fitroom</h2>
             <p role="alert">{error}</p>
           </section>
         </div>
@@ -920,7 +920,7 @@ export function App({ initialState, token: tokenProp }: AppProps) {
             <span className="brand-mark">
               <MarkIcon />
             </span>
-            <h1 className="brand-name">Fitting Room</h1>
+            <h1 className="brand-name">Fitroom</h1>
           </div>
         </header>
         <div className="loading-shell">
@@ -983,7 +983,7 @@ export function App({ initialState, token: tokenProp }: AppProps) {
           <span className="brand-mark">
             <MarkIcon />
           </span>
-          <h1 className="brand-name">Fitting Room</h1>
+          <h1 className="brand-name">Fitroom</h1>
         </div>
 
         <label className="scope-pill">

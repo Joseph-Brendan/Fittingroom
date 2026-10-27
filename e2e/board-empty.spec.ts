@@ -27,7 +27,7 @@ test.beforeAll(async () => {
 test("shows the page group picker, banner, empty state and agent sentence", async ({ page }) => {
   await page.goto(session.url);
 
-  await expect(page.getByRole("heading", { name: "Fitting Room", level: 1 })).toBeVisible();
+  await expect(page.getByRole("heading", { name: "Fitroom", level: 1 })).toBeVisible();
   await expect(page.getByLabel("Page group")).toBeVisible();
   await expect(page.getByText("Design system not found.", { exact: false })).toBeVisible();
   await expect(page.getByText("No directions yet.", { exact: true })).toBeVisible();

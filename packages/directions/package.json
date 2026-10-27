@@ -1,7 +1,7 @@
 {
-  "name": "@fittingroom/directions",
+  "name": "@fitroom/directions",
   "version": "0.0.0",
-  "description": "Design direction specs for Fitting Room.",
+  "description": "Design direction specs for Fitroom.",
   "license": "Apache-2.0",
   "type": "module",
   "sideEffects": false,
@@ -33,5 +33,13 @@
   "devDependencies": {
     "ajv": "^8.20.0"
   },
-  "private": true
+  "private": true,
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Joseph-Brendan/fitroom.git"
+  },
+  "homepage": "https://github.com/Joseph-Brendan/fitroom",
+  "bugs": {
+    "url": "https://github.com/Joseph-Brendan/fitroom/issues"
+  }
 }

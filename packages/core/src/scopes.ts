@@ -1,6 +1,6 @@
 import { stat } from "node:fs/promises";
 import path from "node:path";
-import { loadFittingRoomFile, writeFittingRoomJson } from "./fittingroom-store";
+import { loadFitroomFile, writeFitroomJson } from "./fitroom-store";
 import {
   type DiscoveredRoute,
   discoverRoutes,
@@ -174,7 +174,7 @@ export function resolveDefaultScope(
 }
 
 export function scopeConfigPath(projectRoot: string): string {
-  return path.join(projectRoot, ".fittingroom", "scopes.json");
+  return path.join(projectRoot, ".fitroom", "scopes.json");
 }
 
 interface LastRequestFile {
@@ -192,13 +192,13 @@ function parseLastRequest(value: unknown): LastRequestFile {
 }
 
 export async function recordDevServerRequest(projectRoot: string, route: string): Promise<void> {
-  await writeFittingRoomJson(projectRoot, "last-request.json", {
+  await writeFitroomJson(projectRoot, "last-request.json", {
     path: normalizePagePath(route),
   });
 }
 
 export async function readDevServerLastRequest(projectRoot: string): Promise<string | null> {
-  const file = await loadFittingRoomFile({
+  const file = await loadFitroomFile({
     projectRoot,
     fileName: "last-request.json",
     schema: parseLastRequest,
@@ -257,7 +257,7 @@ export async function detectDefaultScope(
 
 function validateScopes(value: unknown): ScopesConfig {
   if (!isRecord(value) || value.version !== 1 || !Array.isArray(value.scopes)) {
-    throw new Error("Invalid .fittingroom/scopes.json file.");
+    throw new Error("Invalid .fitroom/scopes.json file.");
   }
 
   const ids = new Set<string>();
@@ -304,7 +304,7 @@ export async function loadScopes(
   projectRoot: string,
   options: LoadScopesOptions = {},
 ): Promise<ScopesConfig> {
-  return loadFittingRoomFile({
+  return loadFitroomFile({
     projectRoot,
     fileName: "scopes.json",
     schema: validateScopes,
@@ -327,7 +327,7 @@ export async function loadScopes(
 export async function saveScopes(projectRoot: string, config: ScopesConfig): Promise<ScopesConfig> {
   const validated = validateScopes(config);
 
-  await writeFittingRoomJson(projectRoot, "scopes.json", validated);
+  await writeFitroomJson(projectRoot, "scopes.json", validated);
 
   return validated;
 }

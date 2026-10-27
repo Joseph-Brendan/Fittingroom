@@ -1,6 +1,6 @@
 {
-  "title": "Fitting Room",
-  "description": "<p>Fitting Room is an open-source MCP server and CLI for vibe coders. It captures one page group from an app, audits the UI with a citation on every finding, shows four redesign directions on a local design board, and hands the chosen design back to the coding agent.</p>",
+  "title": "Fitroom",
+  "description": "<p>Fitroom is an open-source MCP server and CLI for vibe coders. It captures one page group from an app, audits the UI with a citation on every finding, shows four redesign directions on a local design board, and hands the chosen design back to the coding agent.</p>",
   "creators": [
     {
       "name": "Brendan, Joseph"
@@ -10,5 +10,12 @@
   "upload_type": "software",
   "access_right": "open",
   "version": "0.0.0",
-  "keywords": ["MCP server", "CLI", "UI audit", "accessibility", "design board", "vibe coding"]
+  "keywords": ["MCP server", "CLI", "UI audit", "accessibility", "design board", "vibe coding"],
+  "related_identifiers": [
+    {
+      "identifier": "https://github.com/Joseph-Brendan/fitroom",
+      "relation": "isSupplementTo",
+      "scheme": "url"
+    }
+  ]
 }

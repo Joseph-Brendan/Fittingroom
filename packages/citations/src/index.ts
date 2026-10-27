@@ -76,7 +76,7 @@ function isCitationLevel(value: string): value is CitationLevel {
 }
 
 function isApprovedUrl(value: string): boolean {
-  if (value === ".fittingroom/DESIGN.md") {
+  if (value === ".fitroom/DESIGN.md") {
     return true;
   }
 

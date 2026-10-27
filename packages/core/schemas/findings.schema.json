@@ -1,7 +1,7 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "title": "Fitting Room findings report",
-  "description": "The findings JSON saved at the end of a Fitting Room audit.",
+  "title": "Fitroom findings report",
+  "description": "The findings JSON saved at the end of a Fitroom audit.",
   "type": "object",
   "additionalProperties": false,
   "required": ["scope", "generatedAt", "findings", "errors"],

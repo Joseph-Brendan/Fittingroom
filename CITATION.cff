@@ -1,8 +1,9 @@
 cff-version: 1.2.0
-message: "If you use Fitting Room in your work, cite it with this metadata."
-title: "Fitting Room"
+message: "If you use Fitroom in your work, cite it with this metadata."
+title: "Fitroom"
 abstract: "An open-source MCP server and CLI that captures a UI, audits it with citations, and shows redesign directions on a local design board."
 type: software
+repository-code: "https://github.com/Joseph-Brendan/fitroom"
 authors:
   - family-names: "Brendan"
     given-names: "Joseph"

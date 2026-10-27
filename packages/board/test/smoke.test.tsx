@@ -40,7 +40,7 @@ describe("board package", () => {
   it("renders four comparison cards and the direction form", () => {
     const html = renderToStaticMarkup(<App initialState={state} token="test-token" />);
 
-    expect(html).toContain("Fitting Room");
+    expect(html).toContain("Fitroom");
     expect(html.match(/class="variant-card"/g)).toHaveLength(4);
     expect(html).toContain("Try another direction");
     expect(html).toContain("Findings (0)");

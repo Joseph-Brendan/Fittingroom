@@ -1,5 +1,5 @@
 ---
-"fitting-room": patch
+"fitroom": patch
 ---
 
 Report the CLI version from package.json.

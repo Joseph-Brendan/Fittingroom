@@ -4,7 +4,7 @@ import path from "node:path";
 import pixelmatch from "pixelmatch";
 import { chromium } from "playwright";
 import { PNG } from "pngjs";
-import { writeFileAtomic, writeJsonAtomic } from "./fittingroom-store";
+import { writeFileAtomic, writeJsonAtomic } from "./fitroom-store";
 import type { StructureBlock, StructureFile } from "./structure";
 
 export const HANDOFF_WIDTHS = [375, 768, 1440] as const;
@@ -224,7 +224,7 @@ function briefFor(manifest: HandoffManifest): string {
 
 export async function writeHandoff(input: WriteHandoffInput): Promise<HandoffResult> {
   const handoffId = `handoff-${randomUUID().slice(0, 8)}`;
-  const folder = path.join(input.projectRoot, ".fittingroom", "handoffs", handoffId);
+  const folder = path.join(input.projectRoot, ".fitroom", "handoffs", handoffId);
   const referenceFolder = path.join(folder, "reference");
 
   await mkdir(referenceFolder, { recursive: true });
@@ -301,12 +301,7 @@ export async function writeHandoff(input: WriteHandoffInput): Promise<HandoffRes
 
 export async function createHandoff(input: CreateHandoffInput): Promise<HandoffResult> {
   const captureId = randomUUID();
-  const captureFolder = path.join(
-    input.projectRoot,
-    ".fittingroom",
-    "reference-captures",
-    captureId,
-  );
+  const captureFolder = path.join(input.projectRoot, ".fitroom", "reference-captures", captureId);
 
   try {
     const reference = await captureReference(input.referenceUrl, captureFolder);

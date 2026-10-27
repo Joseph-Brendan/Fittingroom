@@ -16,7 +16,7 @@ const cliPackageVersion =
     : "0.0.0";
 
 const helpText = [
-  "Fitting Room",
+  "Fitroom",
   "Try your UI on before you ship it.",
   "",
   "Usage: fitroom <command> [options]",
@@ -51,7 +51,7 @@ const auditHelpText = [
   "Audit one page group of your app.",
   "",
   "Options:",
-  "  --url <url>       Audit the app at this URL. Without it, Fitting Room finds a local dev server.",
+  "  --url <url>       Audit the app at this URL. Without it, Fitroom finds a local dev server.",
   "  --scope <scope>   Use a saved page group. This skips the picker.",
   "  --pages <pages>   Use pages separated by commas. This skips the picker.",
   "  -h, --help        Show this help.",
@@ -70,14 +70,14 @@ const boardHelpText = [
   "Options:",
   "  --url <url>       Set the app URL for this board session.",
   "  --scope <scope>   Show this saved page group.",
-  "  --state <file>    Read board state from this file. Defaults to .fittingroom/board.json.",
+  "  --state <file>    Read board state from this file. Defaults to .fitroom/board.json.",
   "  --port <port>     Start on this port. Use 0 for any free port. The default tries 4173 to 4183.",
   "  -h, --help        Show this help.",
   "",
   "Examples:",
   "  fitroom board --url http://localhost:3000",
   "  fitroom board --url http://localhost:3000 --scope marketing",
-  "  fitroom board --state .fittingroom/board.json",
+  "  fitroom board --state .fitroom/board.json",
   "  fitroom board --url http://localhost:3000 --port 0",
 ].join("\n");
 
@@ -111,7 +111,7 @@ const mcpHelpText = [
   "Examples:",
   `  npx ${cliPackageName}`,
   `  npx -y ${cliPackageName} mcp`,
-  `  claude mcp add fitting-room -- npx -y ${cliPackageName} mcp`,
+  `  claude mcp add fitroom -- npx -y ${cliPackageName} mcp`,
   "",
   "Options:",
   "  -h, --help        Show this help.",

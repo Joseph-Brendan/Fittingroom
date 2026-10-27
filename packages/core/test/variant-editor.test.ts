@@ -33,7 +33,7 @@ export default function Variant() {
 `;
 
 async function temporaryProject(): Promise<string> {
-  const directory = await mkdtemp(path.join(os.tmpdir(), "fittingroom-variant-"));
+  const directory = await mkdtemp(path.join(os.tmpdir(), "fitroom-variant-"));
   temporaryDirectories.push(directory);
 
   return directory;
@@ -102,11 +102,11 @@ describe("variant edit log", () => {
     );
 
     const orig = await readFile(
-      path.join(projectRoot, ".fittingroom", "variants", "refined.orig.tsx"),
+      path.join(projectRoot, ".fitroom", "variants", "refined.orig.tsx"),
       "utf8",
     );
     const log = JSON.parse(
-      await readFile(path.join(projectRoot, ".fittingroom", "edits", "refined.json"), "utf8"),
+      await readFile(path.join(projectRoot, ".fitroom", "edits", "refined.json"), "utf8"),
     ) as { edits: unknown[]; redo: unknown[]; slug: string };
 
     expect(orig).toBe(original);
@@ -153,7 +153,7 @@ describe("variant edit log", () => {
     );
 
     const log = JSON.parse(
-      await readFile(path.join(projectRoot, ".fittingroom", "edits", "refined.json"), "utf8"),
+      await readFile(path.join(projectRoot, ".fitroom", "edits", "refined.json"), "utf8"),
     ) as { edits: unknown[]; redo: unknown[] };
 
     expect(log.edits).toHaveLength(1);

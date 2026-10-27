@@ -620,7 +620,7 @@ export function findingIdForPage(pagePath: string, findingId: string): string {
 function defaultOutputDir(): string {
   const timestamp = new Date().toISOString().replace(/[:.]/g, "-");
 
-  return path.resolve(process.cwd(), ".fittingroom", "audits", timestamp);
+  return path.resolve(process.cwd(), ".fitroom", "audits", timestamp);
 }
 
 async function saveCrop(

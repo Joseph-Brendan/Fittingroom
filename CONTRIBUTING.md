@@ -1,6 +1,6 @@
-# Contributing to Fitting Room
+# Contributing to Fitroom
 
-Thanks for helping. Fitting Room is built test first and kept small on purpose.
+Thanks for helping. Fitroom is built test first and kept small on purpose.
 
 ## Before you start
 
@@ -60,7 +60,7 @@ For browser changes, also run `pnpm test:e2e` after installing Chromium.
 - Keep business logic in `packages/core`. The MCP, CLI, and board layers stay thin.
 - Do not add a dependency without explaining why, its install cost, and what you considered
   instead.
-- Write only inside the project and `.fittingroom/`.
+- Write only inside the project and `.fitroom/`.
 - Bind local servers to `127.0.0.1`.
 
 ## Style

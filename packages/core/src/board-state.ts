@@ -1,7 +1,7 @@
 import { randomUUID } from "node:crypto";
 import { readFile, rm } from "node:fs/promises";
 import path from "node:path";
-import { fittingRoomFilePath, writeFittingRoomJson, writeJsonAtomic } from "./fittingroom-store";
+import { fitroomFilePath, writeFitroomJson, writeJsonAtomic } from "./fitroom-store";
 
 export const boardStatuses = [
   "empty",
@@ -458,7 +458,7 @@ export function parseBoardState(value: unknown): BoardState {
 export async function readBoardState(projectRoot: string): Promise<BoardState> {
   try {
     return parseBoardState(
-      JSON.parse(await readFile(fittingRoomFilePath(projectRoot, "board.json"), "utf8")) as unknown,
+      JSON.parse(await readFile(fitroomFilePath(projectRoot, "board.json"), "utf8")) as unknown,
     );
   } catch (error) {
     if ((error as NodeJS.ErrnoException).code === "ENOENT") {
@@ -467,7 +467,7 @@ export async function readBoardState(projectRoot: string): Promise<BoardState> {
 
     if (error instanceof SyntaxError) {
       throw new Error(
-        `Could not read ${fittingRoomFilePath(projectRoot, "board.json")}. The file is not valid JSON. Fix the file or delete it and run the command again.`,
+        `Could not read ${fitroomFilePath(projectRoot, "board.json")}. The file is not valid JSON. Fix the file or delete it and run the command again.`,
       );
     }
 
@@ -476,7 +476,7 @@ export async function readBoardState(projectRoot: string): Promise<BoardState> {
 }
 
 export async function writeBoardState(projectRoot: string, state: BoardState): Promise<void> {
-  await writeFittingRoomJson(projectRoot, "board.json", state);
+  await writeFitroomJson(projectRoot, "board.json", state);
 }
 
 export async function updateBoardState(
@@ -544,7 +544,7 @@ function parseRequest(value: unknown): BoardRequest | null {
 export async function readBoardRequests(projectRoot: string): Promise<BoardRequestsFile> {
   try {
     const raw = JSON.parse(
-      await readFile(fittingRoomFilePath(projectRoot, "requests.json"), "utf8"),
+      await readFile(fitroomFilePath(projectRoot, "requests.json"), "utf8"),
     ) as unknown;
 
     if (!isRecord(raw) || !Array.isArray(raw.requests)) {
@@ -566,7 +566,7 @@ export async function readBoardRequests(projectRoot: string): Promise<BoardReque
 
     if (error instanceof SyntaxError) {
       throw new Error(
-        `Could not read ${fittingRoomFilePath(projectRoot, "requests.json")}. The file is not valid JSON. Fix the file or delete it and run the command again.`,
+        `Could not read ${fitroomFilePath(projectRoot, "requests.json")}. The file is not valid JSON. Fix the file or delete it and run the command again.`,
       );
     }
 
@@ -578,7 +578,7 @@ export async function writeBoardRequests(
   projectRoot: string,
   file: BoardRequestsFile,
 ): Promise<void> {
-  await writeFittingRoomJson(projectRoot, "requests.json", file);
+  await writeFitroomJson(projectRoot, "requests.json", file);
 }
 
 export async function appendBoardRequest(
@@ -685,7 +685,7 @@ function processIsAlive(pid: number): boolean {
 export async function readBoardLock(projectRoot: string): Promise<BoardLock | null> {
   try {
     const raw = JSON.parse(
-      await readFile(fittingRoomFilePath(projectRoot, "board.lock"), "utf8"),
+      await readFile(fitroomFilePath(projectRoot, "board.lock"), "utf8"),
     ) as unknown;
 
     if (!isRecord(raw)) {
@@ -742,13 +742,13 @@ export async function writeBoardLock(
     createdAt: new Date().toISOString(),
   };
 
-  await writeJsonAtomic(fittingRoomFilePath(projectRoot, "board.lock"), lock);
+  await writeJsonAtomic(fitroomFilePath(projectRoot, "board.lock"), lock);
 
   return lock;
 }
 
 export async function removeBoardLock(projectRoot: string): Promise<void> {
-  await rm(fittingRoomFilePath(projectRoot, "board.lock"), { force: true });
+  await rm(fitroomFilePath(projectRoot, "board.lock"), { force: true });
 }
 
 export function boardRequestSentence(request: BoardRequest): string {
@@ -765,5 +765,5 @@ export function boardRequestSentence(request: BoardRequest): string {
 }
 
 export function requestFilePath(projectRoot: string): string {
-  return path.join(projectRoot, ".fittingroom", "requests.json");
+  return path.join(projectRoot, ".fitroom", "requests.json");
 }

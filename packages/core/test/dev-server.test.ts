@@ -27,7 +27,7 @@ describe("detectDevServer", () => {
   });
 
   it("finds the dev server port declared in the project dev script", async () => {
-    const projectRoot = await mkdtemp(path.join(os.tmpdir(), "fittingroom-dev-script-"));
+    const projectRoot = await mkdtemp(path.join(os.tmpdir(), "fitroom-dev-script-"));
     const fixedServer = createServer((_request, response) => {
       response.writeHead(200, { "content-type": "text/html; charset=utf-8" });
       response.end("<!doctype html><html><body>App</body></html>");

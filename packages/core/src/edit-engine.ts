@@ -16,7 +16,7 @@ import {
   type TokenCategory,
   type TokensFile,
 } from "./design-system";
-import { loadFittingRoomFile, writeFittingRoomJson, writeJsonAtomic } from "./fittingroom-store";
+import { loadFitroomFile, writeFitroomJson, writeJsonAtomic } from "./fitroom-store";
 
 export type InsertComponent = "heading" | "text" | "button" | "input" | "image";
 
@@ -316,7 +316,7 @@ async function loadTokens(
     return supplied;
   }
 
-  const file = await loadFittingRoomFile({
+  const file = await loadFitroomFile({
     projectRoot,
     fileName: "tokens.json",
     schema: parseTokensFile,
@@ -560,7 +560,7 @@ function parseEditLog(value: unknown): EditLog {
 }
 
 async function loadLog(projectRoot: string): Promise<EditLog> {
-  return loadFittingRoomFile({
+  return loadFitroomFile({
     projectRoot,
     fileName: "edits.json",
     schema: parseEditLog,
@@ -569,7 +569,7 @@ async function loadLog(projectRoot: string): Promise<EditLog> {
 }
 
 async function saveLog(projectRoot: string, log: EditLog): Promise<void> {
-  await writeFittingRoomJson(projectRoot, "edits.json", log);
+  await writeFitroomJson(projectRoot, "edits.json", log);
 }
 
 function logKey(projectRoot: string, filePath: string): string {
@@ -660,11 +660,11 @@ function safeSlug(slug: string): string {
 }
 
 function variantLogPath(projectRoot: string, slug: string): string {
-  return path.join(projectRoot, ".fittingroom", "edits", `${safeSlug(slug)}.json`);
+  return path.join(projectRoot, ".fitroom", "edits", `${safeSlug(slug)}.json`);
 }
 
 function variantOrigPath(projectRoot: string, slug: string): string {
-  return path.join(projectRoot, ".fittingroom", "variants", `${safeSlug(slug)}.orig.tsx`);
+  return path.join(projectRoot, ".fitroom", "variants", `${safeSlug(slug)}.orig.tsx`);
 }
 
 function jsxTagName(element: TargetElement): string {

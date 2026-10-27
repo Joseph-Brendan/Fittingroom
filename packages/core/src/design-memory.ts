@@ -2,7 +2,7 @@ import { copyFile, mkdir, readFile, stat } from "node:fs/promises";
 import path from "node:path";
 import { chromium } from "playwright";
 import type { Finding } from "./audit";
-import { fittingRoomFilePath, writeFileAtomic, writeJsonAtomic } from "./fittingroom-store";
+import { fitroomFilePath, writeFileAtomic, writeJsonAtomic } from "./fitroom-store";
 
 export interface DesignMemoryButton {
   backgroundColor: string;
@@ -347,7 +347,7 @@ function isDesignMemory(value: unknown): value is DesignMemory {
 export async function readDesignMemory(projectRoot: string): Promise<DesignMemory | null> {
   try {
     const raw = JSON.parse(
-      await readFile(fittingRoomFilePath(projectRoot, "design-memory.json"), "utf8"),
+      await readFile(fitroomFilePath(projectRoot, "design-memory.json"), "utf8"),
     ) as unknown;
 
     return isDesignMemory(raw) ? raw : null;
@@ -360,10 +360,10 @@ export async function saveDesignMemory(
   projectRoot: string,
   memory: DesignMemory,
 ): Promise<SaveDesignMemoryResult> {
-  const directory = path.join(projectRoot, ".fittingroom");
+  const directory = path.join(projectRoot, ".fitroom");
   const designPath = path.join(directory, "DESIGN.md");
   const memoryPath = path.join(directory, "design-memory.json");
-  const files = [".fittingroom/DESIGN.md", ".fittingroom/design-memory.json"];
+  const files = [".fitroom/DESIGN.md", ".fitroom/design-memory.json"];
 
   await mkdir(directory, { recursive: true });
 
@@ -552,7 +552,7 @@ export async function auditDesignMemory(input: AuditDesignMemoryInput): Promise<
   }
 
   const outputDir =
-    input.outputDir ?? path.join(input.projectRoot, ".fittingroom", "design-memory-audit");
+    input.outputDir ?? path.join(input.projectRoot, ".fitroom", "design-memory-audit");
   const screenshotPath = path.join(outputDir, "page.png");
 
   await mkdir(outputDir, { recursive: true });

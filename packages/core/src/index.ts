@@ -6,7 +6,7 @@ export * from "./design-memory";
 export * from "./design-system";
 export * from "./dev-server";
 export * from "./edit-engine";
-export * from "./fittingroom-store";
+export * from "./fitroom-store";
 export * from "./handoff";
 export * from "./regeneration";
 export * from "./rounds";
@@ -17,7 +17,7 @@ export * from "./states";
 export * from "./structure";
 
 export const corePackage = {
-  name: "@fittingroom/core",
+  name: "@fitroom/core",
   version: "0.0.0",
 } as const;
 

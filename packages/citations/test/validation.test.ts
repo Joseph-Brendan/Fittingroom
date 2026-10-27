@@ -33,7 +33,7 @@ describe("citation registry entries", () => {
       expect(approvedSources).toContain(citation.source);
 
       if (citation.source === "Project design memory") {
-        expect(citation.url).toBe(".fittingroom/DESIGN.md");
+        expect(citation.url).toBe(".fitroom/DESIGN.md");
         continue;
       }
 

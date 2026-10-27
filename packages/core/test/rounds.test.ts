@@ -13,7 +13,7 @@ import {
 let temporaryDirectory: string;
 
 beforeAll(async () => {
-  temporaryDirectory = await mkdtemp(path.join(os.tmpdir(), "fittingroom-rounds-"));
+  temporaryDirectory = await mkdtemp(path.join(os.tmpdir(), "fitroom-rounds-"));
 });
 
 afterAll(async () => {
@@ -39,12 +39,12 @@ describe("round history", () => {
     const filePath = await writeFileAt(projectRoot, "variants/refined.tsx", "<h1>Round 1</h1>\n");
     const origPath = await writeFileAt(
       projectRoot,
-      ".fittingroom/variants/refined.orig.tsx",
+      ".fitroom/variants/refined.orig.tsx",
       "<h1>Original</h1>\n",
     );
     const editLogPath = await writeFileAt(
       projectRoot,
-      ".fittingroom/edits/refined.json",
+      ".fitroom/edits/refined.json",
       '{"version":1}\n',
     );
     const screenshotPath = await writeFileAt(projectRoot, "preview.png", "png");
@@ -67,7 +67,7 @@ describe("round history", () => {
 
     expect(snapshot.current).toBe(true);
     expect(
-      await readFile(path.join(projectRoot, ".fittingroom", "rounds", "1", snapshot.file), "utf8"),
+      await readFile(path.join(projectRoot, ".fitroom", "rounds", "1", snapshot.file), "utf8"),
     ).toBe("<h1>Round 1</h1>\n");
     expect(snapshot.orig).not.toBeNull();
     expect(snapshot.editLog).not.toBeNull();
@@ -84,12 +84,12 @@ describe("round history", () => {
     );
     const currentOrig = await writeFileAt(
       projectRoot,
-      ".fittingroom/variants/refined.orig.tsx",
+      ".fitroom/variants/refined.orig.tsx",
       "<h1>Current original</h1>\n",
     );
     const currentLog = await writeFileAt(
       projectRoot,
-      ".fittingroom/edits/refined.json",
+      ".fitroom/edits/refined.json",
       '{"version":1,"edits":["current"]}\n',
     );
 

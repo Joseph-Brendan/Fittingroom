@@ -122,25 +122,25 @@ importers:
         specifier: ^4.6.7
         version: 4.6.7
     devDependencies:
-      '@fittingroom/board':
+      '@fitroom/board':
         specifier: workspace:*
         version: link:../board
-      '@fittingroom/citations':
+      '@fitroom/citations':
         specifier: workspace:*
         version: link:../citations
-      '@fittingroom/core':
+      '@fitroom/core':
         specifier: workspace:*
         version: link:../core
-      '@fittingroom/directions':
+      '@fitroom/directions':
         specifier: workspace:*
         version: link:../directions
-      '@fittingroom/mcp':
+      '@fitroom/mcp':
         specifier: workspace:*
         version: link:../mcp
 
   packages/core:
     dependencies:
-      '@fittingroom/directions':
+      '@fitroom/directions':
         specifier: workspace:*
         version: link:../directions
       axe-core:
@@ -171,13 +171,13 @@ importers:
 
   packages/mcp:
     dependencies:
-      '@fittingroom/citations':
+      '@fitroom/citations':
         specifier: workspace:*
         version: link:../citations
-      '@fittingroom/core':
+      '@fitroom/core':
         specifier: workspace:*
         version: link:../core
-      '@fittingroom/directions':
+      '@fitroom/directions':
         specifier: workspace:*
         version: link:../directions
       '@modelcontextprotocol/sdk':

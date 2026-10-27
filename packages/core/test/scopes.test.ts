@@ -21,7 +21,7 @@ let temporaryDirectory: string;
 let projectRoot: string;
 
 beforeAll(async () => {
-  temporaryDirectory = await mkdtemp(path.join(os.tmpdir(), "fittingroom-scopes-"));
+  temporaryDirectory = await mkdtemp(path.join(os.tmpdir(), "fitroom-scopes-"));
   projectRoot = path.join(temporaryDirectory, "scope-app");
 
   await cp(scopeFixture, projectRoot, { recursive: true });
@@ -74,7 +74,7 @@ describe("scope definitions", () => {
     });
     const reloaded = await loadScopes(projectRoot);
     const raw = JSON.parse(
-      await readFile(path.join(projectRoot, ".fittingroom", "scopes.json"), "utf8"),
+      await readFile(path.join(projectRoot, ".fitroom", "scopes.json"), "utf8"),
     ) as { scopes: Array<{ id: string; routes: string[] }> };
 
     expect(split.scopes.find((scope) => scope.id === "auth")?.routes).toEqual([
@@ -165,10 +165,10 @@ describe("scope state files", () => {
     const root = path.join(temporaryDirectory, "missing-scopes");
 
     await cp(scopeFixture, root, { recursive: true });
-    await rm(path.join(root, ".fittingroom"), { force: true, recursive: true });
+    await rm(path.join(root, ".fitroom"), { force: true, recursive: true });
 
     const config = await loadScopes(root);
-    const filePath = path.join(root, ".fittingroom", "scopes.json");
+    const filePath = path.join(root, ".fitroom", "scopes.json");
 
     expect(config.scopes).toHaveLength(5);
     expect(JSON.parse(await readFile(filePath, "utf8"))).toEqual(config);
@@ -182,16 +182,16 @@ describe("scope state files", () => {
     };
 
     await cp(scopeFixture, root, { recursive: true });
-    await mkdir(path.join(root, ".fittingroom"), { recursive: true });
+    await mkdir(path.join(root, ".fitroom"), { recursive: true });
     await writeFile(
-      path.join(root, ".fittingroom", "scopes.json"),
+      path.join(root, ".fitroom", "scopes.json"),
       `${JSON.stringify(existing, null, 2)}\n`,
     );
 
     expect(await loadScopes(root)).toEqual(existing);
-    expect(
-      JSON.parse(await readFile(path.join(root, ".fittingroom", "scopes.json"), "utf8")),
-    ).toEqual(existing);
+    expect(JSON.parse(await readFile(path.join(root, ".fitroom", "scopes.json"), "utf8"))).toEqual(
+      existing,
+    );
   });
 
   it("creates last-request.json with a null path when it is missing", async () => {
@@ -201,7 +201,7 @@ describe("scope state files", () => {
 
     expect(await readDevServerLastRequest(root)).toBeNull();
     expect(
-      JSON.parse(await readFile(path.join(root, ".fittingroom", "last-request.json"), "utf8")),
+      JSON.parse(await readFile(path.join(root, ".fitroom", "last-request.json"), "utf8")),
     ).toEqual({ path: null });
   });
 
@@ -209,8 +209,8 @@ describe("scope state files", () => {
     const root = path.join(temporaryDirectory, "corrupt-scopes");
 
     await cp(scopeFixture, root, { recursive: true });
-    await mkdir(path.join(root, ".fittingroom"), { recursive: true });
-    await writeFile(path.join(root, ".fittingroom", "scopes.json"), '{"version": 1, "scopes": ');
+    await mkdir(path.join(root, ".fitroom"), { recursive: true });
+    await writeFile(path.join(root, ".fitroom", "scopes.json"), '{"version": 1, "scopes": ');
 
     await expect(loadScopes(root)).rejects.toThrow(
       /scopes\.json.*not valid JSON.*Fix the file or delete it/,

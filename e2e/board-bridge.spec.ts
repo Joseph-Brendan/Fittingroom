@@ -139,13 +139,13 @@ test.beforeAll(async () => {
     cwd: projectRoot,
     env: {
       ...(process.env as Record<string, string>),
-      FITTINGROOM_APP_URL: "http://127.0.0.1:4176",
-      FITTINGROOM_CURRENT_PATH: "/login",
+      FITROOM_APP_URL: "http://127.0.0.1:4176",
+      FITROOM_CURRENT_PATH: "/login",
     },
     stderr: "pipe",
   });
 
-  client = new Client({ name: "fittingroom-board-bridge-test", version: "0.0.0" });
+  client = new Client({ name: "fitroom-board-bridge-test", version: "0.0.0" });
   await client.connect(transport);
 });
 
@@ -235,8 +235,8 @@ test("moves a board request through variants and approval without a reload", asy
 
 test("edits a real variant file, then undo and redo return the exact file", async ({ page }) => {
   const variantPath = path.join(projectRoot, "variants", "refined.tsx");
-  const origPath = path.join(projectRoot, ".fittingroom", "variants", "refined.orig.tsx");
-  const logPath = path.join(projectRoot, ".fittingroom", "edits", "refined.json");
+  const origPath = path.join(projectRoot, ".fitroom", "variants", "refined.orig.tsx");
+  const logPath = path.join(projectRoot, ".fitroom", "edits", "refined.json");
   const original = await readFile(variantPath, "utf8");
 
   await page.goto(session.url);
@@ -340,7 +340,7 @@ test("restores code and edits from an earlier round, then restores the replaced 
   page,
 }) => {
   const variantPath = path.join(projectRoot, "variants", "refined.tsx");
-  const logPath = path.join(projectRoot, ".fittingroom", "edits", "refined.json");
+  const logPath = path.join(projectRoot, ".fitroom", "edits", "refined.json");
 
   for (const round of [2, 3]) {
     const regenerated = await callJson<RegeneratePayload>("fr_regenerate", {
@@ -377,7 +377,7 @@ test("restores code and edits from an earlier round, then restores the replaced 
     throw new Error("Round 1 did not save the refined variant.");
   }
 
-  const firstRoundDirectory = path.join(projectRoot, ".fittingroom", "rounds", "1");
+  const firstRoundDirectory = path.join(projectRoot, ".fitroom", "rounds", "1");
   const firstCode = await readFile(path.join(firstRoundDirectory, firstRefined.file), "utf8");
   const firstLog =
     firstRefined.editLog === null
@@ -417,7 +417,7 @@ test("restores code and edits from an earlier round, then restores the replaced 
     }
 
     const code = await readFile(
-      path.join(projectRoot, ".fittingroom", "rounds", "3", snapshot.file),
+      path.join(projectRoot, ".fitroom", "rounds", "3", snapshot.file),
       "utf8",
     );
 

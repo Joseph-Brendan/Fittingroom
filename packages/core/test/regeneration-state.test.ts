@@ -7,7 +7,7 @@ import { readRegenerationHistory } from "../src/index";
 let temporaryDirectory: string;
 
 beforeAll(async () => {
-  temporaryDirectory = await mkdtemp(path.join(os.tmpdir(), "fittingroom-history-"));
+  temporaryDirectory = await mkdtemp(path.join(os.tmpdir(), "fitroom-history-"));
 });
 
 afterAll(async () => {
@@ -19,7 +19,7 @@ describe("regeneration history file", () => {
     const projectRoot = path.join(temporaryDirectory, "missing");
     const history = await readRegenerationHistory(projectRoot);
     const stored = JSON.parse(
-      await readFile(path.join(projectRoot, ".fittingroom", "history.json"), "utf8"),
+      await readFile(path.join(projectRoot, ".fitroom", "history.json"), "utf8"),
     ) as unknown;
 
     expect(history).toEqual({ version: 1, scopes: {} });
@@ -30,9 +30,9 @@ describe("regeneration history file", () => {
     const projectRoot = path.join(temporaryDirectory, "existing");
     const existing = { version: 1, scopes: {} };
 
-    await mkdir(path.join(projectRoot, ".fittingroom"), { recursive: true });
+    await mkdir(path.join(projectRoot, ".fitroom"), { recursive: true });
     await writeFile(
-      path.join(projectRoot, ".fittingroom", "history.json"),
+      path.join(projectRoot, ".fitroom", "history.json"),
       `${JSON.stringify(existing, null, 2)}\n`,
     );
 
@@ -42,8 +42,8 @@ describe("regeneration history file", () => {
   it("gives a plain error for corrupt history.json", async () => {
     const projectRoot = path.join(temporaryDirectory, "corrupt");
 
-    await mkdir(path.join(projectRoot, ".fittingroom"), { recursive: true });
-    await writeFile(path.join(projectRoot, ".fittingroom", "history.json"), '{"version": 1, ');
+    await mkdir(path.join(projectRoot, ".fitroom"), { recursive: true });
+    await writeFile(path.join(projectRoot, ".fitroom", "history.json"), '{"version": 1, ');
 
     await expect(readRegenerationHistory(projectRoot)).rejects.toThrow(
       /history\.json.*not valid JSON.*Fix the file or delete it/,

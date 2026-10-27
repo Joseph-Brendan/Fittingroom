@@ -1,7 +1,7 @@
 {
-  "name": "@fittingroom/board",
+  "name": "@fitroom/board",
   "version": "0.0.0",
-  "description": "Local design board for Fitting Room.",
+  "description": "Local design board for Fitroom.",
   "license": "Apache-2.0",
   "type": "module",
   "scripts": {
@@ -27,5 +27,13 @@
   "exports": {
     "./package.json": "./package.json"
   },
-  "private": true
+  "private": true,
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Joseph-Brendan/fitroom.git"
+  },
+  "homepage": "https://github.com/Joseph-Brendan/fitroom",
+  "bugs": {
+    "url": "https://github.com/Joseph-Brendan/fitroom/issues"
+  }
 }

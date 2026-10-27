@@ -392,7 +392,7 @@ async function main(): Promise<void> {
   process.on("SIGINT", shutdown);
   process.on("SIGTERM", shutdown);
 
-  process.stdout.write(`Fitting Room board ready at ${url}\n`);
+  process.stdout.write(`Fitroom board ready at ${url}\n`);
 }
 
 void main();

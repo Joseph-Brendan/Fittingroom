@@ -1,6 +1,6 @@
 ---
-"@fittingroom/board": minor
-"fitting-room": minor
+"@fitroom/board": minor
+"fitroom": minor
 ---
 
 Add the four-variant comparison board, preview viewport switching, severity-grouped findings drawer, WebSocket direction requests, and a CLI board host protected by a random session token.

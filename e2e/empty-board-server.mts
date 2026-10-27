@@ -37,7 +37,7 @@ async function main(): Promise<void> {
   process.on("SIGINT", shutdown);
   process.on("SIGTERM", shutdown);
 
-  process.stdout.write(`Empty Fitting Room board ready at ${url}\n`);
+  process.stdout.write(`Empty Fitroom board ready at ${url}\n`);
 }
 
 void main();

@@ -5,7 +5,7 @@ import {
   renameScope,
   type ScopesConfig,
   splitScope,
-} from "@fittingroom/core";
+} from "@fitroom/core";
 
 export interface ScopesCommandOptions {
   projectRoot?: string;

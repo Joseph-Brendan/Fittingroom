@@ -243,7 +243,7 @@ export async function capture(
 
   const outputDir =
     options.outputDir ??
-    path.resolve(process.cwd(), ".fittingroom", "captures", routeSlug(selection.id));
+    path.resolve(process.cwd(), ".fitroom", "captures", routeSlug(selection.id));
 
   await mkdir(outputDir, { recursive: true });
 

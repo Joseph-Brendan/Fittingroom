@@ -1,6 +1,6 @@
 import path from "node:path";
 import { createInterface } from "node:readline/promises";
-import { validate } from "@fittingroom/citations";
+import { validate } from "@fitroom/citations";
 import {
   type AuditCheckError,
   buildScopeChecklist,
@@ -21,7 +21,7 @@ import {
   type ScopeSummary,
   writeFileAtomic,
   writeJsonAtomic,
-} from "@fittingroom/core";
+} from "@fitroom/core";
 
 export interface AuditScopeOptions {
   appUrl?: string;
@@ -165,7 +165,7 @@ export async function selectAuditScope(
     };
   }
 
-  const configuredCurrentPath = options.currentPath ?? process.env.FITTINGROOM_CURRENT_PATH;
+  const configuredCurrentPath = options.currentPath ?? process.env.FITROOM_CURRENT_PATH;
   const defaultScope = await detectDefaultScope(
     projectRoot,
     config,
@@ -287,7 +287,7 @@ function renderHtmlReport(
     "<head>",
     '<meta charset="utf-8">',
     '<meta name="viewport" content="width=device-width, initial-scale=1">',
-    `<title>Fitting Room audit: ${escapeHtml(summary.name)}</title>`,
+    `<title>Fitroom audit: ${escapeHtml(summary.name)}</title>`,
     "<style>",
     "body { margin: 0; padding: 32px; color: #16181d; background: #fff; font-family: system-ui, sans-serif; line-height: 1.5; }",
     "main { max-width: 880px; margin: 0 auto; }",
@@ -300,7 +300,7 @@ function renderHtmlReport(
     "</head>",
     "<body>",
     "<main>",
-    `<h1>Fitting Room audit: ${escapeHtml(summary.name)}</h1>`,
+    `<h1>Fitroom audit: ${escapeHtml(summary.name)}</h1>`,
     `<p><strong>Pages:</strong> ${escapeHtml(summary.pages.join(", "))}</p>`,
     `<p><strong>Generated:</strong> ${escapeHtml(generatedAt)}</p>`,
     `<p><strong>Findings:</strong> ${findings.length}</p>`,
@@ -337,7 +337,7 @@ export async function runAuditCommand(
   });
   const auditRoot =
     options.auditOutputDir ??
-    path.resolve(projectRoot, ".fittingroom", "audits", selection.selection.id);
+    path.resolve(projectRoot, ".fitroom", "audits", selection.selection.id);
   const errors: AuditCommandError[] = [];
   const findings: AuditFinding[] = [];
 

@@ -2,7 +2,7 @@ import { mkdir } from "node:fs/promises";
 import { createRequire } from "node:module";
 import path from "node:path";
 import { chromium, type Page, type Route } from "playwright";
-import { writeJsonAtomic } from "./fittingroom-store";
+import { writeJsonAtomic } from "./fitroom-store";
 
 export type StateName = "empty" | "loading" | "error" | "long" | "dark";
 export type StateStatus = "pass" | "fail" | "not_reachable";
@@ -437,7 +437,7 @@ export async function checkState(input: CheckStateInput): Promise<StateResult> {
 
   const pageName = pageSlug(input.route);
   const screenshotDirectory = path.join(
-    input.outputDir ?? path.join(input.projectRoot, ".fittingroom", "states"),
+    input.outputDir ?? path.join(input.projectRoot, ".fitroom", "states"),
     pageName,
   );
   const screenshots: string[] = [];
@@ -502,7 +502,7 @@ export async function checkState(input: CheckStateInput): Promise<StateResult> {
 async function checkDarkState(input: CheckStateInput): Promise<StateResult> {
   const pageName = pageSlug(input.route);
   const screenshotDirectory = path.join(
-    input.outputDir ?? path.join(input.projectRoot, ".fittingroom", "states"),
+    input.outputDir ?? path.join(input.projectRoot, ".fitroom", "states"),
     pageName,
   );
   const screenshotPath = path.join(screenshotDirectory, "dark-1440.png");
@@ -552,10 +552,7 @@ export async function checkStates(input: CheckStatesInput): Promise<StatesReport
   };
 
   await writeJsonAtomic(
-    path.join(
-      input.outputDir ?? path.join(input.projectRoot, ".fittingroom", "states"),
-      "report.json",
-    ),
+    path.join(input.outputDir ?? path.join(input.projectRoot, ".fitroom", "states"), "report.json"),
     report,
   );
 

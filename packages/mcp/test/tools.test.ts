@@ -4,7 +4,7 @@ import path from "node:path";
 import { Client } from "@modelcontextprotocol/sdk/client/index.js";
 import { InMemoryTransport } from "@modelcontextprotocol/sdk/inMemory.js";
 import { afterAll, beforeAll, describe, expect, it } from "vitest";
-import { createFittingRoomServer } from "../src/index";
+import { createFitroomServer } from "../src/index";
 import { type FixtureServer, fixturePath, startFixtureServer } from "./helpers/fixture-server";
 
 interface ScopesPayload {
@@ -54,20 +54,20 @@ interface SubmitPayload {
 
 let fixture: FixtureServer;
 let client: Client;
-let server: ReturnType<typeof createFittingRoomServer>;
+let server: ReturnType<typeof createFitroomServer>;
 let temporaryDirectory: string;
 
 beforeAll(async () => {
   fixture = await startFixtureServer(fixturePath("bad-ui"));
-  temporaryDirectory = await mkdtemp(path.join(os.tmpdir(), "fittingroom-mcp-"));
-  server = createFittingRoomServer({
+  temporaryDirectory = await mkdtemp(path.join(os.tmpdir(), "fitroom-mcp-"));
+  server = createFitroomServer({
     appUrl: fixture.origin,
     auditOutputDir: path.join(temporaryDirectory, "audits"),
     captureOutputDir: path.join(temporaryDirectory, "captures"),
     currentPath: "/login",
     projectRoot: fixturePath("bad-ui"),
   });
-  client = new Client({ name: "fittingroom-tools-test", version: "0.0.0" });
+  client = new Client({ name: "fitroom-tools-test", version: "0.0.0" });
   const [clientTransport, serverTransport] = InMemoryTransport.createLinkedPair();
 
   await Promise.all([server.connect(serverTransport), client.connect(clientTransport)]);
@@ -105,7 +105,7 @@ function parseJson<T>(content: unknown): T {
   return JSON.parse(textContent(content)) as T;
 }
 
-describe("Fitting Room MCP tools", () => {
+describe("Fitroom MCP tools", () => {
   it("lists the tools and the heuristic-review prompt", async () => {
     const tools = await client.listTools();
     const prompts = await client.listPrompts();

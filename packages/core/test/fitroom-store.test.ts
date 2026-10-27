@@ -2,7 +2,7 @@ import { mkdir, mkdtemp, readdir, readFile, rm, writeFile } from "node:fs/promis
 import os from "node:os";
 import path from "node:path";
 import { afterAll, beforeAll, describe, expect, it } from "vitest";
-import { loadFittingRoomFile, writeJsonAtomic } from "../src/index";
+import { loadFitroomFile, writeJsonAtomic } from "../src/index";
 
 interface SampleFile {
   value: string;
@@ -27,17 +27,17 @@ function parseSample(value: unknown): SampleFile {
 let temporaryDirectory: string;
 
 beforeAll(async () => {
-  temporaryDirectory = await mkdtemp(path.join(os.tmpdir(), "fittingroom-store-"));
+  temporaryDirectory = await mkdtemp(path.join(os.tmpdir(), "fitroom-store-"));
 });
 
 afterAll(async () => {
   await rm(temporaryDirectory, { force: true, recursive: true });
 });
 
-describe("fitting room state files", () => {
+describe("Fitroom state files", () => {
   it("creates a missing file with valid defaults", async () => {
     const projectRoot = path.join(temporaryDirectory, "missing");
-    const value = await loadFittingRoomFile({
+    const value = await loadFitroomFile({
       projectRoot,
       fileName: "sample.json",
       schema: parseSample,
@@ -46,19 +46,19 @@ describe("fitting room state files", () => {
 
     expect(value).toEqual({ version: 1, value: "default" });
 
-    const filePath = path.join(projectRoot, ".fittingroom", "sample.json");
+    const filePath = path.join(projectRoot, ".fitroom", "sample.json");
 
     expect(JSON.parse(await readFile(filePath, "utf8"))).toEqual(value);
   });
 
   it("does not overwrite an existing file", async () => {
     const projectRoot = path.join(temporaryDirectory, "existing");
-    const filePath = path.join(projectRoot, ".fittingroom", "sample.json");
+    const filePath = path.join(projectRoot, ".fitroom", "sample.json");
 
     await mkdir(path.dirname(filePath), { recursive: true });
     await writeFile(filePath, `${JSON.stringify({ version: 1, value: "existing" })}\n`);
 
-    const value = await loadFittingRoomFile({
+    const value = await loadFitroomFile({
       projectRoot,
       fileName: "sample.json",
       schema: parseSample,
@@ -74,13 +74,13 @@ describe("fitting room state files", () => {
 
   it("names the file and the fix when JSON is corrupt", async () => {
     const projectRoot = path.join(temporaryDirectory, "corrupt");
-    const filePath = path.join(projectRoot, ".fittingroom", "sample.json");
+    const filePath = path.join(projectRoot, ".fitroom", "sample.json");
 
     await mkdir(path.dirname(filePath), { recursive: true });
     await writeFile(filePath, '{"version": 1, "value": ');
 
     await expect(
-      loadFittingRoomFile({
+      loadFitroomFile({
         projectRoot,
         fileName: "sample.json",
         schema: parseSample,
@@ -91,13 +91,13 @@ describe("fitting room state files", () => {
 
   it("names the file and the fix when the schema rejects the content", async () => {
     const projectRoot = path.join(temporaryDirectory, "invalid");
-    const filePath = path.join(projectRoot, ".fittingroom", "sample.json");
+    const filePath = path.join(projectRoot, ".fitroom", "sample.json");
 
     await mkdir(path.dirname(filePath), { recursive: true });
     await writeFile(filePath, `${JSON.stringify({ version: 2, value: "wrong" })}\n`);
 
     await expect(
-      loadFittingRoomFile({
+      loadFitroomFile({
         projectRoot,
         fileName: "sample.json",
         schema: parseSample,
@@ -107,7 +107,7 @@ describe("fitting room state files", () => {
   });
 
   it("writes JSON atomically and leaves no temp files", async () => {
-    const filePath = path.join(temporaryDirectory, "atomic", ".fittingroom", "sample.json");
+    const filePath = path.join(temporaryDirectory, "atomic", ".fitroom", "sample.json");
 
     await writeJsonAtomic(filePath, { version: 1, value: "one" });
     await writeJsonAtomic(filePath, { version: 1, value: "two" });
@@ -120,7 +120,7 @@ describe("fitting room state files", () => {
   });
 
   it("keeps the old file when serialization fails", async () => {
-    const filePath = path.join(temporaryDirectory, "serialize", ".fittingroom", "sample.json");
+    const filePath = path.join(temporaryDirectory, "serialize", ".fitroom", "sample.json");
 
     await writeJsonAtomic(filePath, { version: 1, value: "old" });
 

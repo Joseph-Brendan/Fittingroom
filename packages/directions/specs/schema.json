@@ -1,7 +1,7 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "title": "Fitting Room direction spec",
-  "description": "One design direction for a Fitting Room board slot.",
+  "title": "Fitroom direction spec",
+  "description": "One design direction for a Fitroom board slot.",
   "type": "object",
   "additionalProperties": false,
   "required": ["slot", "id", "name", "description", "surfaces"],

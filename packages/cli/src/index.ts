@@ -1,4 +1,5 @@
 #!/usr/bin/env node
+import { migrateLegacyState } from "@fitroom/core";
 import { runAuditCommand } from "./audit.js";
 import { runBoardCommand } from "./board-command.js";
 import { getHelpText, getVersion } from "./help.js";
@@ -145,6 +146,8 @@ async function main(args: string[]): Promise<void> {
     process.stdout.write(`${getHelpText(command)}\n`);
     return;
   }
+
+  await migrateLegacyState(process.cwd(), command === "mcp" ? process.stderr : process.stdout);
 
   if (command === "audit") {
     const flags = auditFlags(rest);

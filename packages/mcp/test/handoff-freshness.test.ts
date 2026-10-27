@@ -3,7 +3,7 @@ import path from "node:path";
 import { Client } from "@modelcontextprotocol/sdk/client/index.js";
 import { InMemoryTransport } from "@modelcontextprotocol/sdk/inMemory.js";
 import { afterAll, beforeAll, describe, expect, it } from "vitest";
-import { createFittingRoomServer } from "../src/index";
+import { createFitroomServer } from "../src/index";
 import { type FixtureServer, fixturePath, startFixtureServer } from "./helpers/fixture-server";
 
 const source = `
@@ -19,7 +19,7 @@ export default function FreshnessVariant() {
 
 let fixture: FixtureServer;
 let client: Client;
-let server: ReturnType<typeof createFittingRoomServer>;
+let server: ReturnType<typeof createFitroomServer>;
 let temporaryDirectory: string;
 let projectRoot: string;
 let variantPath: string;
@@ -65,12 +65,12 @@ beforeAll(async () => {
   await mkdir(path.dirname(variantPath), { recursive: true });
   await writeFile(variantPath, source);
 
-  server = createFittingRoomServer({
+  server = createFitroomServer({
     appUrl: fixture.origin,
     currentPath: "/login",
     projectRoot,
   });
-  client = new Client({ name: "fittingroom-handoff-freshness", version: "0.0.0" });
+  client = new Client({ name: "fitroom-handoff-freshness", version: "0.0.0" });
   const [clientTransport, serverTransport] = InMemoryTransport.createLinkedPair();
 
   await Promise.all([server.connect(serverTransport), client.connect(clientTransport)]);
@@ -98,7 +98,7 @@ afterAll(async () => {
 describe("fr_handoff after edits", () => {
   it("renders the current variant file before writing the handoff", async () => {
     const before = await readFile(
-      path.join(projectRoot, ".fittingroom", "variants", "fresh", "reference", "1440.png"),
+      path.join(projectRoot, ".fitroom", "variants", "fresh", "reference", "1440.png"),
     );
     const stamped = await readFile(variantPath, "utf8");
 
@@ -107,7 +107,7 @@ describe("fr_handoff after edits", () => {
     const handoff = await callJson<{ folder: string }>("fr_handoff", { variantSlug: "fresh" });
     const after = await readFile(path.join(handoff.folder, "reference", "1440.png"));
     const memory = JSON.parse(
-      await readFile(path.join(projectRoot, ".fittingroom", "design-memory.json"), "utf8"),
+      await readFile(path.join(projectRoot, ".fitroom", "design-memory.json"), "utf8"),
     ) as {
       button: { backgroundColor: string };
       colors: Record<string, string>;

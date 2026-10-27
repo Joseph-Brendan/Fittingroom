@@ -10,7 +10,7 @@ import {
   HANDOFF_WIDTHS,
   type HandoffReference,
   runAutomatedChecks,
-} from "@fittingroom/core";
+} from "@fitroom/core";
 import { build } from "esbuild";
 import { chromium } from "playwright";
 
@@ -116,9 +116,9 @@ export async function previewVariant(
   filePath: string,
   slug: string,
 ): Promise<PreviewResult> {
-  const previewRoot = path.join(projectRoot, ".fittingroom", "previews", slug);
-  const outputRoot = path.join(projectRoot, ".fittingroom", "variants", slug);
-  const routePrefix = `/__fittingroom/preview/${encodeURIComponent(slug)}`;
+  const previewRoot = path.join(projectRoot, ".fitroom", "previews", slug);
+  const outputRoot = path.join(projectRoot, ".fitroom", "variants", slug);
+  const routePrefix = `/__fitroom/preview/${encodeURIComponent(slug)}`;
   const entryPath = path.join(previewRoot, "entry.tsx");
   const bundlePath = path.join(previewRoot, "preview.js");
   const relativeVariant = path.relative(previewRoot, filePath).split(path.sep).join("/");

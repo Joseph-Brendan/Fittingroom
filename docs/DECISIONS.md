@@ -1,4 +1,4 @@
-# Fitting Room: Product Decisions v1
+# Fitroom: Product Decisions v1
 
 Approved by Joseph Brendan on 24 October 2026. These decisions answer every "Needs Joseph" item from the full test run. Build exactly what this file says. If something here is unclear, ask before guessing.
 
@@ -8,15 +8,15 @@ Build order: D1, D2, D3, D4, D5, D6, D7. Each decision ends with "Done when". A 
 
 ## D1. Packaging: one bundled package
 
-**Decision:** Publish one npm package, `fitroom`, from `packages/cli`. Do not publish `@fittingroom/core`, `@fittingroom/citations`, `@fittingroom/directions` or `@fittingroom/board`.
+**Decision:** Publish one npm package, `fitroom`, from `packages/cli`. Do not publish `@fitroom/core`, `@fitroom/citations`, `@fitroom/directions` or `@fitroom/board`.
 
-The package install and MCP client commands are `npx fitroom`, `npx -y fitroom mcp` and `claude mcp add fitting-room -- npx -y fitroom mcp`. Antigravity and Cursor use `"command": "npx"` with `"args": ["-y", "fitroom", "mcp"]`.
+The package install and MCP client commands are `npx fitroom`, `npx -y fitroom mcp` and `claude mcp add fitroom -- npx -y fitroom mcp`. Antigravity and Cursor use `"command": "npx"` with `"args": ["-y", "fitroom", "mcp"]`.
 
-**Why:** Users install one thing and remember one name. We do not own the `@fittingroom` scope on npm, and four extra packages mean four times the release work.
+**Why:** Users install one thing and remember one name. We do not own the `@fitroom` scope on npm, and four extra packages mean four times the release work.
 
 **How:**
 
-1. tsup in `packages/cli` bundles every workspace package into `dist`. Use `noExternal: [/^@fittingroom\//]`.
+1. tsup in `packages/cli` bundles every workspace package into `dist`. Use `noExternal: [/^@fitroom\//]`.
 2. `registry.json` and every `directions/*.json` file are imported as JSON so they end up inside the bundle. No code may read them from a path in another package at runtime.
 3. Build the board with Vite into `packages/board/dist`. Copy that folder into `packages/cli/dist/board` as part of the CLI build. The CLI serves the board from `dist/board`.
 4. Third-party runtime libraries (for example playwright, axe-core, ts-morph, ws, the MCP SDK) stay as normal `dependencies` in `packages/cli/package.json`.
@@ -34,22 +34,22 @@ The package install and MCP client commands are `npx fitroom`, `npx -y fitroom m
 
 ## D2. The board bridge and approval flow
 
-**Decision:** The agent and the board talk through files in `.fittingroom`, watched in real time. The board never runs a model. The agent never needs to know the board's port.
+**Decision:** The agent and the board talk through files in `.fitroom`, watched in real time. The board never runs a model. The agent never needs to know the board's port.
 
 **Why:** The MCP server is started by the agent over stdio. The board is a separate process. Files are the simplest link that survives restarts, works on every operating system, and leaves a record we can debug.
 
 **How:**
 
-1. **One state file:** `.fittingroom/board.json`. It holds the current scope, the current round number, the four slots, pins, the selected variant, and a `status`.
+1. **One state file:** `.fitroom/board.json`. It holds the current scope, the current round number, the four slots, pins, the selected variant, and a `status`.
 2. **Status values, in order:** `empty`, `generating`, `directions_ready`, `approved`, `handoff_created`, `verifying`, `verified`, `verify_failed`.
-3. **Requests from the board:** when the user clicks Generate, Regenerate, Regenerate one slot, or Approve, the board appends a request to `.fittingroom/requests.json` with an id, type, slot (if any), and time. The board shows "Waiting for your agent" and the exact sentence to give the agent.
-4. **Lock file:** when the board starts, it writes `.fittingroom/board.lock` with its process id, port and session token. It deletes the file on exit. A stale lock (process no longer running) is ignored and replaced.
+3. **Requests from the board:** when the user clicks Generate, Regenerate, Regenerate one slot, or Approve, the board appends a request to `.fitroom/requests.json` with an id, type, slot (if any), and time. The board shows "Waiting for your agent" and the exact sentence to give the agent.
+4. **Lock file:** when the board starts, it writes `.fitroom/board.lock` with its process id, port and session token. It deletes the file on exit. A stale lock (process no longer running) is ignored and replaced.
 5. **New MCP tools:**
     - `fr_open_board()`: starts the board if no live lock exists, then returns its URL.
     - `fr_board_status()`: returns `board.json` plus any open requests.
     - `fr_wait_for_user(timeoutSeconds)`: waits until there is an open request or the status becomes `approved`, then returns it. The default timeout is 600 seconds. On timeout, it returns `{ timedOut: true }`.
     - `fr_complete_request(id)`: marks a request done.
-6. **Live updates:** the board server watches `.fittingroom` and pushes changes to the browser over its WebSocket. When the agent registers a new variant, the card appears without a page reload.
+6. **Live updates:** the board server watches `.fitroom` and pushes changes to the browser over its WebSocket. When the agent registers a new variant, the card appears without a page reload.
 7. **Approve:** the Approve button sets `status: "approved"` and `approved: { slot, slug, round }`. It is disabled until the user picks a card.
 
 **Done when:**
@@ -66,10 +66,10 @@ The package install and MCP client commands are `npx fitroom`, `npx -y fitroom m
 **How:**
 
 1. A compiler step stamps every JSX element in each variant file with a stable `data-fr-id`.
-2. When a variant is registered, save an untouched copy as `.fittingroom/variants/<slug>.orig.tsx`.
+2. When a variant is registered, save an untouched copy as `.fitroom/variants/<slug>.orig.tsx`.
 3. **Operations:** `set-text`, `set-token`, `move`, `delete`, `duplicate`, `insert`, `swap-section`. Each one targets a `data-fr-id`.
 4. Apply operations with ts-morph. The output is formatted with the project's formatter, or Prettier defaults if there is none.
-5. Each variant has its own log: `.fittingroom/edits/<slug>.json`.
+5. Each variant has its own log: `.fitroom/edits/<slug>.json`.
 6. **Undo:** rebuild the variant from `<slug>.orig.tsx` by replaying the log minus the last operation. **Redo:** replay the undone operation. A new edit after an undo clears the redo stack.
 7. **Inspector:** text, color, font size, spacing, radius, font weight, visibility. When a design system is connected, the token options come first. An off-system value is allowed but saved with `offSystem: true`.
 8. **Move:** drag with dnd-kit, only among siblings inside the same parent.
@@ -89,7 +89,7 @@ The package install and MCP client commands are `npx fitroom`, `npx -y fitroom m
 
 **How:**
 
-1. Each round is saved in `.fittingroom/rounds/<n>/`, with the variant files, their edit logs, screenshots, the direction slug of each slot, and the rationale lines.
+1. Each round is saved in `.fitroom/rounds/<n>/`, with the variant files, their edit logs, screenshots, the direction slug of each slot, and the rationale lines.
 2. `history.json` lists every round with its time, scope, and the 4 direction slugs.
 3. The "Previous" strip on the board shows each round as a row of 4 thumbnails.
 4. **Restore:** the user clicks an old variant, then clicks Restore. It goes back into the slot of the same role (Refined into slot 1, Native into slot 2, and so on), with its edit log. The variant it replaces moves into the current round's history, so it can be restored later.
@@ -150,8 +150,8 @@ The package install and MCP client commands are `npx fitroom`, `npx -y fitroom m
 **How:**
 
 1. On `fr_handoff`, write two files:
-    - `.fittingroom/DESIGN.md`, for people. It lists the direction name, type pair and type scale, color tokens, spacing scale, radius scale, density, the approved button and input styles, and the direction's do and don't lists.
-    - `.fittingroom/design-memory.json`, for code. It holds the same values in machine form.
+    - `.fitroom/DESIGN.md`, for people. It lists the direction name, type pair and type scale, color tokens, spacing scale, radius scale, density, the approved button and input styles, and the direction's do and don't lists.
+    - `.fitroom/design-memory.json`, for code. It holds the same values in machine form.
 2. If design memory already exists, a new approval updates it and keeps the old version as `DESIGN.<date>.md`.
 3. **A page breaks design memory when any of these is measured on a visible element:**
 
@@ -202,7 +202,7 @@ The package install and MCP client commands are `npx fitroom`, `npx -y fitroom m
     | Long text | No text is clipped or overflows its container, and the page has no horizontal scroll at 320 px | wcag22-1.4.10, related wcag22-1.4.12 |
     | Dark mode | The full contrast audit passes in dark mode | wcag22-1.4.3 and wcag22-1.4.11 |
 
-5. Save the screenshots in `.fittingroom/states/<page>/<state>-<width>.png`. Save the results in `.fittingroom/states/report.json`.
+5. Save the screenshots in `.fitroom/states/<page>/<state>-<width>.png`. Save the results in `.fitroom/states/report.json`.
 
 **Done when:**
 

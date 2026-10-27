@@ -9,7 +9,7 @@ import {
   SyntaxKind,
 } from "ts-morph";
 import { applyVariantEdit, type EditOperation } from "./edit-engine";
-import { fittingRoomFilePath, writeJsonAtomic } from "./fittingroom-store";
+import { fitroomFilePath, writeJsonAtomic } from "./fitroom-store";
 
 export const structureKinds = [
   "nav",
@@ -310,7 +310,7 @@ function parseBlock(value: unknown): StructureBlock | null {
 export async function readStructure(projectRoot: string): Promise<StructureFile | null> {
   try {
     const raw = JSON.parse(
-      await readFile(fittingRoomFilePath(projectRoot, "structure.json"), "utf8"),
+      await readFile(fitroomFilePath(projectRoot, "structure.json"), "utf8"),
     ) as unknown;
 
     if (
@@ -340,7 +340,7 @@ export async function readStructure(projectRoot: string): Promise<StructureFile 
 }
 
 export async function writeStructure(projectRoot: string, structure: StructureFile): Promise<void> {
-  await writeJsonAtomic(fittingRoomFilePath(projectRoot, "structure.json"), structure);
+  await writeJsonAtomic(fitroomFilePath(projectRoot, "structure.json"), structure);
 }
 
 function renumber(blocks: StructureBlock[]): StructureBlock[] {

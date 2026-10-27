@@ -65,7 +65,7 @@ let temporaryDirectory: string;
 
 beforeAll(async () => {
   server = await startFixtureServer(fixturePath("design-memory"));
-  temporaryDirectory = await mkdtemp(path.join(os.tmpdir(), "fittingroom-memory-"));
+  temporaryDirectory = await mkdtemp(path.join(os.tmpdir(), "fitroom-memory-"));
 });
 
 afterAll(async () => {
@@ -84,19 +84,16 @@ async function audit(page: string): Promise<Awaited<ReturnType<typeof auditDesig
 describe("design memory", () => {
   it("writes the human and machine files", async () => {
     const result = await saveDesignMemory(temporaryDirectory, memory);
-    const design = await readFile(
-      path.join(temporaryDirectory, ".fittingroom", "DESIGN.md"),
-      "utf8",
-    );
+    const design = await readFile(path.join(temporaryDirectory, ".fitroom", "DESIGN.md"), "utf8");
     const saved = await readDesignMemory(temporaryDirectory);
 
-    expect(result.files).toContain(".fittingroom/DESIGN.md");
+    expect(result.files).toContain(".fitroom/DESIGN.md");
     expect(design).toContain("# Clean UI");
     expect(design).toContain("Inter");
     expect(design).toContain("#1d4ed8");
     expect(saved?.button.backgroundColor).toBe("#1d4ed8");
     expect(
-      (await stat(path.join(temporaryDirectory, ".fittingroom", "design-memory.json"))).size,
+      (await stat(path.join(temporaryDirectory, ".fitroom", "design-memory.json"))).size,
     ).toBeGreaterThan(0);
   });
 
@@ -108,14 +105,14 @@ describe("design memory", () => {
     });
 
     const files = await readFile(
-      path.join(temporaryDirectory, ".fittingroom", "design-memory.json"),
+      path.join(temporaryDirectory, ".fitroom", "design-memory.json"),
       "utf8",
     );
-    const directory = await readdir(path.join(temporaryDirectory, ".fittingroom"));
+    const directory = await readdir(path.join(temporaryDirectory, ".fitroom"));
 
     expect(files).toContain("Clean UI v2");
     expect(
-      (await readFile(path.join(temporaryDirectory, ".fittingroom", "DESIGN.md"), "utf8")).length,
+      (await readFile(path.join(temporaryDirectory, ".fitroom", "DESIGN.md"), "utf8")).length,
     ).toBeGreaterThan(0);
     expect(directory.some((file) => /^DESIGN\.\d{4}-\d{2}-\d{2}.*\.md$/.test(file))).toBe(true);
   });

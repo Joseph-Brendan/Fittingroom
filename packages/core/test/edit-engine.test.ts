@@ -55,7 +55,7 @@ const operationCases: Array<{ name: string; operation: EditOperation }> = [
 let temporaryDirectory: string;
 
 beforeAll(async () => {
-  temporaryDirectory = await mkdtemp(path.join(os.tmpdir(), "fittingroom-edits-"));
+  temporaryDirectory = await mkdtemp(path.join(os.tmpdir(), "fitroom-edits-"));
 });
 
 afterAll(async () => {
@@ -84,7 +84,7 @@ describe.each(operationCases)("edit engine: $name", ({ name, operation }) => {
     expect(result.offSystem).toBe(false);
 
     const log = JSON.parse(
-      await readFile(path.join(projectRoot, ".fittingroom", "edits.json"), "utf8"),
+      await readFile(path.join(projectRoot, ".fitroom", "edits.json"), "utf8"),
     ) as {
       files: Record<
         string,
@@ -114,7 +114,7 @@ describe("edit engine logging and undo", () => {
     );
     const edited = await readFile(filePath, "utf8");
     const log = JSON.parse(
-      await readFile(path.join(projectRoot, ".fittingroom", "edits.json"), "utf8"),
+      await readFile(path.join(projectRoot, ".fitroom", "edits.json"), "utf8"),
     ) as {
       files: Record<string, { edits: Array<{ offSystem: boolean }> }>;
     };
@@ -145,7 +145,7 @@ describe("edit engine logging and undo", () => {
     const edited = await readFile(filePath, "utf8");
     const expected = await readFile(path.join(fixtureRoot, "set-text", "after.tsx"), "utf8");
     const log = JSON.parse(
-      await readFile(path.join(projectRoot, ".fittingroom", "edits.json"), "utf8"),
+      await readFile(path.join(projectRoot, ".fitroom", "edits.json"), "utf8"),
     ) as {
       files: Record<string, { edits: unknown[] }>;
     };
@@ -156,7 +156,7 @@ describe("edit engine logging and undo", () => {
 });
 
 describe("edit engine state files", () => {
-  it("creates tokens.json and edits.json when .fittingroom is missing", async () => {
+  it("creates tokens.json and edits.json when .fitroom is missing", async () => {
     const projectRoot = path.join(temporaryDirectory, "missing-state");
     const filePath = path.join(projectRoot, "variant.tsx");
 
@@ -165,10 +165,10 @@ describe("edit engine state files", () => {
     await applyEdit(filePath, { op: "set-text", id: "title", text: "New title" }, { projectRoot });
 
     const tokensFile = JSON.parse(
-      await readFile(path.join(projectRoot, ".fittingroom", "tokens.json"), "utf8"),
+      await readFile(path.join(projectRoot, ".fitroom", "tokens.json"), "utf8"),
     ) as { tokens?: { color?: Record<string, string> } };
     const log = JSON.parse(
-      await readFile(path.join(projectRoot, ".fittingroom", "edits.json"), "utf8"),
+      await readFile(path.join(projectRoot, ".fitroom", "edits.json"), "utf8"),
     ) as { version?: number; files?: Record<string, unknown> };
 
     expect(tokensFile.tokens?.color).toEqual({});
@@ -181,8 +181,8 @@ describe("edit engine state files", () => {
     const filePath = path.join(projectRoot, "variant.tsx");
 
     await cp(path.join(fixtureRoot, "set-text", "before.tsx"), filePath);
-    await mkdir(path.join(projectRoot, ".fittingroom"), { recursive: true });
-    await writeFile(path.join(projectRoot, ".fittingroom", "tokens.json"), '{"tokens": ');
+    await mkdir(path.join(projectRoot, ".fitroom"), { recursive: true });
+    await writeFile(path.join(projectRoot, ".fitroom", "tokens.json"), '{"tokens": ');
 
     await expect(
       applyEdit(filePath, { op: "set-text", id: "title", text: "New title" }, { projectRoot }),
@@ -194,11 +194,8 @@ describe("edit engine state files", () => {
     const filePath = path.join(projectRoot, "variant.tsx");
 
     await cp(path.join(fixtureRoot, "set-text", "before.tsx"), filePath);
-    await mkdir(path.join(projectRoot, ".fittingroom"), { recursive: true });
-    await writeFile(
-      path.join(projectRoot, ".fittingroom", "edits.json"),
-      '{"version": 1, "files": ',
-    );
+    await mkdir(path.join(projectRoot, ".fitroom"), { recursive: true });
+    await writeFile(path.join(projectRoot, ".fitroom", "edits.json"), '{"version": 1, "files": ');
 
     await expect(
       applyEdit(filePath, { op: "set-text", id: "title", text: "New title" }, { projectRoot }),

@@ -6,8 +6,8 @@ import {
   type DirectionSurface,
   directionLibrary,
   getDirection,
-} from "@fittingroom/directions";
-import { loadFittingRoomFile, writeFittingRoomJson } from "./fittingroom-store";
+} from "@fitroom/directions";
+import { loadFitroomFile, writeFitroomJson } from "./fitroom-store";
 
 export type RefinedMode = "light" | "deep";
 export type VariantRole = "refined" | "native" | "bold" | "wildcard";
@@ -428,7 +428,7 @@ export function setSessionPinned(
 }
 
 export function historyPath(projectRoot: string): string {
-  return path.join(projectRoot, ".fittingroom", "history.json");
+  return path.join(projectRoot, ".fitroom", "history.json");
 }
 
 function isRecord(value: unknown): value is Record<string, unknown> {
@@ -444,7 +444,7 @@ function parseRegenerationHistory(value: unknown): RegenerationHistory {
 }
 
 export async function readRegenerationHistory(projectRoot: string): Promise<RegenerationHistory> {
-  return loadFittingRoomFile({
+  return loadFitroomFile({
     projectRoot,
     fileName: "history.json",
     schema: parseRegenerationHistory,
@@ -456,7 +456,7 @@ export async function writeRegenerationHistory(
   projectRoot: string,
   history: RegenerationHistory,
 ): Promise<void> {
-  await writeFittingRoomJson(projectRoot, "history.json", history);
+  await writeFitroomJson(projectRoot, "history.json", history);
 }
 
 export async function regenerateScope(input: RegenerateScopeInput): Promise<RegenerationResult> {
@@ -482,7 +482,7 @@ export async function regenerateScope(input: RegenerateScopeInput): Promise<Rege
   const result = await regenerateSession(
     session,
     input,
-    path.join(input.projectRoot, ".fittingroom", "regenerations", input.scopeId),
+    path.join(input.projectRoot, ".fitroom", "regenerations", input.scopeId),
   );
 
   history.scopes[input.scopeId] = result.session;

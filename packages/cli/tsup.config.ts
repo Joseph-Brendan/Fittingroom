@@ -5,6 +5,6 @@ export default defineConfig({
   dts: true,
   entry: ["src/index.ts"],
   format: ["esm"],
-  noExternal: [/^@fittingroom\//],
+  noExternal: [/^@fitroom\//],
   sourcemap: true,
 });

@@ -27,7 +27,7 @@ import {
   updateBoardState,
   writeBoardLock,
   writeBoardState,
-} from "@fittingroom/core";
+} from "@fitroom/core";
 import { WebSocket, WebSocketServer } from "ws";
 
 export type { BoardApproval, BoardFinding, BoardRequest, BoardState, BoardStatus, BoardVariant };
@@ -273,7 +273,7 @@ function withPreviewBridge(html: string, slug: string): string {
       ) {
         event.preventDefault();
         window.parent.postMessage({
-          type: "fittingroom:key",
+          type: "fitroom:key",
           key: event.key,
           metaKey: event.metaKey,
           ctrlKey: event.ctrlKey,
@@ -296,7 +296,7 @@ function withPreviewBridge(html: string, slug: string): string {
           label: (child.textContent ?? "").trim().slice(0, 40),
         }));
       window.parent.postMessage({
-        type: "fittingroom:select",
+        type: "fitroom:select",
         slug: ${JSON.stringify(slug)},
         id: element.getAttribute("data-fr-id") ?? "",
         label: (element.textContent ?? "").trim().slice(0, 40),
@@ -334,8 +334,8 @@ export async function startBoardServer(options: BoardServerOptions): Promise<Run
   const requests: DirectionRequest[] = [];
   const editRequests: BoardEditOperation[] = [];
   const projectRoot = options.projectRoot;
-  const fittingRoomDirectory =
-    projectRoot === undefined ? undefined : path.join(projectRoot, ".fittingroom");
+  const fitroomDirectory =
+    projectRoot === undefined ? undefined : path.join(projectRoot, ".fitroom");
 
   if (projectRoot !== undefined) {
     const live = await readLiveBoardLock(projectRoot);
@@ -353,7 +353,7 @@ export async function startBoardServer(options: BoardServerOptions): Promise<Run
   }
 
   if (projectRoot !== undefined) {
-    const statePath = path.join(projectRoot, ".fittingroom", "board.json");
+    const statePath = path.join(projectRoot, ".fitroom", "board.json");
 
     try {
       await access(statePath);
@@ -377,7 +377,7 @@ export async function startBoardServer(options: BoardServerOptions): Promise<Run
   let lockToken: string | undefined;
   const boardRoot = await resolveBoardRoot();
   const previewDirectory =
-    projectRoot === undefined ? undefined : path.join(projectRoot, ".fittingroom", "previews");
+    projectRoot === undefined ? undefined : path.join(projectRoot, ".fitroom", "previews");
   const sockets = new WebSocketServer({ noServer: true });
   const broadcast = (message: unknown): void => {
     const payload = JSON.stringify(message);
@@ -876,7 +876,7 @@ export async function startBoardServer(options: BoardServerOptions): Promise<Run
 
         const roundNumber = decodeURIComponent(rest.slice(0, separator));
         const requested = decodeURIComponent(rest.slice(separator + 1));
-        const roundRoot = path.resolve(projectRoot, ".fittingroom", "rounds", roundNumber);
+        const roundRoot = path.resolve(projectRoot, ".fitroom", "rounds", roundNumber);
         const filePath = path.resolve(roundRoot, requested);
 
         if (!/^\d+$/.test(roundNumber) || !filePath.startsWith(`${roundRoot}${path.sep}`)) {
@@ -971,7 +971,7 @@ export async function startBoardServer(options: BoardServerOptions): Promise<Run
           return;
         }
 
-        const assetPrefix = `/__fittingroom/preview/${encodeURIComponent(slug)}/`;
+        const assetPrefix = `/__fitroom/preview/${encodeURIComponent(slug)}/`;
         const boardPrefix = `/preview-assets/${encodeURIComponent(slug)}/`;
         const html = preview
           .replaceAll(assetPrefix, boardPrefix)
@@ -1077,7 +1077,7 @@ export async function startBoardServer(options: BoardServerOptions): Promise<Run
   const port = address !== null && typeof address !== "string" ? address.port : (options.port ?? 0);
   const url = `http://127.0.0.1:${port}/?token=${encodeURIComponent(token)}`;
 
-  if (projectRoot !== undefined && fittingRoomDirectory !== undefined) {
+  if (projectRoot !== undefined && fitroomDirectory !== undefined) {
     await writeBoardLock(projectRoot, {
       pid: process.pid,
       port,
@@ -1086,7 +1086,7 @@ export async function startBoardServer(options: BoardServerOptions): Promise<Run
       ...(state.scope.id === "" ? {} : { scopeId: state.scope.id }),
     });
     lockToken = token;
-    watcher = watch(fittingRoomDirectory, (_event, fileName) => {
+    watcher = watch(fitroomDirectory, (_event, fileName) => {
       const changed = fileName === null ? undefined : String(fileName);
 
       if (
