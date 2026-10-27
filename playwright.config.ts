@@ -14,7 +14,7 @@ export default defineConfig({
       maxDiffPixelRatio: 0.01,
     },
   },
-  snapshotPathTemplate: "test-reports/board-ui/baselines/{arg}{ext}",
+  snapshotPathTemplate: "test-reports/board-ui/baselines/{platform}/{arg}{ext}",
   use: {
     baseURL: "http://127.0.0.1:4173",
     trace: "on-first-retry",
