@@ -122,19 +122,45 @@ the board edit API and reloads the iframe. Undo restores the previous edit.
 
 ## Run the MCP server
 
-Install the package once.
+Run the CLI without installing it.
 
 ```bash
-npm install -g fitting-room
+npx fitroom --help
+npx fitroom audit
 ```
 
-Start the server from the folder of the app you are testing. This keeps route discovery and file paths inside your project.
+Run the MCP server with npx.
 
 ```bash
-fitroom mcp
+npx -y fitroom mcp
 ```
 
-Add it to your MCP client config with command `fitroom` and args `["mcp"]`. Set the working directory to your app folder.
+Install the CLI globally if you prefer.
+
+```bash
+npm install -g fitroom
+```
+
+Add it to Claude Code.
+
+```bash
+claude mcp add fitting-room -- npx -y fitroom mcp
+```
+
+Antigravity and Cursor use this JSON.
+
+```json
+{
+  "mcpServers": {
+    "fitting-room": {
+      "command": "npx",
+      "args": ["-y", "fitroom", "mcp"]
+    }
+  }
+}
+```
+
+Set the working directory to your app folder. This keeps route discovery and file paths inside your project.
 
 ## MCP tools
 

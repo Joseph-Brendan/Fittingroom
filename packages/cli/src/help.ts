@@ -1,5 +1,20 @@
 import { readFileSync } from "node:fs";
 
+interface CliPackage {
+  name?: unknown;
+  version?: unknown;
+}
+
+const cliPackage = JSON.parse(
+  readFileSync(new URL("../package.json", import.meta.url), "utf8"),
+) as CliPackage;
+const cliPackageName =
+  typeof cliPackage.name === "string" && cliPackage.name !== "" ? cliPackage.name : "fitroom";
+const cliPackageVersion =
+  typeof cliPackage.version === "string" && cliPackage.version !== ""
+    ? cliPackage.version
+    : "0.0.0";
+
 const helpText = [
   "Fitting Room",
   "Try your UI on before you ship it.",
@@ -93,6 +108,11 @@ const mcpHelpText = [
   "",
   "Run it from the folder of the app you are testing.",
   "",
+  "Examples:",
+  `  npx ${cliPackageName}`,
+  `  npx -y ${cliPackageName} mcp`,
+  `  claude mcp add fitting-room -- npx -y ${cliPackageName} mcp`,
+  "",
   "Options:",
   "  -h, --help        Show this help.",
 ].join("\n");
@@ -113,13 +133,5 @@ export function getHelpText(command?: string): string {
 }
 
 export function getVersion(): string {
-  const manifest = JSON.parse(
-    readFileSync(new URL("../package.json", import.meta.url), "utf8"),
-  ) as { version?: unknown };
-
-  if (typeof manifest.version !== "string" || manifest.version === "") {
-    throw new Error("The package version is missing from package.json.");
-  }
-
-  return manifest.version;
+  return cliPackageVersion;
 }

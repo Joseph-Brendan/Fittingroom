@@ -227,6 +227,7 @@ async function cliPackageVersion(): Promise<string> {
 }
 
 async function startBoard(args: string[]): Promise<RunningBoard> {
+  const wantsAppUrl = args.includes("--url") || args.some((arg) => arg.startsWith("--url="));
   const boardArgs =
     args.includes("--port") || args.some((arg) => arg.startsWith("--port="))
       ? args
@@ -249,7 +250,9 @@ async function startBoard(args: string[]): Promise<RunningBoard> {
   const deadline = Date.now() + 30_000;
 
   while (Date.now() < deadline) {
-    if (output.includes("Board ready:")) {
+    const ready = output.includes("Board ready:") && (!wantsAppUrl || output.includes("App URL:"));
+
+    if (ready) {
       return { child, output: () => output };
     }
 

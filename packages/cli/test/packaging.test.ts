@@ -108,6 +108,32 @@ describe("npm pack", () => {
     expect(archives).toEqual([tarballName]);
   });
 
+  it("keeps a fitroom bin entry that points at the built script", async () => {
+    const manifest = JSON.parse(await readFile(path.join(cliRoot, "package.json"), "utf8")) as {
+      bin?: unknown;
+      mcpName?: unknown;
+      name?: unknown;
+    };
+
+    expect(manifest.mcpName).toBe(manifest.name);
+    expect(manifest.bin).toMatchObject({ fitroom: "dist/index.js" });
+
+    const entry = path.join(cliRoot, "dist", "index.js");
+    const firstLine = (await readFile(entry, "utf8")).split("\n")[0];
+
+    expect(firstLine).toBe("#!/usr/bin/env node");
+  });
+
+  it("uses the package name in the MCP install commands", async () => {
+    const readme = await readFile(path.join(repoRoot, "README.md"), "utf8");
+
+    expect(readme).toContain(`npx ${packageName}`);
+    expect(readme).toContain(`npx -y ${packageName} mcp`);
+    expect(readme).toContain(`claude mcp add fitting-room -- npx -y ${packageName} mcp`);
+    expect(readme).toContain(`"args": ["-y", "${packageName}", "mcp"]`);
+    expect(readme).toContain(`npm install -g ${packageName}`);
+  });
+
   it("lists only dist files and no fixtures, tests, reports or env files", async () => {
     const { stdout } = await run(npmCommand, ["pack", "--dry-run", "--json"], cliRoot);
     const packages = JSON.parse(stdout) as Array<{

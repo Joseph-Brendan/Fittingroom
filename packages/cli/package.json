@@ -1,11 +1,11 @@
 {
-  "name": "fitting-room",
+  "name": "fitroom",
   "version": "1.0.0",
   "description": "The fitroom command for Fitting Room.",
   "license": "Apache-2.0",
   "type": "module",
   "bin": {
-    "fitroom": "./dist/index.js"
+    "fitroom": "dist/index.js"
   },
   "files": [
     "dist"
@@ -41,5 +41,6 @@
     "@fittingroom/core": "workspace:*",
     "@fittingroom/directions": "workspace:*",
     "@fittingroom/mcp": "workspace:*"
-  }
+  },
+  "mcpName": "fitroom"
 }

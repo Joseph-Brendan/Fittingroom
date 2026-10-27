@@ -8,7 +8,9 @@ Build order: D1, D2, D3, D4, D5, D6, D7. Each decision ends with "Done when". A 
 
 ## D1. Packaging: one bundled package
 
-**Decision:** Publish one npm package, `fitting-room`, from `packages/cli`. Do not publish `@fittingroom/core`, `@fittingroom/citations`, `@fittingroom/directions` or `@fittingroom/board`.
+**Decision:** Publish one npm package, `fitroom`, from `packages/cli`. Do not publish `@fittingroom/core`, `@fittingroom/citations`, `@fittingroom/directions` or `@fittingroom/board`.
+
+The package install and MCP client commands are `npx fitroom`, `npx -y fitroom mcp` and `claude mcp add fitting-room -- npx -y fitroom mcp`. Antigravity and Cursor use `"command": "npx"` with `"args": ["-y", "fitroom", "mcp"]`.
 
 **Why:** Users install one thing and remember one name. We do not own the `@fittingroom` scope on npm, and four extra packages mean four times the release work.
 
