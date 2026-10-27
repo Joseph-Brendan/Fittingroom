@@ -1,5 +1,5 @@
 import { type ChildProcess, execFile } from "node:child_process";
-import { cp, mkdir, mkdtemp, readdir, rm } from "node:fs/promises";
+import { cp, mkdir, mkdtemp, readdir, readFile, rm } from "node:fs/promises";
 import { createRequire } from "node:module";
 import os from "node:os";
 import path from "node:path";
@@ -14,9 +14,9 @@ const npmCommand = process.platform === "win32" ? "npm.cmd" : "npm";
 const npxCommand = process.platform === "win32" ? "npx.cmd" : "npx";
 const repoRoot = fileURLToPath(new URL("../../..", import.meta.url));
 const cliRoot = fileURLToPath(new URL("..", import.meta.url));
-const packageName = "fitting-room";
-const packageVersion = "0.0.0";
-const tarballName = `${packageName}-${packageVersion}.tgz`;
+
+let packageName = "";
+let tarballName = "";
 
 interface CommandOutput {
   stderr: string;
@@ -72,6 +72,17 @@ beforeAll(async () => {
   temporaryDirectory = await mkdtemp(path.join(os.tmpdir(), "fittingroom-pack-"));
   projectRoot = path.join(temporaryDirectory, "app");
   strangerRoot = path.join(temporaryDirectory, "stranger");
+  const manifest = JSON.parse(await readFile(path.join(cliRoot, "package.json"), "utf8")) as {
+    name?: unknown;
+    version?: unknown;
+  };
+
+  if (typeof manifest.name !== "string" || typeof manifest.version !== "string") {
+    throw new Error("packages/cli/package.json needs a name and version.");
+  }
+
+  packageName = manifest.name;
+  tarballName = `${manifest.name}-${manifest.version}.tgz`;
 
   await mkdir(projectRoot, { recursive: true });
   await mkdir(strangerRoot, { recursive: true });
@@ -89,7 +100,7 @@ afterAll(async () => {
 });
 
 describe("npm pack", () => {
-  it("makes one tarball named fitting-room", async () => {
+  it("makes one tarball from the package name and version", async () => {
     const archives = (await readdir(path.dirname(tarballPath))).filter((file) =>
       file.endsWith(".tgz"),
     );

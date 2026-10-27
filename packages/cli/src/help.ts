@@ -1,3 +1,5 @@
+import { readFileSync } from "node:fs";
+
 const helpText = [
   "Fitting Room",
   "Try your UI on before you ship it.",
@@ -111,5 +113,13 @@ export function getHelpText(command?: string): string {
 }
 
 export function getVersion(): string {
-  return "0.0.0";
+  const manifest = JSON.parse(
+    readFileSync(new URL("../package.json", import.meta.url), "utf8"),
+  ) as { version?: unknown };
+
+  if (typeof manifest.version !== "string" || manifest.version === "") {
+    throw new Error("The package version is missing from package.json.");
+  }
+
+  return manifest.version;
 }

@@ -214,6 +214,18 @@ async function writeBoardState(): Promise<void> {
   await writeFile(path.join(stateRoot, "board.json"), `${JSON.stringify(boardState, null, 2)}\n`);
 }
 
+async function cliPackageVersion(): Promise<string> {
+  const manifest = JSON.parse(
+    await readFile(path.join(repoRoot, "packages", "cli", "package.json"), "utf8"),
+  ) as { version?: unknown };
+
+  if (typeof manifest.version !== "string") {
+    throw new Error("packages/cli/package.json needs a version.");
+  }
+
+  return manifest.version;
+}
+
 async function startBoard(args: string[]): Promise<RunningBoard> {
   const boardArgs =
     args.includes("--port") || args.some((arg) => arg.startsWith("--port="))
@@ -461,7 +473,7 @@ describe("fitroom binary", () => {
     const result = await runFitroom(["audit", "--version"]);
 
     expect(result.code).toBe(0);
-    expect(result.stdout.trim()).toBe("0.0.0");
+    expect(result.stdout.trim()).toBe(await cliPackageVersion());
   });
 
   it("prints valid audit options for an unknown option", async () => {
