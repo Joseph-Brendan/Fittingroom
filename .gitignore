@@ -19,3 +19,8 @@ e2e/.ui-board-session.json
 e2e/.ui-board-approved-session.json
 e2e/.ui-board-empty-session.json
 e2e/.ui-board-waiting-session.json
+
+# Keep docs local only. These files are not part of the product.
+*.md
+!/README.md
+!/packages/cli/README.md
