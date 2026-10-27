@@ -15,3 +15,7 @@ e2e/.board-session.json
 e2e/.empty-board-session.json
 
 e2e/.bridge-session.json
+e2e/.ui-board-session.json
+e2e/.ui-board-approved-session.json
+e2e/.ui-board-empty-session.json
+e2e/.ui-board-waiting-session.json

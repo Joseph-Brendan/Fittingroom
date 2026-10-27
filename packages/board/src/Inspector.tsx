@@ -16,6 +16,7 @@ import {
 import { CSS } from "@dnd-kit/utilities";
 import { useState } from "react";
 import type { BoardDesignSystem } from "./types";
+import { Button, CopyIcon, PlusIcon, TrashIcon } from "./ui";
 
 export interface SelectedPreviewElement {
   id: string;
@@ -119,9 +120,9 @@ function TokenField({
             placeholder="Enter a CSS value"
             value={customValue}
           />
-          <button onClick={applyCustom} type="button">
+          <Button onClick={applyCustom} variant="primary">
             Apply custom value
-          </button>
+          </Button>
         </div>
       ) : null}
     </div>
@@ -192,34 +193,32 @@ export function Inspector({ designSystem, onEdit, selected }: InspectorProps) {
   }
 
   return (
-    <aside aria-label="Inspector" className="inspector">
-      <div className="drawer-heading">
+    <div className="inspector-content">
+      <div className="inspector-heading">
         <h2>Inspector</h2>
-        <p className="selected-id" data-testid="selected-fr-id">
+        <p className="selected-id" data-testid="selected-fr-id" title={selected.id}>
           {selected.id}
         </p>
       </div>
 
       <div className="inspector-fields">
         <div className="inspector-field">
-          <label>
-            Text
-            <input
-              aria-label="Text content"
-              onChange={(event) => setText(event.target.value)}
-              type="text"
-              value={text}
-            />
-          </label>
-          <button
+          <span>Text</span>
+          <input
+            aria-label="Text content"
+            onChange={(event) => setText(event.target.value)}
+            type="text"
+            value={text}
+          />
+          <Button
             className="apply-text"
             onClick={() =>
               onEdit(selected.slug, { op: "set-text", id: selected.id, text: text.trim() })
             }
-            type="button"
+            variant="secondary"
           >
             Apply text
-          </button>
+          </Button>
         </div>
         <div className="inspector-field">
           <label>
@@ -308,13 +307,15 @@ export function Inspector({ designSystem, onEdit, selected }: InspectorProps) {
       </div>
 
       <div className="inspector-actions">
-        <button
+        <Button
+          icon={<TrashIcon />}
           onClick={() => onEdit(selected.slug, { op: "delete", id: selected.id })}
-          type="button"
+          variant="danger"
         >
           Delete
-        </button>
-        <button
+        </Button>
+        <Button
+          icon={<CopyIcon />}
           onClick={() =>
             onEdit(selected.slug, {
               op: "duplicate",
@@ -322,50 +323,53 @@ export function Inspector({ designSystem, onEdit, selected }: InspectorProps) {
               newId: `${selected.id}-copy`,
             })
           }
-          type="button"
+          variant="secondary"
         >
           Duplicate
-        </button>
+        </Button>
       </div>
 
       <section className="insert-panel">
-        <h3>Insert</h3>
-        <select
-          aria-label="Insert component"
-          onChange={(event) => setInsertComponent(event.target.value)}
-          value={insertComponent}
-        >
-          {options.map((option) => (
-            <option key={option.value} value={option.value}>
-              {option.label}
-            </option>
-          ))}
-        </select>
-        <button
-          onClick={() =>
-            onEdit(selected.slug, {
-              op: "insert",
-              parent: selected.id,
-              component: insertComponent,
-              id: `insert-${Date.now().toString(36)}`,
-              text: insertComponent,
-            })
-          }
-          type="button"
-        >
-          Insert
-        </button>
+        <h3 className="inspector-section-title">Insert</h3>
+        <div className="insert-row">
+          <select
+            aria-label="Insert component"
+            onChange={(event) => setInsertComponent(event.target.value)}
+            value={insertComponent}
+          >
+            {options.map((option) => (
+              <option key={option.value} value={option.value}>
+                {option.label}
+              </option>
+            ))}
+          </select>
+          <Button
+            icon={<PlusIcon />}
+            onClick={() =>
+              onEdit(selected.slug, {
+                op: "insert",
+                parent: selected.id,
+                component: insertComponent,
+                id: `insert-${Date.now().toString(36)}`,
+                text: insertComponent,
+              })
+            }
+            variant="secondary"
+          >
+            Insert
+          </Button>
+        </div>
       </section>
 
       {selected.siblings.length > 1 ? (
-        <section className="structure-panel">
-          <h3>Order in {selected.parentId ?? "parent"}</h3>
+        <section className="structure-order">
+          <h3 className="inspector-section-title">Order in {selected.parentId ?? "parent"}</h3>
           <DndContext collisionDetection={closestCenter} onDragEnd={dragEnd} sensors={sensors}>
             <SortableContext
               items={selected.siblings.map((sibling) => sibling.id)}
               strategy={verticalListSortingStrategy}
             >
-              <ul>
+              <ul className="order-list">
                 {selected.siblings.map((sibling) => (
                   <SortableItem id={sibling.id} key={sibling.id} label={sibling.label} />
                 ))}
@@ -374,6 +378,6 @@ export function Inspector({ designSystem, onEdit, selected }: InspectorProps) {
           </DndContext>
         </section>
       ) : null}
-    </aside>
+    </div>
   );
 }

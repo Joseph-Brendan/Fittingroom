@@ -37,7 +37,7 @@ test("shows four variants in iframes with names, rationales and finding counts",
 
   await expect(page.getByRole("heading", { name: "Fitting Room", level: 1 })).toBeVisible();
 
-  const cards = page.locator("article.variant-card");
+  const cards = page.getByTestId("variant-card");
 
   await expect(cards).toHaveCount(4);
 
@@ -148,6 +148,7 @@ test("regenerates all, regenerates one card, pins a card, and shows previous rou
   const previous = page.getByRole("region", { name: "Previous rounds" });
 
   await expect(previous).toBeVisible();
+  await page.getByRole("button", { name: "Show previous rounds" }).click();
   await expect(previous.getByText("Refined / Clean UI / Dark-First / Spatial")).toBeVisible();
 
   await page.getByRole("button", { name: "Pin Clean UI" }).click();
@@ -260,6 +261,7 @@ test("inserts a project component before basic components", async ({ page, reque
   const inspector = page.getByRole("complementary", { name: "Inspector" });
 
   await expect(inspector).toBeVisible();
+  await expect(inspector.getByTestId("selected-fr-id")).toBeVisible();
 
   const insert = inspector.getByLabel("Insert component");
   const options = await insert.locator("option").allTextContents();

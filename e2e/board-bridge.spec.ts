@@ -210,7 +210,7 @@ test("moves a board request through variants and approval without a reload", asy
     expect(registered.accepted).toBe(true);
   }
 
-  await expect(page.locator("article.variant-card")).toHaveCount(4);
+  await expect(page.getByTestId("variant-card")).toHaveCount(4);
   await expect(page.getByRole("heading", { name: "Refined", exact: true })).toBeVisible();
   await expect(page.getByRole("heading", { name: "Dark-First", exact: true })).toBeVisible();
   await expect(
@@ -387,6 +387,7 @@ test("restores code and edits from an earlier round, then restores the replaced 
   const replacedLog = await readTextIfPresent(logPath);
 
   await page.goto(session.url);
+  await page.getByRole("button", { name: "Show previous rounds" }).click();
   await page.locator(`[data-snapshot-id="${firstRefined.id}"]`).click();
 
   const firstRestore = page.waitForResponse(

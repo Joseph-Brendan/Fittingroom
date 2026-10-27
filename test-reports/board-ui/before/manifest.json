@@ -1,0 +1,222 @@
+[
+  {
+    "name": "empty",
+    "width": 375,
+    "path": "test-reports/board-ui/before/empty-375.png"
+  },
+  {
+    "name": "waiting",
+    "width": 375,
+    "path": "test-reports/board-ui/before/waiting-375.png"
+  },
+  {
+    "name": "empty",
+    "width": 768,
+    "path": "test-reports/board-ui/before/empty-768.png"
+  },
+  {
+    "name": "waiting",
+    "width": 768,
+    "path": "test-reports/board-ui/before/waiting-768.png"
+  },
+  {
+    "name": "empty",
+    "width": 1280,
+    "path": "test-reports/board-ui/before/empty-1280.png"
+  },
+  {
+    "name": "waiting",
+    "width": 1280,
+    "path": "test-reports/board-ui/before/waiting-1280.png"
+  },
+  {
+    "name": "empty",
+    "width": 1440,
+    "path": "test-reports/board-ui/before/empty-1440.png"
+  },
+  {
+    "name": "waiting",
+    "width": 1440,
+    "path": "test-reports/board-ui/before/waiting-1440.png"
+  },
+  {
+    "name": "cards",
+    "width": 375,
+    "path": "test-reports/board-ui/before/cards-375.png"
+  },
+  {
+    "name": "cards",
+    "width": 768,
+    "path": "test-reports/board-ui/before/cards-768.png"
+  },
+  {
+    "name": "cards",
+    "width": 1280,
+    "path": "test-reports/board-ui/before/cards-1280.png"
+  },
+  {
+    "name": "cards",
+    "width": 1440,
+    "path": "test-reports/board-ui/before/cards-1440.png"
+  },
+  {
+    "name": "selected",
+    "width": 375,
+    "path": "test-reports/board-ui/before/selected-375.png"
+  },
+  {
+    "name": "selected",
+    "width": 768,
+    "path": "test-reports/board-ui/before/selected-768.png"
+  },
+  {
+    "name": "selected",
+    "width": 1280,
+    "path": "test-reports/board-ui/before/selected-1280.png"
+  },
+  {
+    "name": "selected",
+    "width": 1440,
+    "path": "test-reports/board-ui/before/selected-1440.png"
+  },
+  {
+    "name": "editor",
+    "width": 375,
+    "path": "test-reports/board-ui/before/editor-375.png"
+  },
+  {
+    "name": "editor",
+    "width": 768,
+    "path": "test-reports/board-ui/before/editor-768.png"
+  },
+  {
+    "name": "editor",
+    "width": 1280,
+    "path": "test-reports/board-ui/before/editor-1280.png"
+  },
+  {
+    "name": "editor",
+    "width": 1440,
+    "path": "test-reports/board-ui/before/editor-1440.png"
+  },
+  {
+    "name": "structure",
+    "width": 375,
+    "path": "test-reports/board-ui/before/structure-375.png"
+  },
+  {
+    "name": "structure",
+    "width": 768,
+    "path": "test-reports/board-ui/before/structure-768.png"
+  },
+  {
+    "name": "structure",
+    "width": 1280,
+    "path": "test-reports/board-ui/before/structure-1280.png"
+  },
+  {
+    "name": "structure",
+    "width": 1440,
+    "path": "test-reports/board-ui/before/structure-1440.png"
+  },
+  {
+    "name": "findings",
+    "width": 375,
+    "path": "test-reports/board-ui/before/findings-375.png"
+  },
+  {
+    "name": "findings",
+    "width": 768,
+    "path": "test-reports/board-ui/before/findings-768.png"
+  },
+  {
+    "name": "findings",
+    "width": 1280,
+    "path": "test-reports/board-ui/before/findings-1280.png"
+  },
+  {
+    "name": "findings",
+    "width": 1440,
+    "path": "test-reports/board-ui/before/findings-1440.png"
+  },
+  {
+    "name": "previous",
+    "width": 375,
+    "path": "test-reports/board-ui/before/previous-375.png"
+  },
+  {
+    "name": "previous",
+    "width": 768,
+    "path": "test-reports/board-ui/before/previous-768.png"
+  },
+  {
+    "name": "previous",
+    "width": 1280,
+    "path": "test-reports/board-ui/before/previous-1280.png"
+  },
+  {
+    "name": "previous",
+    "width": 1440,
+    "path": "test-reports/board-ui/before/previous-1440.png"
+  },
+  {
+    "name": "toast",
+    "width": 375,
+    "path": "test-reports/board-ui/before/toast-375.png"
+  },
+  {
+    "name": "toast",
+    "width": 768,
+    "path": "test-reports/board-ui/before/toast-768.png"
+  },
+  {
+    "name": "toast",
+    "width": 1280,
+    "path": "test-reports/board-ui/before/toast-1280.png"
+  },
+  {
+    "name": "toast",
+    "width": 1440,
+    "path": "test-reports/board-ui/before/toast-1440.png"
+  },
+  {
+    "name": "connected",
+    "width": 375,
+    "path": "test-reports/board-ui/before/connected-375.png"
+  },
+  {
+    "name": "connected",
+    "width": 768,
+    "path": "test-reports/board-ui/before/connected-768.png"
+  },
+  {
+    "name": "connected",
+    "width": 1280,
+    "path": "test-reports/board-ui/before/connected-1280.png"
+  },
+  {
+    "name": "connected",
+    "width": 1440,
+    "path": "test-reports/board-ui/before/connected-1440.png"
+  },
+  {
+    "name": "approved",
+    "width": 375,
+    "path": "test-reports/board-ui/before/approved-375.png"
+  },
+  {
+    "name": "approved",
+    "width": 768,
+    "path": "test-reports/board-ui/before/approved-768.png"
+  },
+  {
+    "name": "approved",
+    "width": 1280,
+    "path": "test-reports/board-ui/before/approved-1280.png"
+  },
+  {
+    "name": "approved",
+    "width": 1440,
+    "path": "test-reports/board-ui/before/approved-1440.png"
+  }
+]

@@ -1,0 +1,80 @@
+@import url("https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap");
+
+:root {
+  color-scheme: light dark;
+  --bg: #ffffff;
+  --surface: #fafafa;
+  --subtle: #f4f4f5;
+  --border: #e4e4e7;
+  --border-strong: #d4d4d8;
+  --text: #0a0a0a;
+  --text-muted: #52525b;
+  --text-faint: #71717a;
+  --accent: #6d28d9;
+  --accent-hover: #5b21b6;
+  --accent-soft: #f5f3ff;
+  --accent-contrast: #ffffff;
+  --success: #15803d;
+  --warning: #b45309;
+  --danger: #b91c1c;
+  --control-border: var(--text-faint);
+  --scrim: rgb(10 10 10 / 0.36);
+  --font-ui: "Inter Tight", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
+  --text-10: 10px;
+  --text-12: 12px;
+  --text-13: 13px;
+  --text-14: 14px;
+  --text-16: 16px;
+  --text-20: 20px;
+  --text-24: 24px;
+  --text-32: 32px;
+  --leading-text: 1.5;
+  --leading-heading: 1.2;
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-6: 24px;
+  --space-8: 32px;
+  --space-12: 48px;
+  --radius-control: 6px;
+  --radius-card: 10px;
+  --radius-pill: 999px;
+  --control-height: 32px;
+  --control-height-touch: 36px;
+  --control-height-mobile: 44px;
+  --top-bar-height: 56px;
+  --panel-width: 360px;
+  --drawer-width: 400px;
+  --sheet-height: 85vh;
+  --transition: 140ms ease-out;
+  --focus-ring: 2px solid var(--accent);
+  --focus-offset: 2px;
+  --z-top-bar: 30;
+  --z-panel: 40;
+  --z-modal: 60;
+  --z-toast: 70;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #0a0a0a;
+    --surface: #111113;
+    --subtle: #18181b;
+    --border: #27272a;
+    --border-strong: #3f3f46;
+    --text: #fafafa;
+    --text-muted: #a1a1aa;
+    --text-faint: #a1a1aa;
+    --accent: #a78bfa;
+    --accent-hover: #c4b5fd;
+    --accent-soft: #1e1533;
+    --accent-contrast: #0a0a0a;
+    --success: #4ade80;
+    --warning: #fbbf24;
+    --danger: #f87171;
+    --control-border: var(--text-faint);
+    --scrim: rgb(0 0 0 / 0.62);
+  }
+}

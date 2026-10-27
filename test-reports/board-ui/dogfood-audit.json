@@ -1,0 +1,135 @@
+{
+  "errors": [],
+  "findings": [
+    {
+      "id": "contrast-unmeasured-1",
+      "title": "Contrast could not be measured, check by eye",
+      "citation": "wcag22-1.4.3",
+      "severity": 2,
+      "confidence": "judged",
+      "evidence": {
+        "selector": "article[aria-label=\"01 Refined: Refined\"] > .card-footer > .rationale[data-testid=\"card-rationale\"]",
+        "screenshotPath": "test-reports/board-ui/dogfood/01-wcag22-1-4-3.png",
+        "measuredValue": "Contrast could not be measured: Element's background color could not be determined because element contains an image node"
+      },
+      "fix": "Check the text against its background by eye, then use colors that meet the 4.5:1 contrast minimum."
+    },
+    {
+      "id": "contrast-unmeasured-2",
+      "title": "Contrast could not be measured, check by eye",
+      "citation": "wcag22-1.4.3",
+      "severity": 2,
+      "confidence": "judged",
+      "evidence": {
+        "selector": "article[aria-label=\"02 Native: Clean UI\"] > .card-footer > .rationale[data-testid=\"card-rationale\"]",
+        "screenshotPath": "test-reports/board-ui/dogfood/02-wcag22-1-4-3.png",
+        "measuredValue": "Contrast could not be measured: Element's background color could not be determined because element contains an image node"
+      },
+      "fix": "Check the text against its background by eye, then use colors that meet the 4.5:1 contrast minimum."
+    },
+    {
+      "id": "contrast-unmeasured-3",
+      "title": "Contrast could not be measured, check by eye",
+      "citation": "wcag22-1.4.3",
+      "severity": 2,
+      "confidence": "judged",
+      "evidence": {
+        "selector": "article[aria-label=\"03 Bold: Dark-First\"] > .card-footer > .rationale[data-testid=\"card-rationale\"]",
+        "screenshotPath": "test-reports/board-ui/dogfood/03-wcag22-1-4-3.png",
+        "measuredValue": "Contrast could not be measured: Element's background color could not be determined because element contains an image node"
+      },
+      "fix": "Check the text against its background by eye, then use colors that meet the 4.5:1 contrast minimum."
+    },
+    {
+      "id": "contrast-unmeasured-4",
+      "title": "Contrast could not be measured, check by eye",
+      "citation": "wcag22-1.4.3",
+      "severity": 2,
+      "confidence": "judged",
+      "evidence": {
+        "selector": "article[aria-label=\"04 Wildcard: Spatial\"] > .card-footer > .rationale[data-testid=\"card-rationale\"]",
+        "screenshotPath": "test-reports/board-ui/dogfood/04-wcag22-1-4-3.png",
+        "measuredValue": "Contrast could not be measured: Element's background color could not be determined because it partially overlaps other elements"
+      },
+      "fix": "Check the text against its background by eye, then use colors that meet the 4.5:1 contrast minimum."
+    },
+    {
+      "id": "contrast-unmeasured-5",
+      "title": "Contrast could not be measured, check by eye",
+      "citation": "wcag22-1.4.3",
+      "severity": 2,
+      "confidence": "judged",
+      "evidence": {
+        "selector": "label[for=\"next-direction\"]",
+        "screenshotPath": "test-reports/board-ui/dogfood/05-wcag22-1-4-3.png",
+        "measuredValue": "Contrast could not be measured: Element's background color could not be determined because it is overlapped by another element"
+      },
+      "fix": "Check the text against its background by eye, then use colors that meet the 4.5:1 contrast minimum."
+    },
+    {
+      "id": "contrast-unmeasured-6",
+      "title": "Contrast could not be measured, check by eye",
+      "citation": "wcag22-1.4.3",
+      "severity": 2,
+      "confidence": "judged",
+      "evidence": {
+        "selector": "#next-direction",
+        "screenshotPath": "test-reports/board-ui/dogfood/06-wcag22-1-4-3.png",
+        "measuredValue": "Contrast could not be measured: Element has no value; test color contrast with a value entered"
+      },
+      "fix": "Check the text against its background by eye, then use colors that meet the 4.5:1 contrast minimum."
+    },
+    {
+      "id": "contrast-unmeasured-7",
+      "title": "Contrast could not be measured, check by eye",
+      "citation": "wcag22-1.4.3",
+      "severity": 2,
+      "confidence": "judged",
+      "evidence": {
+        "selector": "button[type=\"submit\"] > .button-label",
+        "screenshotPath": "test-reports/board-ui/dogfood/07-wcag22-1-4-3.png",
+        "measuredValue": "Contrast could not be measured: Element's background color could not be determined because it is overlapped by another element"
+      },
+      "fix": "Check the text against its background by eye, then use colors that meet the 4.5:1 contrast minimum."
+    },
+    {
+      "id": "contrast-unmeasured-8",
+      "title": "Contrast could not be measured, check by eye",
+      "citation": "wcag22-1.4.3",
+      "severity": 2,
+      "confidence": "judged",
+      "evidence": {
+        "selector": ".connection-line",
+        "screenshotPath": "test-reports/board-ui/dogfood/08-wcag22-1-4-3.png",
+        "measuredValue": "Contrast could not be measured: Element's background color could not be determined because it is overlapped by another element"
+      },
+      "fix": "Check the text against its background by eye, then use colors that meet the 4.5:1 contrast minimum."
+    },
+    {
+      "id": "contrast-unmeasured-9",
+      "title": "Contrast could not be measured, check by eye",
+      "citation": "wcag22-1.4.3",
+      "severity": 2,
+      "confidence": "judged",
+      "evidence": {
+        "selector": "strong",
+        "screenshotPath": "test-reports/board-ui/dogfood/09-wcag22-1-4-3.png",
+        "measuredValue": "Contrast could not be measured: Element's background color could not be determined because it is overlapped by another element"
+      },
+      "fix": "Check the text against its background by eye, then use colors that meet the 4.5:1 contrast minimum."
+    },
+    {
+      "id": "contrast-unmeasured-10",
+      "title": "Contrast could not be measured, check by eye",
+      "citation": "wcag22-1.4.3",
+      "severity": 2,
+      "confidence": "judged",
+      "evidence": {
+        "selector": ".panel-empty > p",
+        "screenshotPath": "test-reports/board-ui/dogfood/10-wcag22-1-4-3.png",
+        "measuredValue": "Contrast could not be measured: Element's background color could not be determined because it is overlapped by another element"
+      },
+      "fix": "Check the text against its background by eye, then use colors that meet the 4.5:1 contrast minimum."
+    }
+  ]
+}

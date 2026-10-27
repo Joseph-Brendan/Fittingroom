@@ -1,0 +1,530 @@
+[
+  {
+    "name": "empty",
+    "theme": "light",
+    "width": 375,
+    "path": "test-reports/board-ui/after/empty-light-375.png"
+  },
+  {
+    "name": "empty",
+    "theme": "light",
+    "width": 768,
+    "path": "test-reports/board-ui/after/empty-light-768.png"
+  },
+  {
+    "name": "empty",
+    "theme": "light",
+    "width": 1280,
+    "path": "test-reports/board-ui/after/empty-light-1280.png"
+  },
+  {
+    "name": "empty",
+    "theme": "light",
+    "width": 1440,
+    "path": "test-reports/board-ui/after/empty-light-1440.png"
+  },
+  {
+    "name": "waiting",
+    "theme": "light",
+    "width": 375,
+    "path": "test-reports/board-ui/after/waiting-light-375.png"
+  },
+  {
+    "name": "waiting",
+    "theme": "light",
+    "width": 768,
+    "path": "test-reports/board-ui/after/waiting-light-768.png"
+  },
+  {
+    "name": "waiting",
+    "theme": "light",
+    "width": 1280,
+    "path": "test-reports/board-ui/after/waiting-light-1280.png"
+  },
+  {
+    "name": "waiting",
+    "theme": "light",
+    "width": 1440,
+    "path": "test-reports/board-ui/after/waiting-light-1440.png"
+  },
+  {
+    "name": "cards",
+    "theme": "light",
+    "width": 375,
+    "path": "test-reports/board-ui/after/cards-light-375.png"
+  },
+  {
+    "name": "cards",
+    "theme": "light",
+    "width": 768,
+    "path": "test-reports/board-ui/after/cards-light-768.png"
+  },
+  {
+    "name": "cards",
+    "theme": "light",
+    "width": 1280,
+    "path": "test-reports/board-ui/after/cards-light-1280.png"
+  },
+  {
+    "name": "cards",
+    "theme": "light",
+    "width": 1440,
+    "path": "test-reports/board-ui/after/cards-light-1440.png"
+  },
+  {
+    "name": "selected",
+    "theme": "light",
+    "width": 375,
+    "path": "test-reports/board-ui/after/selected-light-375.png"
+  },
+  {
+    "name": "selected",
+    "theme": "light",
+    "width": 768,
+    "path": "test-reports/board-ui/after/selected-light-768.png"
+  },
+  {
+    "name": "selected",
+    "theme": "light",
+    "width": 1280,
+    "path": "test-reports/board-ui/after/selected-light-1280.png"
+  },
+  {
+    "name": "selected",
+    "theme": "light",
+    "width": 1440,
+    "path": "test-reports/board-ui/after/selected-light-1440.png"
+  },
+  {
+    "name": "editor",
+    "theme": "light",
+    "width": 375,
+    "path": "test-reports/board-ui/after/editor-light-375.png"
+  },
+  {
+    "name": "editor",
+    "theme": "light",
+    "width": 768,
+    "path": "test-reports/board-ui/after/editor-light-768.png"
+  },
+  {
+    "name": "editor",
+    "theme": "light",
+    "width": 1280,
+    "path": "test-reports/board-ui/after/editor-light-1280.png"
+  },
+  {
+    "name": "editor",
+    "theme": "light",
+    "width": 1440,
+    "path": "test-reports/board-ui/after/editor-light-1440.png"
+  },
+  {
+    "name": "structure",
+    "theme": "light",
+    "width": 375,
+    "path": "test-reports/board-ui/after/structure-light-375.png"
+  },
+  {
+    "name": "structure",
+    "theme": "light",
+    "width": 768,
+    "path": "test-reports/board-ui/after/structure-light-768.png"
+  },
+  {
+    "name": "structure",
+    "theme": "light",
+    "width": 1280,
+    "path": "test-reports/board-ui/after/structure-light-1280.png"
+  },
+  {
+    "name": "structure",
+    "theme": "light",
+    "width": 1440,
+    "path": "test-reports/board-ui/after/structure-light-1440.png"
+  },
+  {
+    "name": "findings",
+    "theme": "light",
+    "width": 375,
+    "path": "test-reports/board-ui/after/findings-light-375.png"
+  },
+  {
+    "name": "findings",
+    "theme": "light",
+    "width": 768,
+    "path": "test-reports/board-ui/after/findings-light-768.png"
+  },
+  {
+    "name": "findings",
+    "theme": "light",
+    "width": 1280,
+    "path": "test-reports/board-ui/after/findings-light-1280.png"
+  },
+  {
+    "name": "findings",
+    "theme": "light",
+    "width": 1440,
+    "path": "test-reports/board-ui/after/findings-light-1440.png"
+  },
+  {
+    "name": "previous",
+    "theme": "light",
+    "width": 375,
+    "path": "test-reports/board-ui/after/previous-light-375.png"
+  },
+  {
+    "name": "previous",
+    "theme": "light",
+    "width": 768,
+    "path": "test-reports/board-ui/after/previous-light-768.png"
+  },
+  {
+    "name": "previous",
+    "theme": "light",
+    "width": 1280,
+    "path": "test-reports/board-ui/after/previous-light-1280.png"
+  },
+  {
+    "name": "previous",
+    "theme": "light",
+    "width": 1440,
+    "path": "test-reports/board-ui/after/previous-light-1440.png"
+  },
+  {
+    "name": "toast",
+    "theme": "light",
+    "width": 375,
+    "path": "test-reports/board-ui/after/toast-light-375.png"
+  },
+  {
+    "name": "toast",
+    "theme": "light",
+    "width": 768,
+    "path": "test-reports/board-ui/after/toast-light-768.png"
+  },
+  {
+    "name": "toast",
+    "theme": "light",
+    "width": 1280,
+    "path": "test-reports/board-ui/after/toast-light-1280.png"
+  },
+  {
+    "name": "toast",
+    "theme": "light",
+    "width": 1440,
+    "path": "test-reports/board-ui/after/toast-light-1440.png"
+  },
+  {
+    "name": "approved",
+    "theme": "light",
+    "width": 375,
+    "path": "test-reports/board-ui/after/approved-light-375.png"
+  },
+  {
+    "name": "approved",
+    "theme": "light",
+    "width": 768,
+    "path": "test-reports/board-ui/after/approved-light-768.png"
+  },
+  {
+    "name": "approved",
+    "theme": "light",
+    "width": 1280,
+    "path": "test-reports/board-ui/after/approved-light-1280.png"
+  },
+  {
+    "name": "approved",
+    "theme": "light",
+    "width": 1440,
+    "path": "test-reports/board-ui/after/approved-light-1440.png"
+  },
+  {
+    "name": "connected",
+    "theme": "light",
+    "width": 375,
+    "path": "test-reports/board-ui/after/connected-light-375.png"
+  },
+  {
+    "name": "connected",
+    "theme": "light",
+    "width": 768,
+    "path": "test-reports/board-ui/after/connected-light-768.png"
+  },
+  {
+    "name": "connected",
+    "theme": "light",
+    "width": 1280,
+    "path": "test-reports/board-ui/after/connected-light-1280.png"
+  },
+  {
+    "name": "connected",
+    "theme": "light",
+    "width": 1440,
+    "path": "test-reports/board-ui/after/connected-light-1440.png"
+  },
+  {
+    "name": "empty",
+    "theme": "dark",
+    "width": 375,
+    "path": "test-reports/board-ui/after/empty-dark-375.png"
+  },
+  {
+    "name": "empty",
+    "theme": "dark",
+    "width": 768,
+    "path": "test-reports/board-ui/after/empty-dark-768.png"
+  },
+  {
+    "name": "empty",
+    "theme": "dark",
+    "width": 1280,
+    "path": "test-reports/board-ui/after/empty-dark-1280.png"
+  },
+  {
+    "name": "empty",
+    "theme": "dark",
+    "width": 1440,
+    "path": "test-reports/board-ui/after/empty-dark-1440.png"
+  },
+  {
+    "name": "waiting",
+    "theme": "dark",
+    "width": 375,
+    "path": "test-reports/board-ui/after/waiting-dark-375.png"
+  },
+  {
+    "name": "waiting",
+    "theme": "dark",
+    "width": 768,
+    "path": "test-reports/board-ui/after/waiting-dark-768.png"
+  },
+  {
+    "name": "waiting",
+    "theme": "dark",
+    "width": 1280,
+    "path": "test-reports/board-ui/after/waiting-dark-1280.png"
+  },
+  {
+    "name": "waiting",
+    "theme": "dark",
+    "width": 1440,
+    "path": "test-reports/board-ui/after/waiting-dark-1440.png"
+  },
+  {
+    "name": "cards",
+    "theme": "dark",
+    "width": 375,
+    "path": "test-reports/board-ui/after/cards-dark-375.png"
+  },
+  {
+    "name": "cards",
+    "theme": "dark",
+    "width": 768,
+    "path": "test-reports/board-ui/after/cards-dark-768.png"
+  },
+  {
+    "name": "cards",
+    "theme": "dark",
+    "width": 1280,
+    "path": "test-reports/board-ui/after/cards-dark-1280.png"
+  },
+  {
+    "name": "cards",
+    "theme": "dark",
+    "width": 1440,
+    "path": "test-reports/board-ui/after/cards-dark-1440.png"
+  },
+  {
+    "name": "selected",
+    "theme": "dark",
+    "width": 375,
+    "path": "test-reports/board-ui/after/selected-dark-375.png"
+  },
+  {
+    "name": "selected",
+    "theme": "dark",
+    "width": 768,
+    "path": "test-reports/board-ui/after/selected-dark-768.png"
+  },
+  {
+    "name": "selected",
+    "theme": "dark",
+    "width": 1280,
+    "path": "test-reports/board-ui/after/selected-dark-1280.png"
+  },
+  {
+    "name": "selected",
+    "theme": "dark",
+    "width": 1440,
+    "path": "test-reports/board-ui/after/selected-dark-1440.png"
+  },
+  {
+    "name": "editor",
+    "theme": "dark",
+    "width": 375,
+    "path": "test-reports/board-ui/after/editor-dark-375.png"
+  },
+  {
+    "name": "editor",
+    "theme": "dark",
+    "width": 768,
+    "path": "test-reports/board-ui/after/editor-dark-768.png"
+  },
+  {
+    "name": "editor",
+    "theme": "dark",
+    "width": 1280,
+    "path": "test-reports/board-ui/after/editor-dark-1280.png"
+  },
+  {
+    "name": "editor",
+    "theme": "dark",
+    "width": 1440,
+    "path": "test-reports/board-ui/after/editor-dark-1440.png"
+  },
+  {
+    "name": "structure",
+    "theme": "dark",
+    "width": 375,
+    "path": "test-reports/board-ui/after/structure-dark-375.png"
+  },
+  {
+    "name": "structure",
+    "theme": "dark",
+    "width": 768,
+    "path": "test-reports/board-ui/after/structure-dark-768.png"
+  },
+  {
+    "name": "structure",
+    "theme": "dark",
+    "width": 1280,
+    "path": "test-reports/board-ui/after/structure-dark-1280.png"
+  },
+  {
+    "name": "structure",
+    "theme": "dark",
+    "width": 1440,
+    "path": "test-reports/board-ui/after/structure-dark-1440.png"
+  },
+  {
+    "name": "findings",
+    "theme": "dark",
+    "width": 375,
+    "path": "test-reports/board-ui/after/findings-dark-375.png"
+  },
+  {
+    "name": "findings",
+    "theme": "dark",
+    "width": 768,
+    "path": "test-reports/board-ui/after/findings-dark-768.png"
+  },
+  {
+    "name": "findings",
+    "theme": "dark",
+    "width": 1280,
+    "path": "test-reports/board-ui/after/findings-dark-1280.png"
+  },
+  {
+    "name": "findings",
+    "theme": "dark",
+    "width": 1440,
+    "path": "test-reports/board-ui/after/findings-dark-1440.png"
+  },
+  {
+    "name": "previous",
+    "theme": "dark",
+    "width": 375,
+    "path": "test-reports/board-ui/after/previous-dark-375.png"
+  },
+  {
+    "name": "previous",
+    "theme": "dark",
+    "width": 768,
+    "path": "test-reports/board-ui/after/previous-dark-768.png"
+  },
+  {
+    "name": "previous",
+    "theme": "dark",
+    "width": 1280,
+    "path": "test-reports/board-ui/after/previous-dark-1280.png"
+  },
+  {
+    "name": "previous",
+    "theme": "dark",
+    "width": 1440,
+    "path": "test-reports/board-ui/after/previous-dark-1440.png"
+  },
+  {
+    "name": "toast",
+    "theme": "dark",
+    "width": 375,
+    "path": "test-reports/board-ui/after/toast-dark-375.png"
+  },
+  {
+    "name": "toast",
+    "theme": "dark",
+    "width": 768,
+    "path": "test-reports/board-ui/after/toast-dark-768.png"
+  },
+  {
+    "name": "toast",
+    "theme": "dark",
+    "width": 1280,
+    "path": "test-reports/board-ui/after/toast-dark-1280.png"
+  },
+  {
+    "name": "toast",
+    "theme": "dark",
+    "width": 1440,
+    "path": "test-reports/board-ui/after/toast-dark-1440.png"
+  },
+  {
+    "name": "approved",
+    "theme": "dark",
+    "width": 375,
+    "path": "test-reports/board-ui/after/approved-dark-375.png"
+  },
+  {
+    "name": "approved",
+    "theme": "dark",
+    "width": 768,
+    "path": "test-reports/board-ui/after/approved-dark-768.png"
+  },
+  {
+    "name": "approved",
+    "theme": "dark",
+    "width": 1280,
+    "path": "test-reports/board-ui/after/approved-dark-1280.png"
+  },
+  {
+    "name": "approved",
+    "theme": "dark",
+    "width": 1440,
+    "path": "test-reports/board-ui/after/approved-dark-1440.png"
+  },
+  {
+    "name": "connected",
+    "theme": "dark",
+    "width": 375,
+    "path": "test-reports/board-ui/after/connected-dark-375.png"
+  },
+  {
+    "name": "connected",
+    "theme": "dark",
+    "width": 768,
+    "path": "test-reports/board-ui/after/connected-dark-768.png"
+  },
+  {
+    "name": "connected",
+    "theme": "dark",
+    "width": 1280,
+    "path": "test-reports/board-ui/after/connected-dark-1280.png"
+  },
+  {
+    "name": "connected",
+    "theme": "dark",
+    "width": 1440,
+    "path": "test-reports/board-ui/after/connected-dark-1440.png"
+  }
+]
